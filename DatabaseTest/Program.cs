@@ -35,6 +35,7 @@ namespace DatabaseTest
                 {
                     SiteId = adminSite.Id,
                     CreateDate = DateTime.Now,
+                    UserName = $"{adminSite.Id}_5072128027",
                     Name = "Onur",
                     Surname = "Akalın",
                     PhoneNumber = "5072128027",
@@ -52,6 +53,7 @@ namespace DatabaseTest
                 {
                     SiteId = adminSite.Id,
                     CreateDate = DateTime.Now,
+                    UserName = $"{adminSite.Id}_123456789",
                     Name = "Ahmet Arif",
                     Surname = "Özçelik",
                     PhoneNumber = "123456789",

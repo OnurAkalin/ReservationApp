@@ -6,6 +6,7 @@ namespace Domain.Entities
 {
     public class User : EntityBaseSiteWithAudit<Guid>, IEntity
     {
+        public string UserName { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string PhoneNumber { get; set; }
@@ -13,5 +14,6 @@ namespace Domain.Entities
         public string PasswordHash { get; set; }
 
         public List<UserRole> UserRoles { get; set; }
+        public List<Calendar> Calendars { get; set; }
     }
 }

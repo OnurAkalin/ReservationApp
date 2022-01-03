@@ -5,5 +5,7 @@ namespace Domain.Enumerations
         Active = 1,
         Passive = 2,
         Deleted = 3,
+        Canceled = 4,
+        Completed = 5
     }
 }
