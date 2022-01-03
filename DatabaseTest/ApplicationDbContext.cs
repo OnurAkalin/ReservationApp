@@ -37,6 +37,8 @@ namespace DatabaseTest
             builder.Entity<User>(entity => { entity.ToTable("Users"); });
             builder.Entity<SiteService>(entity => { entity.ToTable("SiteServices"); });
             builder.Entity<Calendar>(entity => { entity.ToTable("Calendars"); });
+            builder.Entity<SiteCustomization>(entity => { entity.ToTable("SiteCustomizations"); });
+            
 
             #endregion
         }
@@ -48,6 +50,7 @@ namespace DatabaseTest
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<SiteService> SiteServices { get; set; }
         public DbSet<Calendar> Calendars { get; set; }
+        public DbSet<SiteCustomization> SiteCustomizations { get; set; }
 
         #endregion
     }
