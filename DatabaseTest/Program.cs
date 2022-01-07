@@ -4,73 +4,72 @@ using System.Linq;
 using Domain.Entities;
 using Domain.Enumerations;
 
-namespace DatabaseTest
+namespace DatabaseTest;
+
+internal static class Program
 {
-    class Program
+    private static void Main()
     {
-        static void Main(string[] args)
+        // Initial DB Create For Admin Users
+        SeedAdminSiteAndUsers();
+    }
+
+    private static void SeedAdminSiteAndUsers()
+    {
+        using var dbContext = new ApplicationDbContext();
+
+        if (dbContext.ReservationSites.Any()) return;
+
+        var adminSite = new ReservationSite
         {
-            // Initial DB Create For Admin Users
-            SeedAdminSiteAndUsers();
-        }
+            Code = "ADMIN",
+            CreateDate = DateTime.Now
+        };
 
-        private static void SeedAdminSiteAndUsers()
+        dbContext.ReservationSites.Add(adminSite);
+        dbContext.SaveChanges();
+
+        var userList = new List<User>
         {
-            using var dbContext = new ApplicationDbContext();
-
-            if (dbContext.ReservationSites.Any()) return;
-
-            var adminSite = new ReservationSite
+            new()
             {
-                Code = "ADMIN",
-                CreateDate = DateTime.Now
-            };
-
-            dbContext.ReservationSites.Add(adminSite);
-            dbContext.SaveChanges();
-
-            var userList = new List<User>
-            {
-                new()
+                SiteId = adminSite.Id,
+                CreateDate = DateTime.Now,
+                UserName = $"{adminSite.Id}_5072128027",
+                Name = "Onur",
+                Surname = "Akalın",
+                PhoneNumber = "5072128027",
+                Email = "onur@gmail.com",
+                PasswordHash = "11223344",
+                UserRoles = new List<UserRole>
                 {
-                    SiteId = adminSite.Id,
-                    CreateDate = DateTime.Now,
-                    UserName = $"{adminSite.Id}_5072128027",
-                    Name = "Onur",
-                    Surname = "Akalın",
-                    PhoneNumber = "5072128027",
-                    Email = "onur@gmail.com",
-                    PasswordHash = "11223344",
-                    UserRoles = new List<UserRole>
+                    new()
                     {
-                        new()
-                        {
-                            Role = Role.Admin
-                        }
-                    }
-                },
-                new()
-                {
-                    SiteId = adminSite.Id,
-                    CreateDate = DateTime.Now,
-                    UserName = $"{adminSite.Id}_123456789",
-                    Name = "Ahmet Arif",
-                    Surname = "Özçelik",
-                    PhoneNumber = "123456789",
-                    Email = "arif@gmail.com",
-                    PasswordHash = "11223344",
-                    UserRoles = new List<UserRole>
-                    {
-                        new()
-                        {
-                            Role = Role.Admin
-                        }
+                        Role = Role.Admin
                     }
                 }
-            };
+            },
+            new()
+            {
+                SiteId = adminSite.Id,
+                CreateDate = DateTime.Now,
+                UserName = $"{adminSite.Id}_123456789",
+                Name = "Ahmet Arif",
+                Surname = "Özçelik",
+                PhoneNumber = "123456789",
+                Email = "arif@gmail.com",
+                PasswordHash = "11223344",
+                UserRoles = new List<UserRole>
+                {
+                    new()
+                    {
+                        Role = Role.Admin
+                    }
+                }
+            }
+        };
 
-            dbContext.AddRange(userList);
-            dbContext.SaveChanges();
-        }
+        dbContext.AddRange(userList);
+        dbContext.SaveChanges();
     }
 }

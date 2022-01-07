@@ -8,6 +8,7 @@ namespace Domain.Entities
     public class Calendar : EntityBaseSiteWithAudit<Guid>, IEntity
     {
         public Day Day { get; set; }
+        public int Week { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
