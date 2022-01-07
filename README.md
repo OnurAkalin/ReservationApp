@@ -4,7 +4,7 @@ This project only used for database design.
 
 Requirements
 1. Docker-Linux
-2. .Net Core 5
+2. .Net Core 6
 
 Installation
 
