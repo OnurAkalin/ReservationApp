@@ -36,6 +36,7 @@ public class ApplicationDbContext : DbContext
         builder.Entity<UserRole>(entity => { entity.ToTable("UserRoles"); });
         builder.Entity<User>(entity => { entity.ToTable("Users"); });
         builder.Entity<SiteService>(entity => { entity.ToTable("SiteServices"); });
+        builder.Entity<SiteServiceDay>(entity => { entity.ToTable("SiteServiceDays"); });
         builder.Entity<Calendar>(entity => { entity.ToTable("Calendars"); });
         builder.Entity<SiteCustomization>(entity => { entity.ToTable("SiteCustomizations"); });
         builder.Entity<Logo>(entity => { entity.ToTable("Logos"); });
@@ -49,6 +50,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<SiteService> SiteServices { get; set; }
+    public DbSet<SiteServiceDay> SiteServiceDays { get; set; }
     public DbSet<Calendar> Calendars { get; set; }
     public DbSet<SiteCustomization> SiteCustomizations { get; set; }
     public DbSet<Logo> Logos { get; set; }

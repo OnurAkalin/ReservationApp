@@ -13,11 +13,14 @@ namespace Domain.Entities
         // After service break times. Optional
         public bool BreakAfter { get; set; }
         public DateTime? BreakAfterDuration { get; set; }
-        public double? AveragePrice { get; set; }
+        
+        [Column(TypeName = "money")]
+        public decimal? AveragePrice { get; set; }
         
         [ForeignKey("Logo")] public int LogoId { get; set; }
         public Logo Logo { get; set; }
 
         public List<Calendar> Calendars { get; set; }
+        public List<SiteServiceDay> SiteServiceDays { get; set; }
     }
 }

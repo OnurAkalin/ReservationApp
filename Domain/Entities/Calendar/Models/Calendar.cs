@@ -8,7 +8,7 @@ namespace Domain.Entities
     public class Calendar : EntityBaseSiteWithAudit<Guid>, IEntity
     {
         public Day Day { get; set; }
-        public int? Week { get; set; } // ??Zorunlu değil.Yılın kaçıncı haftası olduğunu tutmak işleri kolaylaştırabilir.??
+        public int? Week { get; set; } // TODO: Zorunlu değil.Yılın kaçıncı haftası olduğunu tutmak işleri kolaylaştırabilir.
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
