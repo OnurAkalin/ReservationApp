@@ -11,22 +11,22 @@ internal static class Program
     private static void Main()
     {
         // Initial DB Create For Admin Users
-        SeedAdminSiteAndUsers();
+        //SeedAdminSiteAndUsers();
     }
 
     private static void SeedAdminSiteAndUsers()
     {
         using var dbContext = new ApplicationDbContext();
 
-        if (dbContext.ReservationSites.Any()) return;
+        if (dbContext.Sites.Any()) return;
 
-        var adminSite = new ReservationSite
+        var adminSite = new Site
         {
             Code = "ADMIN",
             CreateDate = DateTime.Now
         };
 
-        dbContext.ReservationSites.Add(adminSite);
+        dbContext.Sites.Add(adminSite);
         dbContext.SaveChanges();
 
         var userList = new List<User>

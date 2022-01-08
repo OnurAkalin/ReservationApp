@@ -1,10 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using Core.Entities;
 
 namespace Domain.Entities
 {
-    public class SiteCustomization : EntityBaseSite<Guid>
+    public class SiteCustomization : EntityBaseSite<Guid> , IEntity
     {
-        public string ComponentName { get; set; }
+        [MaxLength(50)] public string ComponentName { get; set; }
         public string CssContent { get; set; }
     }
 }

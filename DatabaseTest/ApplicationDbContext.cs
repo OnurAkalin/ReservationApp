@@ -27,33 +27,45 @@ public class ApplicationDbContext : DbContext
         }
 
         builder.Entity<UserRole>().HasKey(x => new {x.UserId, x.Role});
+        builder.Entity<SiteImage>().HasKey(x => new {x.SiteId, x.ImageId});
+        builder.Entity<SiteServiceImage>().HasKey(x => new {x.ServiceId, x.ImageId});
 
         #endregion
 
         #region Models
 
-        builder.Entity<ReservationSite>(entity => { entity.ToTable("ReservationSites"); });
-        builder.Entity<UserRole>(entity => { entity.ToTable("UserRoles"); });
         builder.Entity<User>(entity => { entity.ToTable("Users"); });
+        builder.Entity<UserRole>(entity => { entity.ToTable("UserRoles"); });
+
+        builder.Entity<Site>(entity => { entity.ToTable("Sites"); });
+        builder.Entity<SiteCustomization>(entity => { entity.ToTable("SiteCustomizations"); });
         builder.Entity<SiteService>(entity => { entity.ToTable("SiteServices"); });
         builder.Entity<SiteServiceDay>(entity => { entity.ToTable("SiteServiceDays"); });
+
         builder.Entity<Calendar>(entity => { entity.ToTable("Calendars"); });
-        builder.Entity<SiteCustomization>(entity => { entity.ToTable("SiteCustomizations"); });
-        builder.Entity<Logo>(entity => { entity.ToTable("Logos"); });
+
+        builder.Entity<Image>(entity => { entity.ToTable("Images"); });
+        builder.Entity<SiteImage>(entity => { entity.ToTable("SiteImages"); });
+        builder.Entity<SiteServiceImage>(entity => { entity.ToTable("SiteServiceImages"); });
 
         #endregion
     }
 
     #region DbSets
 
-    public DbSet<ReservationSite> ReservationSites { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
+
+    public DbSet<Site> Sites { get; set; }
+    public DbSet<SiteCustomization> SiteCustomizations { get; set; }
     public DbSet<SiteService> SiteServices { get; set; }
     public DbSet<SiteServiceDay> SiteServiceDays { get; set; }
+
     public DbSet<Calendar> Calendars { get; set; }
-    public DbSet<SiteCustomization> SiteCustomizations { get; set; }
-    public DbSet<Logo> Logos { get; set; }
+
+    public DbSet<Image> Images { get; set; }
+    public DbSet<SiteImage> SiteImages { get; set; }
+    public DbSet<SiteServiceImage> SiteServiceImages { get; set; }
 
     #endregion
 }
