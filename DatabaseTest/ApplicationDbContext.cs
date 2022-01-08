@@ -38,6 +38,7 @@ public class ApplicationDbContext : DbContext
         builder.Entity<SiteService>(entity => { entity.ToTable("SiteServices"); });
         builder.Entity<Calendar>(entity => { entity.ToTable("Calendars"); });
         builder.Entity<SiteCustomization>(entity => { entity.ToTable("SiteCustomizations"); });
+        builder.Entity<Logo>(entity => { entity.ToTable("Logos"); });
 
         #endregion
     }
@@ -50,6 +51,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<SiteService> SiteServices { get; set; }
     public DbSet<Calendar> Calendars { get; set; }
     public DbSet<SiteCustomization> SiteCustomizations { get; set; }
+    public DbSet<Logo> Logos { get; set; }
 
     #endregion
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entities;
 
 namespace Domain.Entities
@@ -13,6 +14,9 @@ namespace Domain.Entities
         public bool BreakAfter { get; set; }
         public DateTime? BreakAfterDuration { get; set; }
         public double? AveragePrice { get; set; }
+        
+        [ForeignKey("Logo")] public int LogoId { get; set; }
+        public Logo Logo { get; set; }
 
         public List<Calendar> Calendars { get; set; }
     }
