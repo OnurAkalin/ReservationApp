@@ -1,18 +1,13 @@
-using System.Linq;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace DatabaseTest;
+namespace Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=localhost;" +
-                                    "Initial Catalog=ReservationApp;" +
-                                    "User ID=SA;" +
-                                    "Password=<Reservation-1234>;" +
-                                    "MultipleActiveResultSets=true");
+        optionsBuilder.UseSqlServer("Data Source=localhost;Database=ReservationApp;User Id=SA;password=<PassSql-1234>;MultipleActiveResultSets=true");
 
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
     }

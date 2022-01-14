@@ -1,6 +1,6 @@
 # ReservationApp
 
-This project only used for database design.
+! This project only used for database design !
 
 Requirements
 1. Docker-Linux
@@ -8,7 +8,8 @@ Requirements
 
 Installation
 
-1. Open DatabaseTest directory and run "docker-compose up" command.
+1. Open project directory and run "docker-compose up" command.
 2. Run this command to install EF "dotnet tool install --global dotnet-ef"
-3. Run following command to add migration "dotnet ef migrations add First"
-4. Run following command to create database "dotnet ef database update"
+3. Go to Infrastructure directory "cd Infrastructure"
+4. Run following command to add migration "dotnet ef migrations add First"
+5. Run following command to create database "dotnet ef database update"

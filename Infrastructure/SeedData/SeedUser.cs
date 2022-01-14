@@ -1,41 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Domain.Entities;
+﻿using Domain.Entities;
 using Domain.Enumerations;
+using Microsoft.EntityFrameworkCore;
 
-namespace DatabaseTest;
+namespace Infrastructure.SeedData;
 
-internal static class Program
+public static partial class ApplicationDbInitializer
 {
-    private static void Main()
+    private static void SeedAdminUsers(ApplicationDbContext dbContext)
     {
-        // Initial DB Create For Admin Users
-        //SeedAdminSiteAndUsers();
-    }
-
-    private static void SeedAdminSiteAndUsers()
-    {
-        using var dbContext = new ApplicationDbContext();
-
-        if (dbContext.Sites.Any()) return;
-
-        var adminSite = new Site
-        {
-            Code = "ADMIN",
-            CreateDate = DateTime.Now
-        };
-
-        dbContext.Sites.Add(adminSite);
-        dbContext.SaveChanges();
+        var adminSiteId = dbContext.Sites
+            .AsNoTracking()
+            .Where(x => x.Code == "ADMIN")
+            .Select(x => x.Id)
+            .FirstOrDefault();
 
         var userList = new List<User>
         {
             new()
             {
-                SiteId = adminSite.Id,
+                SiteId = adminSiteId,
                 CreateDate = DateTime.Now,
-                UserName = $"{adminSite.Id}_5072128027",
+                UserName = $"{adminSiteId}_5072128027",
                 Name = "Onur",
                 Surname = "Akalın",
                 PhoneNumber = "5072128027",
@@ -51,9 +36,9 @@ internal static class Program
             },
             new()
             {
-                SiteId = adminSite.Id,
+                SiteId = adminSiteId,
                 CreateDate = DateTime.Now,
-                UserName = $"{adminSite.Id}_123456789",
+                UserName = $"{adminSiteId}_123456789",
                 Name = "Ahmet Arif",
                 Surname = "Özçelik",
                 PhoneNumber = "123456789",
@@ -69,7 +54,7 @@ internal static class Program
             }
         };
 
-        dbContext.AddRange(userList);
+        dbContext.Users.AddRange(userList);
         dbContext.SaveChanges();
     }
 }

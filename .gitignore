@@ -455,4 +455,4 @@ $RECYCLE.BIN/
 
 
 ## Migrations
-DatabaseTest/Migrations
+Infrastructure/Migrations

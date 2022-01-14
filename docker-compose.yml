@@ -1,0 +1,24 @@
+﻿version: "3.9"
+
+services:
+  
+  mssql:
+    container_name: sql
+    image: mcr.microsoft.com/mssql/server:2019-CU14-ubuntu-20.04
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "<PassSql-1234>"
+      ACCEPT_EULA: "Y"
+      
+  redis:
+    image: redis:6.2.6
+    container_name: redis
+    command: redis-server --requirepass redis-password
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+        
+volumes:
+  redis-data:
