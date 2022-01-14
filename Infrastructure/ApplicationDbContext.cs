@@ -7,7 +7,11 @@ public class ApplicationDbContext : DbContext
 {
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer("Data Source=localhost;Database=ReservationApp;User Id=SA;password=<PassSql-1234>;MultipleActiveResultSets=true");
+        optionsBuilder.UseSqlServer("Data Source=localhost;" +
+                                    "Database=ReservationApp;" +
+                                    "User Id=SA;" +
+                                    "password=<PassSql-1234>;" +
+                                    "MultipleActiveResultSets=true");
 
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.TrackAll);
     }

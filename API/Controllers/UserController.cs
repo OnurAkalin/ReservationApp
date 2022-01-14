@@ -6,46 +6,30 @@ namespace API.Controllers;
 [Route("api/[controller]/[action]")]
 public class UserController : ControllerBase
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ILogger<UserController> _logger;
+    private readonly Guid _currentUserGuid;
+    private readonly Guid _currentUserSelectedSiteId;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
+
+        try
+        {
+            if (_httpContextAccessor.HttpContext == null) return;
+            var siteId = _httpContextAccessor.HttpContext.Request.Headers["SiteId"];
+            if (!string.IsNullOrEmpty(siteId))
+            {
+                _currentUserSelectedSiteId = Guid.Parse(siteId);
+            }
+        }
+        catch (Exception ex)
+        {
+            //_logger.Error(ex.ToString(), "{message}", "Header SiteId is null");
+        }
     }
     
-    [HttpPost(Name = ("CreateUserWithOTP"))]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(bool) , StatusCodes.Status400BadRequest)]
-    public bool CreateUserWithOtp([FromBody] bool data)
-    {
-        var result = data;
-        return result;
-    }
-
-    [HttpPost(Name = ("Login"))]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(bool) , StatusCodes.Status400BadRequest)]
-    public bool Login([FromBody] bool data)
-    {
-        var result = data;
-        return result;
-    }
-
-    [HttpPost(Name = ("ForgotPassword"))]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(bool) , StatusCodes.Status400BadRequest)]
-    public bool ForgotPassword([FromBody] bool data)
-    {
-        var result = data;
-        return result;
-    }
-
-    [HttpPost(Name = ("ChangePassword"))]
-    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(bool) , StatusCodes.Status400BadRequest)]
-    public bool ChangePassword([FromBody] bool data)
-    {
-        var result = data;
-        return result;
-    }
+    
 }

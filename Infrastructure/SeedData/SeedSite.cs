@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Enumerations;
 
 namespace Infrastructure.SeedData;
 
