@@ -7,7 +7,7 @@ namespace Domain.Entities
 {
     public class User : EntityBaseSiteWithAudit<Guid>, IEntity
     {
-        [MaxLength(40)] public string UserName { get; set; }
+        [MaxLength(60)] public string UserName { get; set; }
         [MaxLength(30)] public string Name { get; set; }
         [MaxLength(30)] public string Surname { get; set; }
         [MaxLength(20)] public string PhoneNumber { get; set; }

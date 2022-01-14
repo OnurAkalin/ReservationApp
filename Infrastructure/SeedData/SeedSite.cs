@@ -35,28 +35,28 @@ public static partial class ApplicationDbInitializer
             {
                 CreateDate = DateTime.Now,
                 Code = "A-BRB",
-                PhoneNumber = "5051234567",
+                PhoneNumber = "5051111111",
                 Email = "berbera@gmail.com",
                 Description = "A Berber",
-                Address = "Kartal İstanbul",
+                Address = "Kartal İstanbul"
             },
             new()
             {
                 CreateDate = DateTime.Now,
                 Code = "B-BRB",
-                PhoneNumber = "5051234567",
+                PhoneNumber = "5052222222",
                 Email = "berberb@gmail.com",
                 Description = "B Berber",
-                Address = "Maltepe İstanbul",
+                Address = "Maltepe İstanbul"
             },
             new()
             {
                 CreateDate = DateTime.Now,
                 Code = "C-BRB",
-                PhoneNumber = "5051234567",
+                PhoneNumber = "5053333333",
                 Email = "berberc@gmail.com",
                 Description = "C Berber",
-                Address = "Bostancı İstanbul",
+                Address = "Bostancı İstanbul"
             }
         };
         
