@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -79,8 +79,8 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(SampleSuccessResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SampleErrorResponseDto), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateUserWithOtp([FromBody] SampleRequestDto requestDto)
     {
         await Task.CompletedTask;
@@ -96,4 +96,4 @@ public class AccountController : ControllerBase
         await Task.CompletedTask;
         return null;
     }
-}
+}*/

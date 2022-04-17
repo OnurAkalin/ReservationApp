@@ -66,7 +66,7 @@ public static class ConfigureExtensions
             });
     }
 
-    public static void ConfigureAutoMapper(this IServiceCollection serviceCollection, IConfiguration configuration)
+    public static void ConfigureAutoMapper(this IServiceCollection serviceCollection)
     {
         var mapperConfig = new AutoMapper.MapperConfiguration(options =>
         {
@@ -83,7 +83,6 @@ public static class ConfigureExtensions
         var connectionString = configuration.GetConnectionString(redis);
         
         var redisConnection = ConnectionMultiplexer.Connect(connectionString);
-
         serviceCollection.AddSingleton<IConnectionMultiplexer>(redisConnection);
 
         var redisDb = redisConnection.GetDatabase(0);

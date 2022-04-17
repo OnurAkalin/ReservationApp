@@ -1,4 +1,5 @@
 using API.Configurations;
+using Core.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.ConfigureSwagger();
 builder.Services.ConfigureAuthentication(builder.Configuration);
 builder.Services.ConfigureDatabase(builder.Configuration);
-builder.Services.ConfigureAutoMapper(builder.Configuration);
+builder.Services.ConfigureAutoMapper();
 builder.Services.ConfigureRedis(builder.Configuration);
 
 #endregion
@@ -20,11 +21,11 @@ builder.Services.ConfigureRedis(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
