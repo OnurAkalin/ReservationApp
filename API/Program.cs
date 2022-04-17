@@ -1,40 +1,21 @@
-using API.Filters;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.OpenApi.Models;
+using API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(x =>
-{
-    x.OperationFilter<AddRequiredHeaderParameter>();
 
-    var jwtSecurityScheme = new OpenApiSecurityScheme
-    {
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Name = "JWT Authentication",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.Http,
-        Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
-        Reference = new OpenApiReference
-        {
-            Id = JwtBearerDefaults.AuthenticationScheme,
-            Type = ReferenceType.SecurityScheme
-        }
-    };
+#region Configurations
 
-    x.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+builder.Services.ConfigureSwagger();
+builder.Services.ConfigureAuthentication(builder.Configuration);
+builder.Services.ConfigureDatabase(builder.Configuration);
+builder.Services.ConfigureAutoMapper(builder.Configuration);
+builder.Services.ConfigureRedis(builder.Configuration);
 
-    x.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {jwtSecurityScheme, Array.Empty<string>()}
-    });
-});
+#endregion
 
 var app = builder.Build();
 

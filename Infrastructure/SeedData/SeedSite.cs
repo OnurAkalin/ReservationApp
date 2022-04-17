@@ -23,7 +23,7 @@ public static partial class ApplicationDbInitializer
     
     private static void SeedTestSites(ApplicationDbContext dbContext)
     {
-        if (dbContext.Sites.Count() > 1) // Another site control. (Admin)
+        if (dbContext.Sites.Any()) // Another site control. (Admin)
         {
             return;
         }

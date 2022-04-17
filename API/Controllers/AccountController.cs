@@ -20,7 +20,8 @@ public class AccountController : ControllerBase
         try
         {
             if (_httpContextAccessor.HttpContext == null) return;
-            var siteId = _httpContextAccessor.HttpContext.Request.Headers["SiteId"];
+            
+            var siteId = _httpContextAccessor.HttpContext?.Request.Headers["SiteId"];
             if (!string.IsNullOrEmpty(siteId))
             {
                 _currentUserSelectedSiteId = Guid.Parse(siteId);

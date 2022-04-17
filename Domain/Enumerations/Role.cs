@@ -1,10 +1,9 @@
-namespace Domain.Enumerations
+namespace Domain.Enumerations;
+
+public enum Role
 {
-    public enum Role
-    {
-        Admin = 1,
-        BusinessOwner = 2,
-        Employee = 3,
-        Customer = 4
-    }
+    Admin = 1,
+    BusinessOwner = 2,
+    Employee = 3,
+    Customer = 4
 }
