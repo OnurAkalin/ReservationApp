@@ -20,7 +20,7 @@ public class TokenService : ITokenService
         _userManager = userManager;
     }
 
-    public async Task<AccessToken> GenerateToken(User user)
+    public async Task<AccessToken> GenerateTokenAsync(User user)
     {
         var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -29,8 +29,6 @@ public class TokenService : ITokenService
         userClaims.AddRoles(userRoles.ToList());
         userClaims.AddMobilePhone(user.PhoneNumber);
         userClaims.AddName(user.GetFullName());
-        userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-        userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
 
         var tokenOptions = _configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -38,18 +36,18 @@ public class TokenService : ITokenService
         var credentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
         var expireDate = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration);
 
-        var token = new JwtSecurityTokenHandler().WriteToken(
-            new JwtSecurityToken
-            (
-                issuer: tokenOptions.Issuer,
-                audience: tokenOptions.Audience,
-                claims: userClaims,
-                expires: expireDate,
-                signingCredentials: credentials
-            ));
+        var tokenData = new JwtSecurityToken
+        (
+            issuer: tokenOptions.Issuer,
+            audience: tokenOptions.Audience,
+            claims: userClaims,
+            expires: expireDate,
+            signingCredentials: credentials
+        );
 
-        //await _userManager.SetAuthenticationTokenAsync(user, tokenOptions.LoginProvider, tokenOptions.TokenName, token);
-
+        var token = new JwtSecurityTokenHandler().WriteToken(tokenData);
+        await _userManager.SetAuthenticationTokenAsync(user, tokenOptions.LoginProvider, tokenOptions.TokenName, token);
+        
         return new AccessToken
         {
             Token = token,

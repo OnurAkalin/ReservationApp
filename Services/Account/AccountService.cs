@@ -42,7 +42,8 @@ public class AccountService : BasicService, IAccountService
             PhoneNumber = requestDto.PhoneNumber,
             FirstName = requestDto.Name,
             LastName = requestDto.Surname,
-            Email = requestDto.Email
+            Email = requestDto.Email,
+            LockoutEnabled = false
         };
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
@@ -51,8 +52,6 @@ public class AccountService : BasicService, IAccountService
         {
             await _userManager.AddToRoleAsync(user, UserRoles.Admin.ToString());
         }
-
-        //await _dbContext.SaveChangesAsync();
 
         return new SuccessResult("İşlem başarılı");
     }
@@ -78,9 +77,9 @@ public class AccountService : BasicService, IAccountService
             return new ErrorDataResult<AccessToken>("Şifre hatalı.");
         }
 
-        var token = await _tokenService.GenerateToken(user);
+        var token = await _tokenService.GenerateTokenAsync(user);
 
-        return new SuccessDataResult<AccessToken>(token);
+        return new SuccessDataResult<AccessToken>(token, "Giriş başarılı...");
     }
     
     public async Task<Result> CreateRoleAsync(string roleName)

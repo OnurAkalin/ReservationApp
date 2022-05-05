@@ -1,4 +1,4 @@
-﻿namespace API.Configurations;
+﻿namespace API.Filters;
 
 public class AddRequiredHeaderParameter : IOperationFilter
 {

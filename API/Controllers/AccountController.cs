@@ -1,10 +1,4 @@
-﻿using Core.Utilities.Results;
-using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Services;
-
-namespace API.Controllers;
+﻿namespace API.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
@@ -57,17 +51,17 @@ public class AccountController : ControllerBase
         return Ok(result);
     }
     
-    [HttpGet, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [HttpGet, Authorize]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetWithToken()
+    public Task<IActionResult> GetWithToken()
     {
-        return Ok("DATA");
+        return Task.FromResult<IActionResult>(Ok("DATA"));
     }
     
     [HttpGet, AllowAnonymous]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetWithoutToken()
+    public Task<IActionResult> GetWithoutToken()
     {
-        return Ok("DATA");
+        return Task.FromResult<IActionResult>(Ok("DATA"));
     }
 }

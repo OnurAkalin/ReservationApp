@@ -4,5 +4,5 @@ namespace Services;
 
 public interface ITokenService
 {
-    Task<AccessToken> GenerateToken(User user);
+    Task<AccessToken> GenerateTokenAsync(User user);
 }

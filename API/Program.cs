@@ -7,10 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigureAllExtensions(builder.Configuration);
 
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.InjectApplicationServices();
 
 var app = builder.Build();
 
@@ -20,12 +17,8 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
