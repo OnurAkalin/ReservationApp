@@ -1,15 +1,23 @@
-﻿using Services.AutoMapper;
-using StackExchange.Redis;
-
-namespace API.Configurations;
+﻿namespace API.Configurations;
 
 public static class ConfigureExtensions
 {
-    public static void ConfigureSwagger(this IServiceCollection serviceCollection)
+    public static void ConfigureAllExtensions(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        serviceCollection.ConfigureDatabase(configuration);
+        serviceCollection.ConfigureIdentity();
+        serviceCollection.ConfigureAutoMapper();
+        serviceCollection.ConfigureRedis(configuration);
+        serviceCollection.ConfigureAuthentication(configuration);
+        serviceCollection.ConfigureSwagger();
+        serviceCollection.ConfigureLogger();
+    }
+
+    private static void ConfigureSwagger(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSwaggerGen(options =>
         {
-            options.OperationFilter<AddRequiredHeaderParameter>();
+            //options.OperationFilter<AddRequiredHeaderParameter>();
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",
@@ -17,56 +25,94 @@ public static class ConfigureExtensions
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.ApiKey,
-                Description = "Put **_ONLY_** your JWT Bearer token on textbox below!",
-                Reference = new OpenApiReference
-                {
-                    Id = JwtBearerDefaults.AuthenticationScheme,
-                    Type = ReferenceType.SecurityScheme
-                }
+                Description = "Please enter token"
             };
-            options.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+            
+            options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                {jwtSecurityScheme, Array.Empty<string>()}
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    Array.Empty<string>()
+                }
             });
         });
     }
 
-    public static void ConfigureAuthentication(this IServiceCollection serviceCollection, IConfiguration configuration)
+    private static void ConfigureIdentity(this IServiceCollection serviceCollection)
+    {
+        serviceCollection
+            .AddIdentity<User, Role>()
+            .AddEntityFrameworkStores<ApplicationDbContext>();
+
+        serviceCollection.Configure<IdentityOptions>(options =>
+        {
+            options.User.RequireUniqueEmail = true;
+            options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+
+            // Password settings.
+            options.Password.RequiredLength = 6;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireUppercase = false;
+        });
+    }
+
+    private static void ConfigureAuthentication(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
+        
         serviceCollection.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            
+        }).AddJwtBearer(options =>
+        {
+            options.Audience = tokenOptions.Audience;
+            options.RequireHttpsMetadata = false;
+
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = tokenOptions.Issuer,
-                    ValidAudience = tokenOptions.Audience,
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
-                };
-            });
+                ValidIssuer = tokenOptions.Issuer,
+                ValidAudience = tokenOptions.Audience,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+            };
+        });
     }
-    
-    public static void ConfigureDatabase(this IServiceCollection serviceCollection, IConfiguration configuration)
+
+    private static void ConfigureDatabase(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         const string database = "Sql";
         var connectionString = configuration.GetConnectionString(database);
-        
-        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(connectionString);
-            });
+
+        serviceCollection.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(connectionString); });
     }
 
-    public static void ConfigureAutoMapper(this IServiceCollection serviceCollection)
+    private static void ConfigureLogger(this IServiceCollection serviceCollection)
+    {
+        var logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .CreateLogger();
+
+        serviceCollection.AddSingleton(logger);
+    }
+
+    private static void ConfigureAutoMapper(this IServiceCollection serviceCollection)
     {
         var mapperConfig = new AutoMapper.MapperConfiguration(options =>
         {
@@ -77,11 +123,11 @@ public static class ConfigureExtensions
         serviceCollection.AddSingleton(mapper);
     }
 
-    public static void ConfigureRedis(this IServiceCollection serviceCollection, IConfiguration configuration)
+    private static void ConfigureRedis(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         const string redis = "Redis";
         var connectionString = configuration.GetConnectionString(redis);
-        
+
         var redisConnection = ConnectionMultiplexer.Connect(connectionString);
         serviceCollection.AddSingleton<IConnectionMultiplexer>(redisConnection);
 

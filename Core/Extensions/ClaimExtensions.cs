@@ -20,13 +20,13 @@ public static class ClaimExtensions
         claims.Add(new Claim(ClaimTypes.NameIdentifier, nameIdentifier));
     }
 
-    public static void AddNameUniqueIdentifier(this ICollection<Claim> claims, string nameUniqueIdentifier)
+    public static void AddMobilePhone(this ICollection<Claim> claims, string mobilePhone)
     {
-        claims.Add(new Claim(ClaimTypes.SerialNumber, nameUniqueIdentifier));
+        claims.Add(new Claim(ClaimTypes.MobilePhone, mobilePhone));
     }
 
-    public static void AddRoles(this ICollection<Claim> claims, string[] roles)
+    public static void AddRoles(this ICollection<Claim> claims, List<string> roles)
     {
-        roles.ToList().ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
+        roles.ForEach(role => claims.Add(new Claim(ClaimTypes.Role, role)));
     }
 }

@@ -1,17 +1,19 @@
-using System.ComponentModel.DataAnnotations;
-using Core.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
 
-public class User : EntityBaseSiteWithAudit<Guid>, IEntity
+public class User : IdentityUser<Guid>
 {
-    [MaxLength(60)] public string UserName { get; set; }
-    [MaxLength(30)] public string Name { get; set; }
-    [MaxLength(30)] public string Surname { get; set; }
-    [MaxLength(20)] public string PhoneNumber { get; set; }
-    [MaxLength(40)] public string Email { get; set; }
-    [MaxLength(200)] public string PasswordHash { get; set; }
+    //[ForeignKey("Site")] public Guid SiteId { get; set; }
+    //public Site Site { get; set; } = null!;
 
-    public List<UserRole> UserRoles { get; set; } = new List<UserRole>();
-    public List<Calendar> Calendars { get; set; } = new List<Calendar>();
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+
+    public List<Calendar> Calendars { get; set; } = null!;
+
+    public string GetFullName()
+    {
+        return FirstName + " " + LastName;
+    }
 }

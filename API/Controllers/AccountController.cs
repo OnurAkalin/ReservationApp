@@ -1,5 +1,8 @@
-﻿/*using Microsoft.AspNetCore.Authorization;
+﻿using Core.Utilities.Results;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Services;
 
 namespace API.Controllers;
 
@@ -7,93 +10,64 @@ namespace API.Controllers;
 [Route("api/[controller]/[action]")]
 public class AccountController : ControllerBase
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILogger<AccountController> _logger;
-    private readonly Guid _currentUserGuid;
-    private readonly Guid _currentUserSelectedSiteId;
+    private readonly IAccountService _accountService;
 
-    public AccountController(ILogger<AccountController> logger, IHttpContextAccessor httpContextAccessor)
+    public AccountController(IAccountService accountService)
     {
-        _logger = logger;
-        _httpContextAccessor = httpContextAccessor;
-
-        try
-        {
-            if (_httpContextAccessor.HttpContext == null) return;
-            
-            var siteId = _httpContextAccessor.HttpContext?.Request.Headers["SiteId"];
-            if (!string.IsNullOrEmpty(siteId))
-            {
-                _currentUserSelectedSiteId = Guid.Parse(siteId);
-            }
-        }
-        catch (Exception ex)
-        {
-            //_logger.Error(ex.ToString(), "{message}", "Header SiteId is null");
-        }
+        _accountService = accountService;
     }
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(SampleSuccessResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SampleErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Login([FromBody] SampleRequestDto requestDto)
+    public async Task<IActionResult> Register([FromBody] RegisterRequestDto requestDto)
     {
-        return null;
-
-        //var result = await _accountService.Login(requestDto);
-//
-        //if (!result)
-        //{
-        //    return BadRequest(new SampleErrorResponseDto
-        //    {
-        //        Message = result.Message
-        //    });
-        //}
-//
-        //return Ok(new SampleSuccessResponseDto
-        //{
-        //    Message = result.Message
-        //});
+        var result = await _accountService.RegisterAsync(requestDto);
+        return Ok(result);
     }
 
     [HttpPost]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(SampleSuccessResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SampleErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ForgotPassword([FromBody] SampleRequestDto requestDto)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto requestDto)
     {
-        await Task.CompletedTask;
-        return null;
+        var result = await _accountService.LoginAsync(requestDto);
+        return Ok(result);
     }
-
-    [HttpPost]
-    [Authorize]
-    [ProducesResponseType(typeof(SampleSuccessResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SampleErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ChangePassword([FromBody] SampleRequestDto requestDto)
-    {
-        await Task.CompletedTask;
-        return null;
-    }
-
+    
     [HttpPost]
     [AllowAnonymous]
+    public async Task<IActionResult> CreateRole(string roleName)
+    {
+        var result = await _accountService.CreateRoleAsync(roleName);
+        return Ok(result);
+    }
+    
+    [HttpPost]
+    [AllowAnonymous]
+    public async Task<IActionResult> UpdateRole(Guid id, string roleName)
+    {
+        var result = await _accountService.UpdateRoleAsync(id, roleName);
+        return Ok(result);
+    }
+    
+    [HttpGet, AllowAnonymous]
+    [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetRoles()
+    {
+        var result = await _accountService.GetRolesAsync();
+        return Ok(result);
+    }
+    
+    [HttpGet, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUserWithOtp([FromBody] SampleRequestDto requestDto)
+    public async Task<IActionResult> GetWithToken()
     {
-        await Task.CompletedTask;
-        return null;
+        return Ok("DATA");
     }
-
-    [HttpPost]
-    [Authorize]
-    [ProducesResponseType(typeof(SampleSuccessResponseDto), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(SampleErrorResponseDto), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> DeleteUser([FromBody] SampleRequestDto requestDto)
+    
+    [HttpGet, AllowAnonymous]
+    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetWithoutToken()
     {
-        await Task.CompletedTask;
-        return null;
+        return Ok("DATA");
     }
-}*/
+}

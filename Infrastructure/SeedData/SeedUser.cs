@@ -6,7 +6,7 @@ namespace Infrastructure.SeedData;
 
 public static partial class ApplicationDbInitializer
 {
-    private static void SeedAdminUsers(ApplicationDbContext dbContext)
+    /*private static void SeedAdminUsers(ApplicationDbContext dbContext)
     {
         var adminSiteId = dbContext.Sites
             .AsNoTracking()
@@ -56,5 +56,5 @@ public static partial class ApplicationDbInitializer
 
         dbContext.Users.AddRange(userList);
         dbContext.SaveChanges();
-    }
+    }*/
 }

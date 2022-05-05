@@ -6,6 +6,6 @@ public static partial class ApplicationDbInitializer
     {
         SeedAdminSite(dbContext);
         SeedTestSites(dbContext);
-        SeedAdminUsers(dbContext);
+        //SeedAdminUsers(dbContext);
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Utilities.Results;
+﻿namespace Core.Utilities.Results;
 
 public class ApiResult<T>
 {

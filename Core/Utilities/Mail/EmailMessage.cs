@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Core.Utilities.Mail;
+﻿namespace Core.Utilities.Mail;
 
 public class EmailMessage
 {

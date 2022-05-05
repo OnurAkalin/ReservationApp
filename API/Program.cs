@@ -1,6 +1,3 @@
-using API.Configurations;
-using Core.Extensions;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -8,27 +5,25 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
-#region Configurations
+builder.Services.ConfigureAllExtensions(builder.Configuration);
 
-builder.Services.ConfigureSwagger();
-builder.Services.ConfigureAuthentication(builder.Configuration);
-builder.Services.ConfigureDatabase(builder.Configuration);
-builder.Services.ConfigureAutoMapper();
-builder.Services.ConfigureRedis(builder.Configuration);
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
-#endregion
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
