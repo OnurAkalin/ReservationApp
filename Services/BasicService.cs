@@ -1,5 +1,4 @@
 ﻿global using AutoMapper;
-global using Microsoft.AspNetCore.Http;
 global using User = Domain.Entities.User;
 using Infrastructure;
 using Serilog.Core;

@@ -31,7 +31,7 @@ public static class Configurations
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
                 Type = SecuritySchemeType.Http,
-                Description = "Put **ONLY** your JWT Bearer token on textbox below!",
+                Description = "Put **ONLY** your JWT token on text box below, **Sample:** eyJhbGci....",
                 Reference = new OpenApiReference
                 {
                     Id = JwtBearerDefaults.AuthenticationScheme,
@@ -91,8 +91,7 @@ public static class Configurations
         serviceCollection.Configure<IdentityOptions>(options =>
         {
             options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
             // Password settings.
             options.Password.RequiredLength = 6;
