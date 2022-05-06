@@ -22,40 +22,16 @@ public class AccountController : ControllerBase
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<TokenResponseDto>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorDataResult<TokenResponseDto>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto requestDto)
     {
         var result = await _accountService.LoginAsync(requestDto);
 
         if (!result.Success)
         {
-            return Unauthorized(result.Message);
+            return BadRequest(result);
         }
         
-        return Ok(result);
-    }
-    
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> CreateRole(string roleName)
-    {
-        var result = await _accountService.CreateRoleAsync(roleName);
-        return Ok(result);
-    }
-    
-    [HttpPost]
-    [AllowAnonymous]
-    public async Task<IActionResult> UpdateRole(Guid id, string roleName)
-    {
-        var result = await _accountService.UpdateRoleAsync(id, roleName);
-        return Ok(result);
-    }
-    
-    [HttpGet, AllowAnonymous]
-    [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRoles()
-    {
-        var result = await _accountService.GetRolesAsync();
         return Ok(result);
     }
 }

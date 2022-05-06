@@ -1,4 +1,5 @@
 ﻿global using API;
+global using API.AppServices;
 global using Swashbuckle.AspNetCore.SwaggerGen;
 global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;

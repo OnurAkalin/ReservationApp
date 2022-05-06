@@ -27,13 +27,10 @@ public class AccountService : BasicService, IAccountService
         _tokenService = tokenService;
     }
 
-
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
         var tempSiteId = Guid.Empty;
-
         var userName = tempSiteId + "_" + requestDto.Email;
-
 
         var checkUserExist = await _dbContext.Users
             .AsNoTracking()
@@ -46,14 +43,8 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UIMessages.UserAlreadyExist);
         }
 
-        var user = new User
-        {
-            UserName = userName,
-            PhoneNumber = requestDto.PhoneNumber,
-            FirstName = requestDto.Name,
-            LastName = requestDto.Surname,
-            Email = requestDto.Email
-        };
+        var user = _mapper.Map<User>(requestDto);
+        user.UserName = userName;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
 
@@ -89,51 +80,5 @@ public class AccountService : BasicService, IAccountService
         var token = await _tokenService.GenerateTokenAsync(user);
 
         return new SuccessDataResult<TokenResponseDto>(token, UIMessages.Authorized);
-    }
-
-    public async Task<Result> CreateRoleAsync(string roleName)
-    {
-        var result = await _roleManager.CreateAsync(new Role {Name = roleName});
-
-        if (result.Succeeded)
-        {
-            return new SuccessResult(UIMessages.Success);
-        }
-
-        return new ErrorResult(UIMessages.Fail);
-    }
-
-    public async Task<Result> UpdateRoleAsync(Guid id, string roleName)
-    {
-        var role = await _roleManager.FindByIdAsync(id.ToString());
-
-        if (role == null)
-        {
-            return new ErrorResult(UIMessages.NotFoundData);
-        }
-
-        role.Name = roleName;
-
-        var result = await _roleManager.UpdateAsync(role);
-
-        if (!result.Succeeded)
-        {
-            return new ErrorResult(UIMessages.Fail);
-        }
-
-        return new SuccessResult(UIMessages.Success);
-    }
-
-    public async Task<DataResult<List<RoleResponseDto>>> GetRolesAsync()
-    {
-        var roles = await _dbContext.Roles.Select(x => new RoleResponseDto
-        {
-            Id = x.Id,
-            Name = x.Name
-        }).ToListAsync();
-
-        var result = new SuccessDataResult<List<RoleResponseDto>>(roles, UIMessages.Success);
-
-        return result;
     }
 }

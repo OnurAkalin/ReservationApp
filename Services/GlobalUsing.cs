@@ -4,7 +4,7 @@ global using AutoMapper;
 global using Serilog.Core;
 global using Infrastructure;
 global using Core.Extensions;
-global using Core.Jwt;
+global using Newtonsoft.Json;
 global using TokenOptions = Core.Jwt.TokenOptions;
 global using Core.Encryption;
 global using Core.Utilities.Results;

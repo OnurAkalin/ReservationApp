@@ -48,6 +48,8 @@ public class TokenService : ITokenService
         {
             Token = token,
             Expiration = expireDate,
+            UserId = user.Id,
+            UserFullName = user.GetFullName(),
             UserRoles = userRoles.ToList()
         };
     }

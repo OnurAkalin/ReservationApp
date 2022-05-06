@@ -2,13 +2,6 @@
 
 public static class Configurations
 {
-    public static void InjectApplicationServices(this IServiceCollection serviceCollection)
-    {
-        serviceCollection.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        serviceCollection.AddScoped<IAccountService, AccountService>();
-        serviceCollection.AddScoped<ITokenService, TokenService>();
-    }
-
     public static void ConfigureAllExtensions(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         serviceCollection.ConfigureDatabase(configuration);
@@ -19,6 +12,8 @@ public static class Configurations
         serviceCollection.ConfigureAuthentication(configuration);
         serviceCollection.ConfigureSwagger();
     }
+
+    #region Extensions
 
     private static void ConfigureSwagger(this IServiceCollection serviceCollection)
     {
@@ -133,4 +128,6 @@ public static class Configurations
 
         serviceCollection.AddSingleton(logger);
     }
+
+    #endregion
 }
