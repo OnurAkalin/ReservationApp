@@ -1,9 +1,4 @@
-﻿global using AutoMapper;
-global using User = Domain.Entities.User;
-using Infrastructure;
-using Serilog.Core;
-
-namespace Services;
+﻿namespace Services;
 
 public class BasicService
 {

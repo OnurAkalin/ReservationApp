@@ -17,6 +17,6 @@ public class Calendar : EntityBaseSiteWithAudit<Guid>, IEntity
     [ForeignKey("SiteService")] public Guid SiteServiceId { get; set; }
     public SiteService SiteService { get; set; }
 
-    [ForeignKey("User")] public int UserId { get; set; }
+    [ForeignKey("User")] public Guid UserId { get; set; }
     public User User { get; set; }
 }

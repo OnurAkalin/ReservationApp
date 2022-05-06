@@ -7,7 +7,7 @@ namespace Services;
 public interface IAccountService
 {
     Task<Result> RegisterAsync(RegisterRequestDto requestDto);
-    Task<DataResult<AccessToken>> LoginAsync(LoginRequestDto requestDto);
+    Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto);
     Task<Result> CreateRoleAsync(string roleName);
     Task<Result> UpdateRoleAsync(Guid id, string roleName);
     Task<DataResult<List<RoleResponseDto>>> GetRolesAsync();

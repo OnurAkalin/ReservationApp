@@ -1,11 +1,4 @@
-﻿using Core.Jwt;
-using Core.Utilities.Results;
-using Domain.Enumerations;
-using Domain.Entities;
-using Infrastructure;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Serilog.Core;
+﻿using Domain.Constants;
 
 namespace Services;
 
@@ -23,7 +16,9 @@ public class AccountService : BasicService, IAccountService
         UserManager<User> userManager,
         SignInManager<User> signInManager,
         RoleManager<Role> roleManager,
-        ApplicationDbContext dbContext, ITokenService tokenService)
+        ApplicationDbContext dbContext,
+        ITokenService tokenService
+    )
         : base(logger, mapper, dbContext)
     {
         _userManager = userManager;
@@ -35,84 +30,98 @@ public class AccountService : BasicService, IAccountService
 
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
+        var tempSiteId = Guid.Empty;
+
+        var userName = tempSiteId + "_" + requestDto.Email;
+
+
+        var checkUserExist = await _dbContext.Users
+            .AsNoTracking()
+            .AnyAsync(x =>
+                x.Email == requestDto.Email
+                || x.UserName == userName);
+
+        if (checkUserExist)
+        {
+            return new ErrorResult(UIMessages.UserAlreadyExist);
+        }
+
         var user = new User
         {
-            Id = default,
-            UserName = requestDto.Email + "_00000000-0000-0000-0000-000000000000",
+            UserName = userName,
             PhoneNumber = requestDto.PhoneNumber,
             FirstName = requestDto.Name,
             LastName = requestDto.Surname,
-            Email = requestDto.Email,
-            LockoutEnabled = false
+            Email = requestDto.Email
         };
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
 
-        if (createUserResult.Succeeded)
+        if (!createUserResult.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, UserRoles.Admin.ToString());
+            return new ErrorResult(UIMessages.InvalidCredentials);
         }
 
-        return new SuccessResult("İşlem başarılı");
+        return new SuccessResult(UIMessages.Success);
     }
 
-    public async Task<DataResult<AccessToken>> LoginAsync(LoginRequestDto requestDto)
+    public async Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto)
     {
         if (string.IsNullOrWhiteSpace(requestDto.Email) || string.IsNullOrWhiteSpace(requestDto.Password))
         {
-            return new ErrorDataResult<AccessToken>("Boş istek");
+            return new ErrorDataResult<TokenResponseDto>(UIMessages.EmptyRequest);
         }
 
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == requestDto.Email);
 
         if (user == null)
         {
-            return new ErrorDataResult<AccessToken>("Kullanıcı bulunamadı");
+            return new ErrorDataResult<TokenResponseDto>(UIMessages.UserNotFound);
         }
-        
+
         var passwordIsCorrect = await _signInManager.CheckPasswordSignInAsync(user, requestDto.Password, false);
 
         if (!passwordIsCorrect.Succeeded)
         {
-            return new ErrorDataResult<AccessToken>("Şifre hatalı.");
+            return new ErrorDataResult<TokenResponseDto>(UIMessages.InvalidCredentials);
         }
 
         var token = await _tokenService.GenerateTokenAsync(user);
 
-        return new SuccessDataResult<AccessToken>(token, "Giriş başarılı...");
+        return new SuccessDataResult<TokenResponseDto>(token, UIMessages.Authorized);
     }
-    
+
     public async Task<Result> CreateRoleAsync(string roleName)
     {
         var result = await _roleManager.CreateAsync(new Role {Name = roleName});
 
         if (result.Succeeded)
         {
-            return new SuccessResult("İşlem başarılı");
+            return new SuccessResult(UIMessages.Success);
         }
 
-        return new ErrorResult("İşlem başarısız..");
+        return new ErrorResult(UIMessages.Fail);
     }
-    
+
     public async Task<Result> UpdateRoleAsync(Guid id, string roleName)
     {
         var role = await _roleManager.FindByIdAsync(id.ToString());
-        
+
         if (role == null)
         {
-            return new ErrorResult("Rol bulunamadı.");
+            return new ErrorResult(UIMessages.NotFoundData);
         }
 
         role.Name = roleName;
 
         var result = await _roleManager.UpdateAsync(role);
 
-        if (result.Succeeded)
+        if (!result.Succeeded)
         {
-            return new SuccessResult("İşlem başarılı");
+            return new ErrorResult(UIMessages.Fail);
         }
 
-        return new ErrorResult("İşlem başarısız..");
+        return new SuccessResult(UIMessages.Success);
     }
 
     public async Task<DataResult<List<RoleResponseDto>>> GetRolesAsync()
@@ -123,7 +132,7 @@ public class AccountService : BasicService, IAccountService
             Name = x.Name
         }).ToListAsync();
 
-        var result = new SuccessDataResult<List<RoleResponseDto>>(roles);
+        var result = new SuccessDataResult<List<RoleResponseDto>>(roles, UIMessages.Success);
 
         return result;
     }

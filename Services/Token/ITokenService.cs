@@ -1,8 +1,6 @@
-﻿using Core.Jwt;
-
-namespace Services;
+﻿namespace Services;
 
 public interface ITokenService
 {
-    Task<AccessToken> GenerateTokenAsync(User user);
+    Task<TokenResponseDto> GenerateTokenAsync(User user);
 }

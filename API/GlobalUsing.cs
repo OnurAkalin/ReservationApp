@@ -11,7 +11,6 @@ global using Core.Utilities.Results;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
-global using Services.AutoMapper;
 global using Infrastructure;
 global using Services;
 global using Domain.Entities;

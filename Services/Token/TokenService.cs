@@ -1,11 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Core.Encryption;
-using Core.Extensions;
-using Core.Jwt;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using TokenOptions = Core.Jwt.TokenOptions;
 
 namespace Services;
 
@@ -20,7 +15,7 @@ public class TokenService : ITokenService
         _userManager = userManager;
     }
 
-    public async Task<AccessToken> GenerateTokenAsync(User user)
+    public async Task<TokenResponseDto> GenerateTokenAsync(User user)
     {
         var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -36,7 +31,7 @@ public class TokenService : ITokenService
         var credentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
         var expireDate = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration);
 
-        var tokenData = new JwtSecurityToken
+        var tokenTemplate = new JwtSecurityToken
         (
             issuer: tokenOptions.Issuer,
             audience: tokenOptions.Audience,
@@ -45,13 +40,15 @@ public class TokenService : ITokenService
             signingCredentials: credentials
         );
 
-        var token = new JwtSecurityTokenHandler().WriteToken(tokenData);
-        await _userManager.SetAuthenticationTokenAsync(user, tokenOptions.LoginProvider, tokenOptions.TokenName, token);
+        var token = new JwtSecurityTokenHandler().WriteToken(tokenTemplate);
         
-        return new AccessToken
+        await _userManager.SetAuthenticationTokenAsync(user, tokenOptions.LoginProvider, tokenOptions.TokenName, token);
+
+        return new TokenResponseDto
         {
             Token = token,
-            Expiration = expireDate
+            Expiration = expireDate,
+            UserRoles = userRoles.ToList()
         };
     }
 }

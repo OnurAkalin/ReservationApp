@@ -21,9 +21,17 @@ public class AccountController : ControllerBase
 
     [HttpPost]
     [AllowAnonymous]
+    [ProducesResponseType(typeof(DataResult<TokenResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginRequestDto requestDto)
     {
         var result = await _accountService.LoginAsync(requestDto);
+
+        if (!result.Success)
+        {
+            return Unauthorized(result.Message);
+        }
+        
         return Ok(result);
     }
     
@@ -49,19 +57,5 @@ public class AccountController : ControllerBase
     {
         var result = await _accountService.GetRolesAsync();
         return Ok(result);
-    }
-    
-    [HttpGet, Authorize]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetWithToken()
-    {
-        return Task.FromResult<IActionResult>(Ok("DATA"));
-    }
-    
-    [HttpGet, AllowAnonymous]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetWithoutToken()
-    {
-        return Task.FromResult<IActionResult>(Ok("DATA"));
     }
 }

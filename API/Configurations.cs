@@ -118,7 +118,7 @@ public static class Configurations
     {
         var mapperConfig = new AutoMapper.MapperConfiguration(options =>
         {
-            options.AddProfile(new AutoMapperInitializer());
+            options.AddProfile(new Services.AutoMapper());
         });
 
         var mapper = mapperConfig.CreateMapper();
