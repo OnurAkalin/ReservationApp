@@ -12,10 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        foreach (var relationship in builder.Model.GetEntityTypes().SelectMany(x => x.GetForeignKeys()))
-        {
-            relationship.DeleteBehavior = DeleteBehavior.Restrict;
-        }
+        
 
         builder.Entity<SiteImage>().HasKey(x => new {x.SiteId, x.ImageId});
         builder.Entity<SiteServiceImage>().HasKey(x => new {x.ServiceId, x.ImageId});

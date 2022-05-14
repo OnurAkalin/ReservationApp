@@ -71,10 +71,11 @@ public static class Configurations
 
     private static void ConfigureDatabase(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        const string database = "Sql";
-        var connectionString = configuration.GetConnectionString(database);
-
-        serviceCollection.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(connectionString); });
+        var connectionString = configuration.GetConnectionString("MySql");
+        
+        var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
+        
+        serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseMySql(connectionString, serverVersion));
     }
 
     private static void ConfigureIdentity(this IServiceCollection serviceCollection)

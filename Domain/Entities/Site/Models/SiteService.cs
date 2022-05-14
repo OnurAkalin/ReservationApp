@@ -14,7 +14,7 @@ public class SiteService : EntityBaseSiteWithAudit<Guid>, IEntity
     public bool BreakAfter { get; set; } // After service break times. Optional. True if exists.
     public DateTime? BreakAfterDuration { get; set; } // If BreakAfter property is true. This field keeps break time duration
 
-    [Column(TypeName = "money")] public decimal? ServicePrice { get; set; } // Optional
+    public int ServicePrice { get; set; } // Optional
 
     // RELATIONS //
     public List<Calendar> Calendars { get; set; } = new List<Calendar>();
