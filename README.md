@@ -11,3 +11,5 @@ Installation
 3. Go to Infrastructure directory "cd Infrastructure"
 4. Run following command to add migration "dotnet ef migrations add First -s ..\API"
 5. Run following command to create database "dotnet ef database update -s ..\API"
+
+NOTE: Use ../API for step 4 and 5 if you use linux or mac.
