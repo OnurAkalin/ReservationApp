@@ -2,7 +2,7 @@
 
 Requirements
 1. Docker-Linux
-2. .Net Core 6
+2. .Net Core 6.0.5(SDK 6.0.300)
 
 Installation
 
