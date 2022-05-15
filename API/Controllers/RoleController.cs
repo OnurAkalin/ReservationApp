@@ -14,38 +14,17 @@ public class RoleController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateRole(string roleName)
-    {
-        var result = await _roleService.CreateRoleAsync(roleName);
-        return Ok(result);
-    }
+        => Ok(await _roleService.CreateRoleAsync(roleName));
+
 
     [HttpPost]
-    [ProducesResponseType(typeof(SuccessResult), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateRole(Guid id, string roleName)
-    {
-        var result = await _roleService.UpdateRoleAsync(id, roleName);
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateRole(int id, string roleName)
+        => Ok(await _roleService.UpdateRoleAsync(id, roleName));
 
-        if (!result.Success)
-        {
-            return BadRequest(new ErrorResult(result.Message));
-        }
-        
-        return Ok(result);
-    }
 
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetRoles()
-    {
-        var result = await _roleService.GetRolesAsync();
-
-        if (!result.Success)
-        {
-            return BadRequest(new ErrorResult(result.Message));
-        }
-
-        return Ok(result);
-    }
+        => Ok(await _roleService.GetRolesAsync());
 }

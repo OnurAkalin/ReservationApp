@@ -6,7 +6,6 @@ public class AccountService : BasicService, IAccountService
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<Role> _roleManager;
     private readonly ITokenService _tokenService;
 
     public AccountService
@@ -15,7 +14,6 @@ public class AccountService : BasicService, IAccountService
         IMapper mapper,
         UserManager<User> userManager,
         SignInManager<User> signInManager,
-        RoleManager<Role> roleManager,
         ApplicationDbContext dbContext,
         ITokenService tokenService
     )
@@ -23,20 +21,18 @@ public class AccountService : BasicService, IAccountService
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _roleManager = roleManager;
         _tokenService = tokenService;
     }
 
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
-        var tempSiteId = Guid.Empty;
-        var userName = tempSiteId + "_" + requestDto.Email;
+        const string tempSiteCode = "ADMIN";
+        var userName = tempSiteCode + "_" + requestDto.Email;
 
         var checkUserExist = await _dbContext.Users
             .AsNoTracking()
-            .AnyAsync(x =>
-                x.Email == requestDto.Email
-                || x.UserName == userName);
+            .AnyAsync(x => x.Email.Equals(requestDto.Email)
+                           || x.UserName.Equals(userName));
 
         if (checkUserExist)
         {
@@ -58,7 +54,7 @@ public class AccountService : BasicService, IAccountService
 
     public async Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == requestDto.Email);
+        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(requestDto.Email));
 
         if (user is null)
         {
@@ -77,10 +73,10 @@ public class AccountService : BasicService, IAccountService
         return new SuccessDataResult<TokenResponseDto>(token, UiMessages.Authorized);
     }
 
-    public async Task<Result> ChangePassword(ChangePasswordRequestDto requestDto)
+    public async Task<Result> ChangePasswordAsync(ChangePasswordRequestDto requestDto)
     {
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id == requestDto.Id);
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
 
         if (user is null)
         {
@@ -97,7 +93,7 @@ public class AccountService : BasicService, IAccountService
         return new SuccessResult(UiMessages.Success);
     }
 
-    public async Task<Result> ChangeEmail(ChangeEmailRequestDto requestDto)
+    public async Task<Result> ChangeEmailAsync(ChangeEmailRequestDto requestDto)
     {
         var checkEmailExists = await _dbContext.Users
             .AnyAsync(x => x.Email.Equals(requestDto.Email)
@@ -116,8 +112,10 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UiMessages.UserNotFound);
         }
 
+        const string tempSiteCode = "ADMIN";
+        var userName = tempSiteCode + "_" + requestDto.Email;
+        
         await _userManager.SetEmailAsync(user, requestDto.Email);
-        var userName = Guid.Empty + "_" + requestDto.Email;
         await _userManager.SetUserNameAsync(user, userName);
 
         return new SuccessResult(UiMessages.Success);

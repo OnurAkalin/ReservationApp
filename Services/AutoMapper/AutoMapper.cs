@@ -7,6 +7,7 @@ public class AutoMapper : Profile
         #region User
 
         CreateMap<RegisterRequestDto, User>();
+        CreateMap<UserDto, User>().ReverseMap();
 
         #endregion
 

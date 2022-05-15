@@ -6,7 +6,7 @@ namespace Domain.Entities;
 
 public class SiteServiceImage : IEntity
 {
-    [Key] [ForeignKey("SiteService")] public Guid ServiceId { get; set; }
+    [Key] [ForeignKey("SiteService")] public int ServiceId { get; set; }
     public SiteService SiteService { get; set; }
 
     [Key] [ForeignKey("Image")] public int ImageId { get; set; }

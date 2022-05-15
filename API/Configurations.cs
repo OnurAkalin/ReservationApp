@@ -19,6 +19,8 @@ public static class Configurations
     {
         serviceCollection.AddSwaggerGen(options =>
         {
+            options.OperationFilter<AddRequiredHeaderParameter>();
+
             var jwtSecurityScheme = new OpenApiSecurityScheme
             {
                 Name = "JWT Authentication",
@@ -33,6 +35,7 @@ public static class Configurations
                     Type = ReferenceType.SecurityScheme
                 }
             };
+
             options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, jwtSecurityScheme);
 
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -45,37 +48,37 @@ public static class Configurations
     private static void ConfigureAuthentication(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
-        
+
         serviceCollection.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            
         }).AddJwtBearer(options =>
         {
             options.Audience = tokenOptions.Audience;
             options.RequireHttpsMetadata = false;
 
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidIssuer = tokenOptions.Issuer,
-                    ValidAudience = tokenOptions.Audience,
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
-                };
-            });
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = tokenOptions.Issuer,
+                ValidAudience = tokenOptions.Audience,
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+            };
+        });
     }
 
     private static void ConfigureDatabase(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("MySql");
-        
+
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
-        
-        serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseMySql(connectionString, serverVersion));
+
+        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
+            options.UseMySql(connectionString, serverVersion));
     }
 
     private static void ConfigureIdentity(this IServiceCollection serviceCollection)
@@ -87,7 +90,8 @@ public static class Configurations
         serviceCollection.Configure<IdentityOptions>(options =>
         {
             options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
             // Password settings.
             options.Password.RequiredLength = 6;

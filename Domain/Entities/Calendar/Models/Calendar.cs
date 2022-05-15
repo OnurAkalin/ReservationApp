@@ -4,7 +4,7 @@ using Domain.Enumerations;
 
 namespace Domain.Entities;
 
-public class Calendar : EntityBaseSiteWithAudit<Guid>, IEntity
+public class Calendar : EntityBaseSiteWithAudit<int>, IEntity
 {
     public Day? Day { get; set; } // This property may helpful for FE.
     public DateTime StartTime { get; set; }
@@ -14,9 +14,9 @@ public class Calendar : EntityBaseSiteWithAudit<Guid>, IEntity
 
     // FOREIGN KEYS //
         
-    [ForeignKey("SiteService")] public Guid SiteServiceId { get; set; }
+    [ForeignKey("SiteService")] public int SiteServiceId { get; set; }
     public SiteService SiteService { get; set; }
 
-    [ForeignKey("User")] public Guid UserId { get; set; }
+    [ForeignKey("User")] public int UserId { get; set; }
     public User User { get; set; }
 }

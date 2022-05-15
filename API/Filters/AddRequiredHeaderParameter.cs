@@ -6,11 +6,12 @@ public class AddRequiredHeaderParameter : IOperationFilter
     {
         operation.Parameters ??= new List<OpenApiParameter>();
 
-        operation.Parameters.Add (new OpenApiParameter {
-            Name = "SiteId",  
-            In = ParameterLocation.Header,  
-            Description = "Current Site Id",  
-            Required = true
+        operation.Parameters.Add(new OpenApiParameter
+        {
+            Name = "SiteId",
+            In = ParameterLocation.Header,
+            Description = "Current Site Id",
+            Required = false
         });
     }
 }

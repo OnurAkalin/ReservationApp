@@ -30,15 +30,15 @@ public class RoleService : BasicService, IRoleService
         return new ErrorResult(UiMessages.UnknownError);
     }
 
-    public async Task<Result> UpdateRoleAsync(Guid id, string roleName)
+    public async Task<Result> UpdateRoleAsync(int id, string roleName)
     {
         var role = await _roleManager.FindByIdAsync(id.ToString());
 
-        if (role == null)
+        if (role is null)
         {
             return new ErrorResult(UiMessages.NotFoundData);
         }
-        
+
         role.Name = roleName;
 
         var result = await _roleManager.UpdateAsync(role);
@@ -47,7 +47,7 @@ public class RoleService : BasicService, IRoleService
         {
             return new SuccessResult(UiMessages.Success);
         }
-        
+
         return new ErrorResult(UiMessages.UnknownError);
     }
 

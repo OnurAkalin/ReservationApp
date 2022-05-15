@@ -2,6 +2,10 @@ namespace Services;
 
 public interface IUserService
 {
-    Task<Result> UpdateUser(UserDto requestDto);
-    Task<Result> DeleteUser(Guid id);
+    Task<DataResult<UserDto>> GetUserAsync(int id);
+    Task<Result> UpdateUserAsync(UserDto requestDto);
+    Task<Result> DeleteUserAsync(int id);
+    Task<Result> AddToRoleAsync(int userId , int roleId);
+    Task<Result> DeleteFromRoleAsync(int userId, int roleId);
+
 }

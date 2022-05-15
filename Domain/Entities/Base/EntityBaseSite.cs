@@ -4,6 +4,6 @@ namespace Domain.Entities;
 
 public abstract class EntityBaseSite<T> : EntityBase<T>
 {
-    [ForeignKey("Site")] public Guid SiteId { get; set; }
+    [ForeignKey("Site")] public int SiteId { get; set; }
     public Site Site { get; set; }
 }
