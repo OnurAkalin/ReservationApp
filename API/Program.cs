@@ -4,7 +4,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigureAllExtensions(builder.Configuration);
-
 builder.Services.InjectApplicationServices();
 
 var app = builder.Build();

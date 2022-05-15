@@ -9,7 +9,11 @@ public class TokenService : ITokenService
     private readonly IConfiguration _configuration;
     private readonly UserManager<User> _userManager;
 
-    public TokenService(IConfiguration configuration, UserManager<User> userManager)
+    public TokenService
+    (
+        IConfiguration configuration,
+        UserManager<User> userManager
+    )
     {
         _configuration = configuration;
         _userManager = userManager;
@@ -41,7 +45,7 @@ public class TokenService : ITokenService
         );
 
         var token = new JwtSecurityTokenHandler().WriteToken(tokenTemplate);
-        
+
         await _userManager.SetAuthenticationTokenAsync(user, tokenOptions.LoginProvider, tokenOptions.TokenName, token);
 
         return new TokenResponseDto

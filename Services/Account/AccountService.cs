@@ -40,7 +40,7 @@ public class AccountService : BasicService, IAccountService
 
         if (checkUserExist)
         {
-            return new ErrorResult(UIMessages.UserAlreadyExist);
+            return new ErrorResult(UiMessages.UserAlreadyExist);
         }
 
         var user = _mapper.Map<User>(requestDto);
@@ -50,35 +50,76 @@ public class AccountService : BasicService, IAccountService
 
         if (!createUserResult.Succeeded)
         {
-            return new ErrorResult(UIMessages.InvalidCredentials);
+            return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
-        return new SuccessResult(UIMessages.Success);
+        return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto)
     {
-        if (string.IsNullOrWhiteSpace(requestDto.Email) || string.IsNullOrWhiteSpace(requestDto.Password))
-        {
-            return new ErrorDataResult<TokenResponseDto>(UIMessages.EmptyRequest);
-        }
-
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == requestDto.Email);
 
-        if (user == null)
+        if (user is null)
         {
-            return new ErrorDataResult<TokenResponseDto>(UIMessages.UserNotFound);
+            return new ErrorDataResult<TokenResponseDto>(UiMessages.UserNotFound);
         }
 
         var passwordIsCorrect = await _signInManager.CheckPasswordSignInAsync(user, requestDto.Password, false);
 
         if (!passwordIsCorrect.Succeeded)
         {
-            return new ErrorDataResult<TokenResponseDto>(UIMessages.InvalidCredentials);
+            return new ErrorDataResult<TokenResponseDto>(UiMessages.InvalidCredentials);
         }
 
         var token = await _tokenService.GenerateTokenAsync(user);
 
-        return new SuccessDataResult<TokenResponseDto>(token, UIMessages.Authorized);
+        return new SuccessDataResult<TokenResponseDto>(token, UiMessages.Authorized);
+    }
+
+    public async Task<Result> ChangePassword(ChangePasswordRequestDto requestDto)
+    {
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(x => x.Id == requestDto.Id);
+
+        if (user is null)
+        {
+            return new ErrorResult(UiMessages.UserNotFound);
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, requestDto.OldPassword, requestDto.NewPassword);
+
+        if (!result.Succeeded)
+        {
+            return new ErrorResult(UiMessages.InvalidPassword);
+        }
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<Result> ChangeEmail(ChangeEmailRequestDto requestDto)
+    {
+        var checkEmailExists = await _dbContext.Users
+            .AnyAsync(x => x.Email.Equals(requestDto.Email)
+                           && !x.Id.Equals(requestDto.Id));
+
+        if (checkEmailExists)
+        {
+            return new ErrorResult(UiMessages.UserWithEmailAlreadyExist);
+        }
+
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
+
+        if (user is null)
+        {
+            return new ErrorResult(UiMessages.UserNotFound);
+        }
+
+        await _userManager.SetEmailAsync(user, requestDto.Email);
+        var userName = Guid.Empty + "_" + requestDto.Email;
+        await _userManager.SetUserNameAsync(user, userName);
+
+        return new SuccessResult(UiMessages.Success);
     }
 }

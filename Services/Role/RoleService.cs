@@ -24,10 +24,10 @@ public class RoleService : BasicService, IRoleService
 
         if (result.Succeeded)
         {
-            return new SuccessResult(UIMessages.Success);
+            return new SuccessResult(UiMessages.Success);
         }
 
-        return new ErrorResult(UIMessages.UnknownError);
+        return new ErrorResult(UiMessages.UnknownError);
     }
 
     public async Task<Result> UpdateRoleAsync(Guid id, string roleName)
@@ -36,7 +36,7 @@ public class RoleService : BasicService, IRoleService
 
         if (role == null)
         {
-            return new ErrorResult(UIMessages.NotFoundData);
+            return new ErrorResult(UiMessages.NotFoundData);
         }
         
         role.Name = roleName;
@@ -45,10 +45,10 @@ public class RoleService : BasicService, IRoleService
 
         if (result.Succeeded)
         {
-            return new SuccessResult(UIMessages.Success);
+            return new SuccessResult(UiMessages.Success);
         }
         
-        return new ErrorResult(UIMessages.UnknownError);
+        return new ErrorResult(UiMessages.UnknownError);
     }
 
     public async Task<DataResult<List<RoleResponseDto>>> GetRolesAsync()
@@ -59,11 +59,11 @@ public class RoleService : BasicService, IRoleService
 
         if (!roles.Any())
         {
-            return new ErrorDataResult<List<RoleResponseDto>>(message: UIMessages.NotFoundData);
+            return new ErrorDataResult<List<RoleResponseDto>>(message: UiMessages.NotFoundData);
         }
 
         var mappedData = _mapper.Map<List<RoleResponseDto>>(roles);
 
-        return new SuccessDataResult<List<RoleResponseDto>>(mappedData, UIMessages.Success);
+        return new SuccessDataResult<List<RoleResponseDto>>(mappedData, UiMessages.Success);
     }
 }
