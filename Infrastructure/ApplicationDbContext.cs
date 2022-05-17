@@ -29,7 +29,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     #region DbSets
 
     public DbSet<Site> Sites { get; set; }
-    public DbSet<SiteCustomization> SiteCustomizations { get; set; }
     public DbSet<SiteService> SiteServices { get; set; }
     public DbSet<SiteServiceDay> SiteServiceDays { get; set; }
 

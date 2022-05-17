@@ -104,8 +104,7 @@ public static class Configurations
 
     private static void ConfigureRedis(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
-        const string redis = "Redis";
-        var connectionString = configuration.GetConnectionString(redis);
+        var connectionString = configuration.GetConnectionString("Redis");
 
         var redisConnection = ConnectionMultiplexer.Connect(connectionString);
         serviceCollection.AddSingleton<IConnectionMultiplexer>(redisConnection);

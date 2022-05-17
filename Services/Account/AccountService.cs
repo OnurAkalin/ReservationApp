@@ -43,6 +43,7 @@ public class AccountService : BasicService, IAccountService
         user.UserName = userName;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
+        await _userManager.SetLockoutEnabledAsync(user, false);
 
         if (!createUserResult.Succeeded)
         {

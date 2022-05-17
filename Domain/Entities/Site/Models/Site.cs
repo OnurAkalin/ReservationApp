@@ -11,6 +11,5 @@ public class Site : EntityBaseWithAudit<int>, IEntity
     public string Address { get; set; }
 
     // RELATIONS //
-    public List<SiteCustomization> SiteCustomizations { get; set; }
     public List<SiteImage> SiteImages { get; set; }
 }
