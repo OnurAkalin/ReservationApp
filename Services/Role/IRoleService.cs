@@ -2,7 +2,7 @@
 
 public interface IRoleService
 {
-    Task<Result> CreateRoleAsync(string roleName);
-    Task<Result> UpdateRoleAsync(int id, string roleName);
-    Task<DataResult<List<RoleResponseDto>>> GetRolesAsync();
+    Task<Result> CreateAsync(string roleName);
+    Task<Result> UpdateAsync(int id, string roleName);
+    Task<DataResult<List<RoleResponseDto>>> ListAsync();
 }

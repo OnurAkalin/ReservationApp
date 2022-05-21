@@ -14,17 +14,17 @@ public class RoleController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateRole(string roleName)
-        => Ok(await _roleService.CreateRoleAsync(roleName));
+        => Ok(await _roleService.CreateAsync(roleName));
 
 
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateRole(int id, string roleName)
-        => Ok(await _roleService.UpdateRoleAsync(id, roleName));
+        => Ok(await _roleService.UpdateAsync(id, roleName));
 
 
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRoles()
-        => Ok(await _roleService.GetRolesAsync());
+    public async Task<IActionResult> List()
+        => Ok(await _roleService.ListAsync());
 }

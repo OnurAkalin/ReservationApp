@@ -7,7 +7,9 @@ public class AutoMapper : Profile
         #region User
 
         CreateMap<RegisterRequestDto, User>();
-        CreateMap<UserDto, User>().ReverseMap();
+        CreateMap<User, UserResponseDto>();
+        CreateMap<User, EmployeeResponseDto>();
+        CreateMap<EmployeeRequestDto, User>();
 
         #endregion
 

@@ -1,6 +1,4 @@
-﻿using Domain.Constants;
-
-namespace Services;
+﻿namespace Services;
 
 public class AccountService : BasicService, IAccountService
 {
@@ -26,8 +24,14 @@ public class AccountService : BasicService, IAccountService
 
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
-        const string tempSiteCode = "ADMIN";
-        var userName = tempSiteCode + "_" + requestDto.Email;
+        var site = await _dbContext.Sites.FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+
+        if (site is null)
+        {
+            return new ErrorResult(UiMessages.InvalidSiteCode);
+        }
+
+        var userName = site.Id + "_" + requestDto.Email;
 
         var checkUserExist = await _dbContext.Users
             .AsNoTracking()
@@ -41,15 +45,17 @@ public class AccountService : BasicService, IAccountService
 
         var user = _mapper.Map<User>(requestDto);
         user.UserName = userName;
+        user.RegisterDate = DateTime.Now;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
-        await _userManager.SetLockoutEnabledAsync(user, false);
 
         if (!createUserResult.Succeeded)
         {
             return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
+        await _userManager.AddToRoleAsync(user, UserRoles.Customer.ToString());
+        
         return new SuccessResult(UiMessages.Success);
     }
 
@@ -69,7 +75,10 @@ public class AccountService : BasicService, IAccountService
             return new ErrorDataResult<TokenResponseDto>(UiMessages.InvalidCredentials);
         }
 
-        var token = await _tokenService.GenerateTokenAsync(user);
+        var token = await _tokenService.GenerateAsync(user);
+        
+        user.LastLoginDate = DateTime.Now;
+        await _dbContext.SaveChangesAsync();
 
         return new SuccessDataResult<TokenResponseDto>(token, UiMessages.Authorized);
     }
@@ -113,8 +122,14 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UiMessages.UserNotFound);
         }
 
-        const string tempSiteCode = "ADMIN";
-        var userName = tempSiteCode + "_" + requestDto.Email;
+        var site = await _dbContext.Sites.FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+
+        if (site is null)
+        {
+            return new ErrorResult(UiMessages.InvalidSiteCode);
+        }
+
+        var userName = site.Id + "_" + requestDto.Email;
         
         await _userManager.SetEmailAsync(user, requestDto.Email);
         await _userManager.SetUserNameAsync(user, userName);

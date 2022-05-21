@@ -1,5 +1,3 @@
-using Domain.Constants;
-
 namespace Services;
 
 public class UserService : BasicService, IUserService
@@ -21,7 +19,7 @@ public class UserService : BasicService, IUserService
         _roleManager = roleManager;
     }
 
-    public async Task<DataResult<UserDto>> GetUserAsync(int id)
+    public async Task<DataResult<UserResponseDto>> GetAsync(int id)
     {
         var user = await _dbContext.Users
             .AsNoTracking()
@@ -29,15 +27,15 @@ public class UserService : BasicService, IUserService
 
         if (user is null)
         {
-            return new ErrorDataResult<UserDto>(UiMessages.UserNotFound);
+            return new ErrorDataResult<UserResponseDto>(UiMessages.UserNotFound);
         }
 
-        var mappedData = _mapper.Map<UserDto>(user);
+        var mappedData = _mapper.Map<UserResponseDto>(user);
 
-        return new SuccessDataResult<UserDto>(mappedData, UiMessages.Success);
+        return new SuccessDataResult<UserResponseDto>(mappedData, UiMessages.Success);
     }
 
-    public async Task<Result> UpdateUserAsync(UserDto requestDto)
+    public async Task<Result> UpdateAsync(UserRequestDto requestDto)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
@@ -53,7 +51,7 @@ public class UserService : BasicService, IUserService
         return new SuccessResult(UiMessages.Success);
     }
 
-    public async Task<Result> DeleteUserAsync(int id)
+    public async Task<Result> DeleteAsync(int id)
     {
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
@@ -63,7 +61,7 @@ public class UserService : BasicService, IUserService
             return new ErrorResult(UiMessages.UserNotFound);
         }
 
-        // Delete action
+        _dbContext.Users.Remove(user);
 
         await _dbContext.SaveChangesAsync();
 

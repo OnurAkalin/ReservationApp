@@ -13,6 +13,7 @@ public class SeedDataController : ControllerBase
     
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SeedData()
-        => Ok(await _seedDataService.SeedAdminSiteAndUser());
+    public async Task<IActionResult> SeedBaseData()
+        => Ok(await _seedDataService.SeedBaseData());
+    
 }

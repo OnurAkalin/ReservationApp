@@ -6,6 +6,7 @@ global using Microsoft.AspNetCore.Authentication.JwtBearer;
 global using Microsoft.IdentityModel.Tokens;
 global using TokenOptions = Core.Jwt.TokenOptions;
 global using Role = Domain.Entities.Role;
+global using User = Domain.Entities.User;
 global using Core.Encryption;
 global using Microsoft.OpenApi.Models;
 global using Microsoft.AspNetCore.Identity;

@@ -1,6 +1,4 @@
-﻿using Domain.Constants;
-
-namespace Services;
+﻿namespace Services;
 
 public class RoleService : BasicService, IRoleService
 {
@@ -18,7 +16,7 @@ public class RoleService : BasicService, IRoleService
         _roleManager = roleManager;
     }
 
-    public async Task<Result> CreateRoleAsync(string roleName)
+    public async Task<Result> CreateAsync(string roleName)
     {
         var result = await _roleManager.CreateAsync(new Role {Name = roleName});
 
@@ -30,7 +28,7 @@ public class RoleService : BasicService, IRoleService
         return new ErrorResult(UiMessages.UnknownError);
     }
 
-    public async Task<Result> UpdateRoleAsync(int id, string roleName)
+    public async Task<Result> UpdateAsync(int id, string roleName)
     {
         var role = await _roleManager.FindByIdAsync(id.ToString());
 
@@ -51,7 +49,7 @@ public class RoleService : BasicService, IRoleService
         return new ErrorResult(UiMessages.UnknownError);
     }
 
-    public async Task<DataResult<List<RoleResponseDto>>> GetRolesAsync()
+    public async Task<DataResult<List<RoleResponseDto>>> ListAsync()
     {
         var roles = await _dbContext.Roles
             .AsNoTracking()

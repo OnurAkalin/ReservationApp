@@ -1,6 +1,4 @@
-﻿using Domain.Constants;
-
-namespace Services;
+﻿namespace Services;
 
 public class SeedDataService : ISeedDataService
 {
@@ -20,7 +18,7 @@ public class SeedDataService : ISeedDataService
         _roleManager = roleManager;
     }
 
-    public async Task<Result> SeedAdminSiteAndUser()
+    public async Task<Result> SeedBaseData()
     {
         if (await _dbContext.Sites.AnyAsync())
         {
@@ -30,12 +28,7 @@ public class SeedDataService : ISeedDataService
         var site = new Site
         {
             CreateDate = DateTime.Now,
-            Code = "ADMIN",
-            PhoneNumber = "123456789",
-            Email = "Admin",
-            Description = "Admin",
-            Address = "Admin",
-
+            Code = "ADMIN"
         };
 
         await _dbContext.Sites.AddAsync(site);
@@ -45,20 +38,20 @@ public class SeedDataService : ISeedDataService
         {
             UserName = site.Code + "_" + "admin@admin.com",
             Email = "admin@admin.com",
-            PhoneNumber = "123456789",
+            PhoneNumber = "0000000000",
             FirstName = "Admin",
-            LastName = "Admin"
+            LastName = "Admin",
+            SiteId = site.Id,
+            RegisterDate = DateTime.Now
         };
+
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Admin.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.BusinessOwner.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Employee.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer.ToString()});
         
         await _userManager.CreateAsync(user, "qwe123");
-
-
-        await _roleManager.CreateAsync(new Role {Name = "Admin"});
-        await _roleManager.CreateAsync(new Role {Name = "BusinessOwner"});
-        await _roleManager.CreateAsync(new Role {Name = "Employee"});
-        await _roleManager.CreateAsync(new Role {Name = "Customer"});
-
-        await _userManager.AddToRoleAsync(user, "Admin");
+        await _userManager.AddToRoleAsync(user, UserRoles.Admin.ToString());
 
         return new SuccessResult(UiMessages.Success);
     }

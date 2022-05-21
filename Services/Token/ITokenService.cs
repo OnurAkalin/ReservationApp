@@ -2,5 +2,5 @@
 
 public interface ITokenService
 {
-    Task<TokenResponseDto> GenerateTokenAsync(User user);
+    Task<TokenResponseDto> GenerateAsync(User user);
 }

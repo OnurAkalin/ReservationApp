@@ -19,7 +19,7 @@ public class TokenService : ITokenService
         _userManager = userManager;
     }
 
-    public async Task<TokenResponseDto> GenerateTokenAsync(User user)
+    public async Task<TokenResponseDto> GenerateAsync(User user)
     {
         var userRoles = await _userManager.GetRolesAsync(user);
 
