@@ -64,4 +64,18 @@ public class RoleService : BasicService, IRoleService
 
         return new SuccessDataResult<List<RoleResponseDto>>(mappedData, UiMessages.Success);
     }
+
+    public async Task<Result> DeleteAsync(int id)
+    {
+        var role = await _dbContext.Roles.FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (role is null)
+        {
+            return new ErrorResult(UiMessages.Error);
+        }
+
+        await _roleManager.DeleteAsync(role);
+
+        return new SuccessResult(UiMessages.Success);
+    }
 }
