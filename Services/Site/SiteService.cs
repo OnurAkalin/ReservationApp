@@ -35,7 +35,7 @@ public class SiteService : BasicService, ISiteService
     public async Task<Result> UpdateAsync(SiteRequestDto requestDto)
     {
         var checkCodeExists = await _dbContext.Sites
-            .AnyAsync(x => x.Code.Equals(requestDto.Code) 
+            .AnyAsync(x => x.Code.Equals(requestDto.Code)
                            && !x.Id.Equals(requestDto.Id));
 
         if (checkCodeExists)

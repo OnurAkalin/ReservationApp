@@ -21,7 +21,7 @@ public class SiteController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(SiteRequestDto requestDto)
-        => Ok(await _siteService.InsertAsync(requestDto));
+        => Ok(await _siteService.UpdateAsync(requestDto));
 
 
     [HttpPost]

@@ -59,4 +59,43 @@ public class ComponentService : BasicService, IComponentService
 
         return new SuccessDataResult<List<LoginComponentDto>>(jsonData!, UiMessages.Success);
     }
+
+    public async Task<Result> SetRegisterAsync(List<RegisterComponentDto> requestDto)
+    {
+        var currentRegisterComponent = await _dbContext.Components
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register));
+
+        if (currentRegisterComponent is not null)
+        {
+            _dbContext.Remove(currentRegisterComponent);
+        }
+
+        var loginComponent = new Component
+        {
+            Type = ComponentType.Register,
+            Value = JsonConvert.SerializeObject(requestDto)
+        };
+
+        await _dbContext.AddAsync(loginComponent);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<RegisterComponentDto>>> GetRegisterAsync()
+    {
+        var registerComponent = await _dbContext.Components
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register));
+
+        if (registerComponent is null)
+        {
+            return new ErrorDataResult<List<RegisterComponentDto>>(UiMessages.NotFoundData);
+        }
+
+        var jsonData = JsonConvert.DeserializeObject<List<RegisterComponentDto>>(registerComponent.Value);
+
+        return new SuccessDataResult<List<RegisterComponentDto>>(jsonData!, UiMessages.Success);
+    }
 }
