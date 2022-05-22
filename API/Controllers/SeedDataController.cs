@@ -10,10 +10,9 @@ public class SeedDataController : ControllerBase
     {
         _seedDataService = seedDataService;
     }
-    
+
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> SeedBaseData()
         => Ok(await _seedDataService.SeedBaseData());
-    
 }

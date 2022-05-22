@@ -1,4 +1,6 @@
-﻿namespace API.AppServices;
+﻿using SiteService = Services.SiteService;
+
+namespace API.AppServices;
 
 public static class ServiceRegistration
 {
@@ -11,5 +13,6 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<IRoleService, RoleService>();
         serviceCollection.AddScoped<IUserService, UserService>();
         serviceCollection.AddScoped<IEmployeeService, EmployeeService>();
+        serviceCollection.AddScoped<ISiteService, SiteService>();
     }
 }

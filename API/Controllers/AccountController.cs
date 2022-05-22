@@ -17,8 +17,8 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register([FromBody] RegisterRequestDto requestDto)
         => Ok(await _accountService.RegisterAsync(requestDto));
-
-
+    
+    
     [HttpPost]
     [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<TokenResponseDto>), StatusCodes.Status200OK)]

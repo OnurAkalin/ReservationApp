@@ -9,6 +9,7 @@ public static class UiMessages
     public const string InvalidCredentials = "Girilen bilgiler geçersiz. Lütfen tekrar deneyiniz.";
     public const string InvalidPassword = "Girilen parola hatalı. Lütfen tekrar deneyiniz.";
     public const string InvalidSiteCode = "Girilen kod hatalı. Lütfen tekrar deneyiniz.";
+    public const string SiteCodeAlreadyExists = "Girilen kod sistemde mevcut. Lütfen başka bir kod ile tekrar deneyiniz.";
     public const string Authorized = "Giriş yapma işlemi başarılı";
     public const string UserNotFound = "Kullanıcı bulunamadı.";
     public const string UserAlreadyExist = "Kullanıcı sistemde mevcut.";

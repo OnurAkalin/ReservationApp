@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Enumerations;
 using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;

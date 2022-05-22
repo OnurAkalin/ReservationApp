@@ -18,5 +18,12 @@ public class AutoMapper : Profile
         CreateMap<Role, RoleResponseDto>();
 
         #endregion
+
+        #region Site
+
+        CreateMap<SiteRequestDto, Site>();
+        CreateMap<Site, SiteResponseDto>();
+
+        #endregion
     }
 }
