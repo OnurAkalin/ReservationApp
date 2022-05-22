@@ -46,13 +46,13 @@ public class SeedDataService : ISeedDataService
             CreateDate = DateTime.Now
         };
 
-        await _roleManager.CreateAsync(new Role {Name = UserRoles.Admin.ToString()});
-        await _roleManager.CreateAsync(new Role {Name = UserRoles.BusinessOwner.ToString()});
-        await _roleManager.CreateAsync(new Role {Name = UserRoles.Employee.ToString()});
-        await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRole.Admin.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRole.BusinessOwner.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRole.Employee.ToString()});
+        await _roleManager.CreateAsync(new Role {Name = UserRole.Customer.ToString()});
         
         await _userManager.CreateAsync(user, "qwe123");
-        await _userManager.AddToRoleAsync(user, UserRoles.Admin.ToString());
+        await _userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
 
         return new SuccessResult(UiMessages.Success);
     }

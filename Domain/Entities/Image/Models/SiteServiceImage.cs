@@ -1,14 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using Core.Entities;
 
 namespace Domain.Entities;
 
-public class SiteServiceImage : IEntity
+public class SiteServiceImage : EntityBase<int>, IEntity
 {
-    [Key] [ForeignKey("SiteService")] public int ServiceId { get; set; }
+    [ForeignKey("SiteService")] public int ServiceId { get; set; }
     public SiteService SiteService { get; set; }
 
-    [Key] [ForeignKey("Image")] public int ImageId { get; set; }
+    [ForeignKey("Image")] public int ImageId { get; set; }
     public Image Image { get; set; }
 }

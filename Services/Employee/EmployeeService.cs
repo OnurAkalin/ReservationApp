@@ -22,7 +22,7 @@ public class EmployeeService : BasicService, IEmployeeService
         var employees = await (from user in _dbContext.Users
             join userRole in _dbContext.UserRoles on user.Id equals userRole.UserId
             join role in _dbContext.Roles on userRole.RoleId equals role.Id
-            where role.Name.Equals(UserRoles.Employee.ToString())
+            where role.Name.Equals(UserRole.Employee.ToString())
             select new EmployeeResponseDto
             {
                 Id = user.Id,
@@ -69,7 +69,7 @@ public class EmployeeService : BasicService, IEmployeeService
             return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
-        await _userManager.AddToRoleAsync(user, UserRoles.Employee.ToString());
+        await _userManager.AddToRoleAsync(user, UserRole.Employee.ToString());
 
         return new SuccessResult(UiMessages.Success);
     }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Enumerations;
 
-public enum UserRoles
+public enum UserRole
 {
     Admin,
     BusinessOwner,

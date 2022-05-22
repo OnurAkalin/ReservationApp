@@ -4,20 +4,29 @@
 [Route("api/[controller]/[action]")]
 public class ComponentController : ControllerBase
 {
-    public ComponentController()
+    private readonly IComponentService _componentService;
+    
+    public ComponentController(IComponentService componentService)
     {
+        _componentService = componentService;
     }
     
     [AllowAnonymous]
     [HttpGet]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCalendar()
-        => Ok(new SuccessResult("Yapılacak"));
+    [ProducesResponseType(typeof(DataResult<List<LoginComponentDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetLogin()
+        => Ok(await _componentService.GetLoginAsync());
     
     
     [AllowAnonymous]
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetCalendar()
-        => Ok(new SuccessResult("Yapılacak"));
+    public async Task<IActionResult> SetLogin([FromBody] List<LoginComponentDto> requestDto)
+        => Ok(await _componentService.SetLoginAsync(requestDto));
+    
+    [AllowAnonymous]
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<string>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetFonts()
+        => Ok(await _componentService.GetFontsAsync());
 }
