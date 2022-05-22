@@ -27,7 +27,9 @@ public class TokenService : ITokenService
 
         userClaims.AddRoles(userRoles.ToList());
         userClaims.AddMobilePhone(user.PhoneNumber);
+        userClaims.AddEmail(user.Email);
         userClaims.AddName(user.GetFullName());
+        userClaims.AddNameIdentifier(user.Id.ToString());
 
         var tokenOptions = _configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -54,6 +56,7 @@ public class TokenService : ITokenService
             Expiration = expireDate,
             UserId = user.Id,
             UserFullName = user.GetFullName(),
+            SiteId = user.SiteId,
             UserRoles = userRoles.ToList()
         };
     }

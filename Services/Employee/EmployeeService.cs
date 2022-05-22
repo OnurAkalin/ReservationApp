@@ -9,8 +9,10 @@ public class EmployeeService : BasicService, IEmployeeService
         Logger logger,
         IMapper mapper,
         ApplicationDbContext dbContext,
-        UserManager<User> userManager)
-        : base(logger, mapper, dbContext)
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<User> userManager
+    )
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
         _userManager = userManager;
     }

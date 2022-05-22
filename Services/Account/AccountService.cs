@@ -10,12 +10,13 @@ public class AccountService : BasicService, IAccountService
     (
         Logger logger,
         IMapper mapper,
+        ApplicationDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor,
         UserManager<User> userManager,
         SignInManager<User> signInManager,
-        ApplicationDbContext dbContext,
         ITokenService tokenService
     )
-        : base(logger, mapper, dbContext)
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -24,7 +25,8 @@ public class AccountService : BasicService, IAccountService
 
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
-        var site = await _dbContext.Sites.FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+        var site = await _dbContext.Sites
+            .FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
 
         if (site is null)
         {
@@ -45,6 +47,7 @@ public class AccountService : BasicService, IAccountService
 
         var user = _mapper.Map<User>(requestDto);
         user.UserName = userName;
+        user.CreateDate = DateTime.Now;
         user.RegisterDate = DateTime.Now;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
@@ -61,7 +64,8 @@ public class AccountService : BasicService, IAccountService
 
     public async Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto)
     {
-        var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email.Equals(requestDto.Email));
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(x => x.Email.Equals(requestDto.Email));
 
         if (user is null)
         {
@@ -122,7 +126,8 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UiMessages.UserNotFound);
         }
 
-        var site = await _dbContext.Sites.FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+        var site = await _dbContext.Sites
+            .FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
 
         if (site is null)
         {

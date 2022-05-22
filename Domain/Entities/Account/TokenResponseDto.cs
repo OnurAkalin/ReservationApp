@@ -6,5 +6,6 @@ public class TokenResponseDto
     public DateTime Expiration { get; set; }
     public int UserId { get; set; }
     public string UserFullName { get; set; }
+    public int SiteId { get; set; }
     public List<string> UserRoles { get; set; }
 }

@@ -8,10 +8,11 @@ public class RoleService : BasicService, IRoleService
     (
         Logger logger,
         IMapper mapper,
-        RoleManager<Role> roleManager,
-        ApplicationDbContext dbContext
+        ApplicationDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor,
+        RoleManager<Role> roleManager
     )
-        : base(logger, mapper, dbContext)
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
         _roleManager = roleManager;
     }
@@ -67,7 +68,8 @@ public class RoleService : BasicService, IRoleService
 
     public async Task<Result> DeleteAsync(int id)
     {
-        var role = await _dbContext.Roles.FirstOrDefaultAsync(x => x.Id.Equals(id));
+        var role = await _dbContext.Roles
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (role is null)
         {

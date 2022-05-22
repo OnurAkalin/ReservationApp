@@ -10,10 +10,11 @@ public class UserService : BasicService, IUserService
         Logger logger,
         IMapper mapper,
         ApplicationDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor,
         UserManager<User> userManager,
         RoleManager<Role> roleManager
     )
-        : base(logger, mapper, dbContext)
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -46,6 +47,8 @@ public class UserService : BasicService, IUserService
         }
 
         _mapper.Map(requestDto, user);
+        user.ModifyDate = DateTime.Now;
+        
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);
@@ -62,7 +65,6 @@ public class UserService : BasicService, IUserService
         }
 
         _dbContext.Users.Remove(user);
-
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);

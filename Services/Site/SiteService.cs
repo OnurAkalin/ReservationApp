@@ -6,9 +6,10 @@ public class SiteService : BasicService, ISiteService
     (
         Logger logger,
         IMapper mapper,
-        ApplicationDbContext dbContext
+        ApplicationDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor
     )
-        : base(logger, mapper, dbContext)
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
     }
 
@@ -23,6 +24,7 @@ public class SiteService : BasicService, ISiteService
         }
 
         var site = _mapper.Map<Site>(requestDto);
+        site.CreateDate = DateTime.Now;
 
         await _dbContext.Sites.AddAsync(site);
         await _dbContext.SaveChangesAsync();
@@ -44,7 +46,13 @@ public class SiteService : BasicService, ISiteService
         var site = await _dbContext.Sites
             .FirstOrDefaultAsync(x => x.Id == requestDto.Id);
 
+        if (site is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
         _mapper.Map(requestDto, site);
+        site.ModifyDate = DateTime.Now;
 
         await _dbContext.SaveChangesAsync();
 

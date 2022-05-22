@@ -11,9 +11,10 @@ public class ComponentService : BasicService, IComponentService
         Logger logger,
         IMapper mapper,
         ApplicationDbContext dbContext,
+        IHttpContextAccessor httpContextAccessor,
         IConnectionMultiplexer redis
     )
-        : base(logger, mapper, dbContext)
+        : base(logger, mapper, dbContext, httpContextAccessor)
     {
         _redis = redis.GetDatabase((int) RedisDatabases.Component);
     }

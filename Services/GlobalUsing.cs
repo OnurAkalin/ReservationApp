@@ -12,3 +12,5 @@ global using Domain.Entities;
 global using Domain.Constants;
 global using User = Domain.Entities.User;
 global using Role = Domain.Entities.Role;
+global using Microsoft.AspNetCore.Http;
+global using System.Security.Claims;

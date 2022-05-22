@@ -42,7 +42,8 @@ public class SeedDataService : ISeedDataService
             FirstName = "Admin",
             LastName = "Admin",
             SiteId = site.Id,
-            RegisterDate = DateTime.Now
+            RegisterDate = DateTime.Now,
+            CreateDate = DateTime.Now
         };
 
         await _roleManager.CreateAsync(new Role {Name = UserRoles.Admin.ToString()});
