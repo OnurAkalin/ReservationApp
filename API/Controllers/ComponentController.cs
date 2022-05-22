@@ -24,9 +24,4 @@ public class ComponentController : ControllerBase
     public async Task<IActionResult> SetLogin([FromBody] List<LoginComponentDto> requestDto)
         => Ok(await _componentService.SetLoginAsync(requestDto));
     
-    [AllowAnonymous]
-    [HttpGet]
-    [ProducesResponseType(typeof(DataResult<string>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetFonts()
-        => Ok(await _componentService.GetFontsAsync());
 }

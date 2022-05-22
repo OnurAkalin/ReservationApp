@@ -50,7 +50,7 @@ public class SeedDataService : ISeedDataService
         await _roleManager.CreateAsync(new Role {Name = UserRole.BusinessOwner.ToString()});
         await _roleManager.CreateAsync(new Role {Name = UserRole.Employee.ToString()});
         await _roleManager.CreateAsync(new Role {Name = UserRole.Customer.ToString()});
-        
+
         await _userManager.CreateAsync(user, "qwe123");
         await _userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
 

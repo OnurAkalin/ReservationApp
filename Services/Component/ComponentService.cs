@@ -59,17 +59,4 @@ public class ComponentService : BasicService, IComponentService
 
         return new SuccessDataResult<List<LoginComponentDto>>(jsonData!, UiMessages.Success);
     }
-
-    public async Task<DataResult<string>> GetFontsAsync()
-    {
-        var font = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Font));
-
-        if (font is null)
-        {
-            return new ErrorDataResult<string>(UiMessages.NotFoundData);
-        }
-        
-        return new SuccessDataResult<string>(font.Value, UiMessages.Success);
-    }
 }

@@ -18,9 +18,5 @@ public enum ComponentType
     
     // Custom
     
-    Custom = 10,
-    
-    // Google Fonts
-    
-    Font = 11
+    Custom = 10
 }
