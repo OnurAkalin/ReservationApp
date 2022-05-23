@@ -15,5 +15,6 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<IEmployeeService, EmployeeService>();
         serviceCollection.AddScoped<ISiteService, SiteService>();
         serviceCollection.AddScoped<IComponentService, ComponentService>();
+        serviceCollection.AddScoped<ICalendarService, CalendarService>();
     }
 }

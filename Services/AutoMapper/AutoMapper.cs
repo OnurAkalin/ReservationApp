@@ -28,5 +28,12 @@ public class AutoMapper : Profile
         CreateMap<SiteService, SiteServiceResponseDto>();
 
         #endregion
+
+        #region Calendar
+
+        CreateMap<CalendarRequestDto, Calendar>();
+        CreateMap<Calendar, CalendarResponseDto>();
+
+        #endregion
     }
 }
