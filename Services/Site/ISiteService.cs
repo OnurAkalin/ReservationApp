@@ -2,9 +2,15 @@
 
 public interface ISiteService
 {
-    Task<Result> InsertAsync(SiteRequestDto requestDto);
-    Task<Result> UpdateAsync(SiteRequestDto requestDto);
-    Task<DataResult<List<SiteResponseDto>>> ListAsync();
-    Task<DataResult<SiteResponseDto>> GetAsync(int id);
-    Task<Result> DeleteAsync(int id);
+    Task<Result> InsertSiteAsync(SiteRequestDto requestDto);
+    Task<Result> UpdateSiteAsync(SiteRequestDto requestDto);
+    Task<DataResult<List<SiteResponseDto>>> ListSiteAsync();
+    Task<DataResult<SiteResponseDto>> GetSiteAsync(int id);
+    Task<Result> DeleteSiteAsync(int id);
+    
+    Task<Result> InsertSiteServiceAsync(SiteServiceRequestDto requestDto);
+    Task<Result> UpdateSiteServiceAsync(SiteServiceRequestDto requestDto);
+    Task<DataResult<List<SiteServiceResponseDto>>> ListSiteServiceAsync();
+    Task<DataResult<SiteServiceResponseDto>> GetSiteServiceAsync(int id);
+    Task<Result> DeleteSiteServiceAsync(int id);
 }

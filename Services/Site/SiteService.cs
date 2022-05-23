@@ -13,7 +13,9 @@ public class SiteService : BasicService, ISiteService
     {
     }
 
-    public async Task<Result> InsertAsync(SiteRequestDto requestDto)
+    #region Site
+
+    public async Task<Result> InsertSiteAsync(SiteRequestDto requestDto)
     {
         var checkCodeExists = await _dbContext.Sites
             .AnyAsync(x => x.Code.Equals(requestDto.Code));
@@ -25,6 +27,7 @@ public class SiteService : BasicService, ISiteService
 
         var site = _mapper.Map<Site>(requestDto);
         site.CreateDate = DateTime.Now;
+        site.CreateUser = _currentUserId;
 
         await _dbContext.Sites.AddAsync(site);
         await _dbContext.SaveChangesAsync();
@@ -32,7 +35,7 @@ public class SiteService : BasicService, ISiteService
         return new SuccessResult(UiMessages.Success);
     }
 
-    public async Task<Result> UpdateAsync(SiteRequestDto requestDto)
+    public async Task<Result> UpdateSiteAsync(SiteRequestDto requestDto)
     {
         var checkCodeExists = await _dbContext.Sites
             .AnyAsync(x => x.Code.Equals(requestDto.Code)
@@ -59,7 +62,7 @@ public class SiteService : BasicService, ISiteService
         return new SuccessResult(UiMessages.Success);
     }
 
-    public async Task<DataResult<List<SiteResponseDto>>> ListAsync()
+    public async Task<DataResult<List<SiteResponseDto>>> ListSiteAsync()
     {
         var sites = await _dbContext.Sites
             .AsNoTracking()
@@ -70,7 +73,7 @@ public class SiteService : BasicService, ISiteService
         return new SuccessDataResult<List<SiteResponseDto>>(mappedData, UiMessages.Success);
     }
 
-    public async Task<DataResult<SiteResponseDto>> GetAsync(int id)
+    public async Task<DataResult<SiteResponseDto>> GetSiteAsync(int id)
     {
         var site = await _dbContext.Sites
             .AsNoTracking()
@@ -86,7 +89,7 @@ public class SiteService : BasicService, ISiteService
         return new SuccessDataResult<SiteResponseDto>(mappedData, UiMessages.Success);
     }
 
-    public async Task<Result> DeleteAsync(int id)
+    public async Task<Result> DeleteSiteAsync(int id)
     {
         var site = await _dbContext.Sites
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
@@ -101,4 +104,97 @@ public class SiteService : BasicService, ISiteService
 
         return new SuccessResult(UiMessages.Success);
     }
+
+    #endregion
+
+    #region Site Service
+
+    public async Task<Result> InsertSiteServiceAsync(SiteServiceRequestDto requestDto)
+    {
+        var siteService = _mapper.Map<Domain.Entities.SiteService>(requestDto);
+        siteService.SiteId = _currentSiteId;
+        siteService.CreateDate = DateTime.Now;
+        siteService.CreateUser = _currentUserId;
+
+        await _dbContext.SiteServices.AddAsync(siteService);
+        var result = await _dbContext.SaveChangesAsync();
+
+        if (result > 0)
+        {
+            return new SuccessResult(UiMessages.Success);
+        }
+
+        return new ErrorResult(UiMessages.Error);
+    }
+
+    public async Task<Result> UpdateSiteServiceAsync(SiteServiceRequestDto requestDto)
+    {
+        var siteService = await _dbContext.SiteServices
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
+
+        if (siteService is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _mapper.Map(requestDto, siteService);
+        siteService.ModifyDate = DateTime.Now;
+        siteService.ModifyUser = _currentUserId;
+
+        var result = await _dbContext.SaveChangesAsync();
+
+        if (result > 0)
+        {
+            return new SuccessResult(UiMessages.Success);
+        }
+
+        return new ErrorResult(UiMessages.Error);
+    }
+
+    public async Task<DataResult<List<SiteServiceResponseDto>>> ListSiteServiceAsync()
+    {
+        var siteServices = await _dbContext.SiteServices
+            .AsNoTracking()
+            .Where(x => x.SiteId.Equals(_currentSiteId))
+            .ToListAsync();
+
+        var mappedData = _mapper.Map<List<SiteServiceResponseDto>>(siteServices);
+
+        return new SuccessDataResult<List<SiteServiceResponseDto>>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<DataResult<SiteServiceResponseDto>> GetSiteServiceAsync(int id)
+    {
+        var siteService = await _dbContext.SiteServices
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteService is null)
+        {
+            return new ErrorDataResult<SiteServiceResponseDto>(UiMessages.NotFoundData);
+        }
+
+        var mappedData = _mapper.Map<SiteServiceResponseDto>(siteService);
+
+        return new SuccessDataResult<SiteServiceResponseDto>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<Result> DeleteSiteServiceAsync(int id)
+    {
+        var siteService = await _dbContext.SiteServices
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteService is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _dbContext.SiteServices.Remove(siteService);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    #endregion
+    
 }

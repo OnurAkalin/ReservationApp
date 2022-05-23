@@ -15,29 +15,29 @@ public class SiteController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Insert(SiteRequestDto requestDto)
-        => Ok(await _siteService.InsertAsync(requestDto));
+        => Ok(await _siteService.InsertSiteAsync(requestDto));
 
 
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(SiteRequestDto requestDto)
-        => Ok(await _siteService.UpdateAsync(requestDto));
+        => Ok(await _siteService.UpdateSiteAsync(requestDto));
 
 
     [HttpPost]
     [ProducesResponseType(typeof(DataResult<SiteResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int id)
-        => Ok(await _siteService.GetAsync(id));
+        => Ok(await _siteService.GetSiteAsync(id));
 
 
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<SiteResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
-        => Ok(await _siteService.ListAsync());
+        => Ok(await _siteService.ListSiteAsync());
 
 
     [HttpDelete]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete([FromQuery] int id)
-        => Ok(await _siteService.DeleteAsync(id));
+        => Ok(await _siteService.DeleteSiteAsync(id));
 }

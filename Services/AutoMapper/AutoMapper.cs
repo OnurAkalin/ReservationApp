@@ -23,6 +23,9 @@ public class AutoMapper : Profile
 
         CreateMap<SiteRequestDto, Site>();
         CreateMap<Site, SiteResponseDto>();
+        
+        CreateMap<SiteServiceRequestDto, SiteService>();
+        CreateMap<SiteService, SiteServiceResponseDto>();
 
         #endregion
     }
