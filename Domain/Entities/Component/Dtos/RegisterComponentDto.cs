@@ -11,4 +11,6 @@ public class RegisterComponentDto
     public string Width { get; set; }
     public string Height { get; set; }
     public string BackgroundImage { get; set; }
+    public string Color { get; set; }
+    public string BorderColor { get; set; }
 }

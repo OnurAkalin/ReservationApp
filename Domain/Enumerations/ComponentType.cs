@@ -8,7 +8,7 @@ public enum ComponentType
     Calendar = 3,
     WebPages = 4,
     Widgets = 5,
-    
+
     // Layouts
     
     AuthLayout = 6,
@@ -18,5 +18,12 @@ public enum ComponentType
     
     // Custom
     
-    Custom = 10
+    Custom = 10,
+    
+    // Configuration
+    
+    CalendarConfiguration = 11,
+    
+    // Theme
+    CalendarTheme = 12
 }
