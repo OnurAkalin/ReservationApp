@@ -28,10 +28,29 @@ public class SeedDataService : ISeedDataService
         var site = new Site
         {
             CreateDate = DateTime.Now,
-            Code = "ADMIN"
+            Code = "ADMIN",
+            PhoneNumber = "ADMIN",
+            Email = "ADMIN",
+            Description = "ADMIN",
+            Address = "ADMIN",
         };
 
         await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+
+        var siteService = new Domain.Entities.SiteService
+        {
+            SiteId = site.Id,
+            CreateDate = DateTime.Now,
+            Name = "Test Hizmeti",
+            Description = "Test Hizmeti Açıklama",
+            Duration = 30,
+            BreakAfter = true,
+            BreakAfterDuration = 10,
+            Price = 10
+        };
+        
+        await _dbContext.SiteServices.AddAsync(siteService);
         await _dbContext.SaveChangesAsync();
 
         var user = new User

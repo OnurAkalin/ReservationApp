@@ -31,6 +31,7 @@ public class SiteController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<SiteResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
         => Ok(await _siteService.ListSiteAsync());
