@@ -1,8 +1,6 @@
-﻿using Domain.Enumerations;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public class ReservationRequestDto
+public class ReservationMainDto
 {
     public int? Id { get; set; }
     public DateTime Start { get; set; }

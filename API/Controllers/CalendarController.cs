@@ -14,24 +14,24 @@ public class CalendarController : ControllerBase
     
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Insert(ReservationRequestDto requestDto)
+    public async Task<IActionResult> Insert(ReservationMainDto requestDto)
         => Ok(await _reservationService.InsertAsync(requestDto));
 
 
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Update(ReservationRequestDto requestDto)
+    public async Task<IActionResult> Update(ReservationMainDto requestDto)
         => Ok(await _reservationService.UpdateAsync(requestDto));
 
 
     [HttpPost]
-    [ProducesResponseType(typeof(DataResult<ReservationResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DataResult<ReservationMainDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int id)
         => Ok(await _reservationService.GetAsync(id));
 
 
     [HttpGet]
-    [ProducesResponseType(typeof(DataResult<List<ReservationResponseDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DataResult<List<ReservationMainDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
         => Ok(await _reservationService.ListAsync());
 
