@@ -15,7 +15,7 @@ public class SiteService : EntityBaseSiteWithAudit<int>, IEntity
     public int Price { get; set; } // Optional
 
     // RELATIONS //
-    public List<Calendar> Calendars { get; set; }
+    public List<Reservation> Calendars { get; set; }
     public List<SiteServiceDay> SiteServiceDays { get; set; }
     public List<SiteServiceImage> SiteServiceImages { get; set; }
 }

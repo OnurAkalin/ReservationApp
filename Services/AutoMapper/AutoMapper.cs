@@ -29,10 +29,10 @@ public class AutoMapper : Profile
 
         #endregion
 
-        #region Calendar
+        #region Reservation
 
-        CreateMap<CalendarRequestDto, Calendar>();
-        CreateMap<Calendar, CalendarResponseDto>();
+        CreateMap<ReservationRequestDto, Reservation>();
+        CreateMap<Reservation, ReservationResponseDto>();
 
         #endregion
     }

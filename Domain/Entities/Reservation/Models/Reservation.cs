@@ -4,16 +4,15 @@ using Domain.Enumerations;
 
 namespace Domain.Entities;
 
-public class Calendar : EntityBaseSiteWithAudit<int>, IEntity
+public class Reservation : EntityBaseSiteWithAudit<int>, IEntity
 {
-    public Day? Day { get; set; } // This property may helpful for FE.
-    public DateTime StartTime { get; set; }
-    public DateTime EndTime { get; set; }
-        
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
+
     public string UserMessage { get; set; } // User message or note for reservation.
 
     // FOREIGN KEYS //
-        
+    
     [ForeignKey("SiteService")] public int SiteServiceId { get; set; }
     public SiteService SiteService { get; set; }
 

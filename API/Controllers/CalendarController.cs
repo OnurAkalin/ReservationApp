@@ -5,39 +5,39 @@
 [Route("api/[controller]/[action]")]
 public class CalendarController : ControllerBase
 {
-    private readonly ICalendarService _calendarService;
+    private readonly IReservationService _reservationService;
 
-    public CalendarController(ICalendarService calendarService)
+    public CalendarController(IReservationService reservationService)
     {
-        _calendarService = calendarService;
+        _reservationService = reservationService;
     }
     
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Insert(CalendarRequestDto requestDto)
-        => Ok(await _calendarService.InsertAsync(requestDto));
+    public async Task<IActionResult> Insert(ReservationRequestDto requestDto)
+        => Ok(await _reservationService.InsertAsync(requestDto));
 
 
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Update(CalendarRequestDto requestDto)
-        => Ok(await _calendarService.UpdateAsync(requestDto));
+    public async Task<IActionResult> Update(ReservationRequestDto requestDto)
+        => Ok(await _reservationService.UpdateAsync(requestDto));
 
 
     [HttpPost]
-    [ProducesResponseType(typeof(DataResult<CalendarResponseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DataResult<ReservationResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int id)
-        => Ok(await _calendarService.GetAsync(id));
+        => Ok(await _reservationService.GetAsync(id));
 
 
     [HttpGet]
-    [ProducesResponseType(typeof(DataResult<List<CalendarResponseDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DataResult<List<ReservationResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()
-        => Ok(await _calendarService.ListAsync());
+        => Ok(await _reservationService.ListAsync());
 
 
     [HttpDelete]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete([FromQuery] int id)
-        => Ok(await _calendarService.DeleteAsync(id));
+        => Ok(await _reservationService.DeleteAsync(id));
 }

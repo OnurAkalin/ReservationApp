@@ -31,7 +31,7 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<Component> Components { get; set; }
 
-    public DbSet<Calendar> Calendars { get; set; }
+    public DbSet<Reservation> Reservations { get; set; }
 
     public DbSet<Image> Images { get; set; }
     public DbSet<SiteImage> SiteImages { get; set; }

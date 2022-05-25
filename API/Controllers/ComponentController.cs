@@ -14,83 +14,83 @@ public class ComponentController : ControllerBase
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<LoginComponentDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetLogin()
+    public async Task<IActionResult> Login()
         => Ok(await _componentService.GetLoginAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetLogin([FromBody] List<LoginComponentDto> requestDto)
+    public async Task<IActionResult> Login([FromBody] List<LoginComponentDto> requestDto)
         => Ok(await _componentService.SetLoginAsync(requestDto));
 
 
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<RegisterComponentDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetRegister()
+    public async Task<IActionResult> Register()
         => Ok(await _componentService.GetRegisterAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetRegister([FromBody] List<RegisterComponentDto> requestDto)
+    public async Task<IActionResult> Register([FromBody] List<RegisterComponentDto> requestDto)
         => Ok(await _componentService.SetRegisterAsync(requestDto));
     
     
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<AuthLayoutDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAuthLayout()
+    public async Task<IActionResult> AuthLayout()
         => Ok(await _componentService.GetAuthLayoutAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetAuthLayout([FromBody] List<AuthLayoutDto> requestDto)
+    public async Task<IActionResult> AuthLayout([FromBody] List<AuthLayoutDto> requestDto)
         => Ok(await _componentService.SetAuthLayoutAsync(requestDto));
     
     
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CalendarConfigurationDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCalendarConfiguration()
+    public async Task<IActionResult> CalendarConfiguration()
         => Ok(await _componentService.GetCalendarConfigurationAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetCalendarConfiguration([FromBody] List<CalendarConfigurationDto> requestDto)
+    public async Task<IActionResult> CalendarConfiguration([FromBody] List<CalendarConfigurationDto> requestDto)
         => Ok(await _componentService.SetCalendarConfigurationAsync(requestDto));
     
     
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CalendarThemeDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCalendarTheme()
+    public async Task<IActionResult> CalendarTheme()
         => Ok(await _componentService.GetCalendarThemeAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetCalendarTheme([FromBody] List<CalendarThemeDto> requestDto)
+    public async Task<IActionResult> CalendarTheme([FromBody] List<CalendarThemeDto> requestDto)
         => Ok(await _componentService.SetCalendarThemeAsync(requestDto));
     
     
     [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CustomDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetCustom()
+    public async Task<IActionResult> Custom()
         => Ok(await _componentService.GetCustomAsync());
 
 
     [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> SetCustom([FromBody] List<CustomDto> requestDto)
+    public async Task<IActionResult> Custom([FromBody] List<CustomDto> requestDto)
         => Ok(await _componentService.SetCustomAsync(requestDto));
 }
