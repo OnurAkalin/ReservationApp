@@ -28,11 +28,11 @@ public class SeedDataService : ISeedDataService
         var site = new Site
         {
             CreateDate = DateTime.Now,
-            Code = "ADMIN",
-            PhoneNumber = "ADMIN",
-            Email = "ADMIN",
-            Description = "ADMIN",
-            Address = "ADMIN",
+            Code = "Admin",
+            PhoneNumber = "Admin",
+            Email = "Admin",
+            Description = "Admin",
+            Address = "Admin",
         };
 
         await _dbContext.Sites.AddAsync(site);
