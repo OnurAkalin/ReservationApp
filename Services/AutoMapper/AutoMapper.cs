@@ -38,7 +38,6 @@ public class AutoMapper : Profile
             .ForMember(x => x.Deletable, y => y.MapFrom(z => z.Actions.Deletable))
             .ForMember(x => x.UserMessage, y => y.MapFrom(z => z.Meta.UserMessage))
             .ForMember(x => x.UserId, y => y.MapFrom(z => z.Meta.UserId))
-            .ForMember(x => x.SiteId, y => y.MapFrom(z => z.Meta.SiteId))
             .ForMember(x => x.SiteServiceId, y => y.MapFrom(z => z.Meta.SiteServiceId))
             .ReverseMap();
 

@@ -3,11 +3,11 @@
 [Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class CalendarController : ControllerBase
+public class ReservationController : ControllerBase
 {
     private readonly IReservationService _reservationService;
 
-    public CalendarController(IReservationService reservationService)
+    public ReservationController(IReservationService reservationService)
     {
         _reservationService = reservationService;
     }
