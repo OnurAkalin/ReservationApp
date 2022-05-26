@@ -3,6 +3,7 @@
 public static class UiMessages
 {
     public const string UnknownError = "Bilinmeyen bir hata oluştu. Lütfen tekrar deneyiniz.";
+    public const string SeedDataError = "İçeride zaten data mevcut.";
     public const string Success = "İşlem başarıyla gerçekleşti.";
     public const string Error = "İşlem başarısız oldu.";
     public const string NotFoundData = "Uygun veri bulunamadı.";

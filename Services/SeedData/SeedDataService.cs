@@ -1,4 +1,6 @@
-﻿namespace Services;
+﻿using Newtonsoft.Json;
+
+namespace Services;
 
 public class SeedDataService : ISeedDataService
 {
@@ -20,12 +22,23 @@ public class SeedDataService : ISeedDataService
 
     public async Task<Result> SeedBaseData()
     {
+        var adminSite = (await SeedAdminSite()).Data;
+        await SeedRoles();
+        await SeedAdminUser(adminSite);
+        await SeedLoginComponent();
+
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    private async Task<DataResult<Site>> SeedAdminSite()
+    {
         if (await _dbContext.Sites.AnyAsync())
         {
-            return new ErrorResult(UiMessages.Error);
+            return new ErrorDataResult<Site>(UiMessages.SeedDataError);
         }
 
-        var site = new Site
+        var adminSite = new Site
         {
             CreateDate = DateTime.Now,
             Code = "Admin",
@@ -35,44 +48,93 @@ public class SeedDataService : ISeedDataService
             Address = "Admin",
         };
 
-        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.Sites.AddAsync(adminSite);
         await _dbContext.SaveChangesAsync();
 
-        var siteService = new Domain.Entities.SiteService
-        {
-            SiteId = site.Id,
-            CreateDate = DateTime.Now,
-            Name = "Test Hizmeti",
-            Description = "Test Hizmeti Açıklama",
-            Duration = 30,
-            BreakAfter = true,
-            BreakAfterDuration = 10,
-            Price = 10
-        };
-        
-        await _dbContext.SiteServices.AddAsync(siteService);
-        await _dbContext.SaveChangesAsync();
+        return new SuccessDataResult<Site>(adminSite);
+    }
 
-        var user = new User
-        {
-            UserName = site.Code + "_" + "admin@admin.com",
-            Email = "admin@admin.com",
-            PhoneNumber = "0000000000",
-            FirstName = "Admin",
-            LastName = "Admin",
-            SiteId = site.Id,
-            RegisterDate = DateTime.Now,
-            CreateDate = DateTime.Now
-        };
-
+    private async Task SeedRoles()
+    {
         await _roleManager.CreateAsync(new Role {Name = UserRole.Admin.ToString()});
         await _roleManager.CreateAsync(new Role {Name = UserRole.BusinessOwner.ToString()});
         await _roleManager.CreateAsync(new Role {Name = UserRole.Employee.ToString()});
         await _roleManager.CreateAsync(new Role {Name = UserRole.Customer.ToString()});
+    }
+
+    private async Task SeedAdminUser(Site adminSite)
+    {
+        var user = new User
+        {
+            UserName = adminSite.Code + "_" + "admin@admin.com",
+            Email = "admin@admin.com",
+            PhoneNumber = "0000000000",
+            FirstName = "Admin",
+            LastName = "Admin",
+            SiteId = adminSite.Id,
+            RegisterDate = DateTime.Now,
+            CreateDate = DateTime.Now
+        };
 
         await _userManager.CreateAsync(user, "qwe123");
         await _userManager.AddToRoleAsync(user, UserRole.Admin.ToString());
+    }
 
-        return new SuccessResult(UiMessages.Success);
+    private async Task SeedLoginComponent()
+    {
+        var componentList = new List<LoginComponentDto>
+        {
+            new()
+            {
+                Id = "1",
+                Name = "Login Container",
+                BackgroundColor = "",
+                Font = "",
+                Margin = "",
+                Padding = "",
+                Width = "",
+                Height = "",
+                BackgroundImage = "",
+                Color = "",
+                BorderColor = ""
+            },
+            new()
+            {
+                Id = "2",
+                Name = "Login Button",
+                BackgroundColor = "",
+                Font = "",
+                Margin = "",
+                Padding = "",
+                Width = "",
+                Height = "",
+                BackgroundImage = "",
+                Color = "",
+                BorderColor = ""
+            },
+            new()
+            {
+                Id = "3",
+                Name = "Login Forms",
+                BackgroundColor = "",
+                Font = "",
+                Margin = "",
+                Padding = "",
+                Width = "",
+                Height = "",
+                BackgroundImage = "",
+                Color = "",
+                BorderColor = ""
+            }
+        };
+
+        var loginComponent = new Component
+        {
+            Type = ComponentType.Login,
+            Value = JsonConvert.SerializeObject(componentList)
+        };
+
+        await _dbContext.Components.AddAsync(loginComponent);
+        await _dbContext.SaveChangesAsync();
     }
 }

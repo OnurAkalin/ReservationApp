@@ -24,7 +24,7 @@ public class ReservationController : ControllerBase
         => Ok(await _reservationService.UpdateAsync(requestDto));
 
 
-    [HttpPost]
+    [HttpGet]
     [ProducesResponseType(typeof(DataResult<ReservationMainDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get([FromQuery] int id)
         => Ok(await _reservationService.GetAsync(id));
