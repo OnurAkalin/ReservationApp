@@ -173,44 +173,6 @@ public class ComponentService : BasicService, IComponentService
         return new SuccessDataResult<List<CalendarConfigurationDto>>(jsonData!, UiMessages.Success);
     }
 
-    public async Task<Result> SetCalendarThemeAsync(List<CalendarThemeDto> requestDto)
-    {
-        var currentCalendarThemeComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarTheme));
-
-        if (currentCalendarThemeComponent is not null)
-        {
-            _dbContext.Components.Remove(currentCalendarThemeComponent);
-        }
-
-        var calendarThemeComponent = new Component
-        {
-            Type = ComponentType.CalendarTheme,
-            Value = JsonConvert.SerializeObject(requestDto)
-        };
-
-        await _dbContext.Components.AddAsync(calendarThemeComponent);
-        await _dbContext.SaveChangesAsync();
-
-        return new SuccessResult(UiMessages.Success);
-    }
-
-    public async Task<DataResult<List<CalendarThemeDto>>> GetCalendarThemeAsync()
-    {
-        var calendarThemeComponent = await _dbContext.Components
-            .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarTheme));
-
-        if (calendarThemeComponent is null)
-        {
-            return new ErrorDataResult<List<CalendarThemeDto>>(UiMessages.NotFoundData);
-        }
-
-        var jsonData = JsonConvert.DeserializeObject<List<CalendarThemeDto>>(calendarThemeComponent.Value);
-
-        return new SuccessDataResult<List<CalendarThemeDto>>(jsonData!, UiMessages.Success);
-    }
-
     public async Task<Result> SetCustomAsync(List<CustomDto> requestDto)
     {
         var currentCustomComponent = await _dbContext.Components
@@ -247,5 +209,43 @@ public class ComponentService : BasicService, IComponentService
         var jsonData = JsonConvert.DeserializeObject<List<CustomDto>>(customComponent.Value);
 
         return new SuccessDataResult<List<CustomDto>>(jsonData!, UiMessages.Success);
+    }
+
+    public async Task<Result> SetWebPageAsync(List<WebPageDto> requestDto)
+    {
+        var currentWebPageComponent = await _dbContext.Components
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage));
+
+        if (currentWebPageComponent is not null)
+        {
+            _dbContext.Components.Remove(currentWebPageComponent);
+        }
+
+        var webPageComponent = new Component
+        {
+            Type = ComponentType.WebPage,
+            Value = JsonConvert.SerializeObject(requestDto)
+        };
+
+        await _dbContext.Components.AddAsync(webPageComponent);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<WebPageDto>>> GetWebPageAsync()
+    {
+        var webPageComponent = await _dbContext.Components
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage));
+
+        if (webPageComponent is null)
+        {
+            return new ErrorDataResult<List<WebPageDto>>(UiMessages.NotFoundData);
+        }
+
+        var jsonData = JsonConvert.DeserializeObject<List<WebPageDto>>(webPageComponent.Value);
+
+        return new SuccessDataResult<List<WebPageDto>>(jsonData!, UiMessages.Success);
     }
 }

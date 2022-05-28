@@ -1,4 +1,5 @@
 using Core.Entities;
+using Domain.Enumerations;
 
 namespace Domain.Entities;
 
@@ -13,6 +14,7 @@ public class SiteService : EntityBaseSiteWithAudit<int>, IEntity
     public int? BreakAfterDuration { get; set; } // If BreakAfter property is true. This field keeps break time duration in minute
 
     public int? Price { get; set; } // Optional
+    public Currency? Currency { get; set; }
 
     // RELATIONS //
     public List<Reservation> Reservations { get; set; }

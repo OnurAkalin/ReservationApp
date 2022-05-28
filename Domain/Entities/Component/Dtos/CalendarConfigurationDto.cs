@@ -7,14 +7,6 @@ public class CalendarConfigurationDto
     public int HourSegmentHeight { get; set; }
     public string Precision { get; set; }
     public string Locale { get; set; }
-    public string MonthViewColumnHeader { get; set; }
-    public string MonthViewDayNumber { get; set; }
-    public string MonthViewTitle { get; set; }
-    public string WeekViewColumnHeader { get; set; }
-    public string WeekViewColumnSubHeader { get; set; }
-    public string WeekViewHour { get; set; }
-    public string DayViewHour { get; set; }
-    public string DayViewTitle { get; set; }
     public List<int> ExcludeDays { get; set; }
     public List<int> WeekendDays { get; set; }
     public CalendarConfigThemeDto Theme { get; set; }

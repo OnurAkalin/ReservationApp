@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Enumerations;
+
+namespace Domain.Entities;
 
 public class SiteServiceRequestDto
 {
@@ -8,5 +10,6 @@ public class SiteServiceRequestDto
     public DateTime Duration { get; set; }
     public bool BreakAfter { get; set; }
     public DateTime? BreakAfterDuration { get; set; }
-    public int Price { get; set; }
+    public int? Price { get; set; }
+    public Currency? Currency { get; set; }
 }

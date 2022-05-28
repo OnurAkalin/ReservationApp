@@ -6,7 +6,7 @@ public enum ComponentType
     Login = 1,
     Register = 2,
     Calendar = 3,
-    WebPages = 4,
+    WebPage = 4,
     Widgets = 5,
 
     // Layouts

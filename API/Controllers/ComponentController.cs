@@ -69,20 +69,6 @@ public class ComponentController : ControllerBase
     
     [AllowAnonymous]
     [HttpGet]
-    [ProducesResponseType(typeof(DataResult<List<CalendarThemeDto>>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CalendarTheme()
-        => Ok(await _componentService.GetCalendarThemeAsync());
-
-
-    [AllowAnonymous]
-    [HttpPut]
-    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CalendarTheme([FromBody] List<CalendarThemeDto> requestDto)
-        => Ok(await _componentService.SetCalendarThemeAsync(requestDto));
-    
-    
-    [AllowAnonymous]
-    [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CustomDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Custom()
         => Ok(await _componentService.GetCustomAsync());
@@ -93,4 +79,18 @@ public class ComponentController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Custom([FromBody] List<CustomDto> requestDto)
         => Ok(await _componentService.SetCustomAsync(requestDto));
+    
+    
+    [AllowAnonymous]
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<WebPageDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> WebPage()
+        => Ok(await _componentService.GetWebPageAsync());
+
+
+    [AllowAnonymous]
+    [HttpPut]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    public async Task<IActionResult> WebPage([FromBody] List<WebPageDto> requestDto)
+        => Ok(await _componentService.SetWebPageAsync(requestDto));
 }

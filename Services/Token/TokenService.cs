@@ -34,7 +34,7 @@ public class TokenService : ITokenService
 
         var securityKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey);
         var credentials = SigningCredentialsHelper.CreateSigningCredentials(securityKey);
-        var expireDate = DateTime.Now.AddMinutes(tokenOptions.AccessTokenExpiration);
+        var expireDate = DateTime.Now.AddDays(tokenOptions.AccessTokenExpiration);
 
         var tokenTemplate = new JwtSecurityToken
         (

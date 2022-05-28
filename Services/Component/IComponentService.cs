@@ -10,8 +10,8 @@ public interface IComponentService
     Task<DataResult<List<AuthLayoutDto>>> GetAuthLayoutAsync();
     Task<Result> SetCalendarConfigurationAsync(List<CalendarConfigurationDto> requestDto);
     Task<DataResult<List<CalendarConfigurationDto>>> GetCalendarConfigurationAsync();
-    Task<Result> SetCalendarThemeAsync(List<CalendarThemeDto> requestDto);
-    Task<DataResult<List<CalendarThemeDto>>> GetCalendarThemeAsync();
     Task<Result> SetCustomAsync(List<CustomDto> requestDto);
     Task<DataResult<List<CustomDto>>> GetCustomAsync();
+    Task<Result> SetWebPageAsync(List<WebPageDto> requestDto);
+    Task<DataResult<List<WebPageDto>>> GetWebPageAsync();
 }
