@@ -1,8 +1,6 @@
-﻿using Core.Entities;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public class Image : EntityBase<int>, IEntity
+public class Image : EntityBase<int>
 {
     public byte[] ImageContent { get; set; }
 }

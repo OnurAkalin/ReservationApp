@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class UserRequestDto
+public class UserRequestDto : IDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; }

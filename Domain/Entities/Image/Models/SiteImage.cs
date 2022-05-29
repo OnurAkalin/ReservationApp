@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Core.Entities;
 
 namespace Domain.Entities;
 
-public class SiteImage : EntityBase<int>,  IEntity
+public class SiteImage : EntityBase<int>
 {
     [ForeignKey("Site")] public int SiteId { get; set; }
     public Site Site { get; set; }

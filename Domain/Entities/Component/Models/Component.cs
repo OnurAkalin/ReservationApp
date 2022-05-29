@@ -1,6 +1,4 @@
-﻿using Domain.Enumerations;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 
 public class Component : EntityBase<int>
 {

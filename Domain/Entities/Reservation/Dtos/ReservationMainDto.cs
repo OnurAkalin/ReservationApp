@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class ReservationMainDto
+public class ReservationMainDto : IDto
 {
     public int? Id { get; set; }
     public DateTime Start { get; set; }

@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using Domain.Enumerations;
 
 namespace Domain.Entities;
 

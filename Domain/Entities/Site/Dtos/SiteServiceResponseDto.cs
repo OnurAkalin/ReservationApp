@@ -1,8 +1,6 @@
-﻿using Domain.Enumerations;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities;
-
-public class SiteServiceResponseDto
+public class SiteServiceResponseDto : IDto
 {
     public string Name { get; set; }
     public string Description { get; set; }

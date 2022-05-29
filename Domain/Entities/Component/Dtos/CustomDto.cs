@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class CustomDto
+public class CustomDto : IDto
 {
     public string Id { get; set; }
     public string Name { get; set; }

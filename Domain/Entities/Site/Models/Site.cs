@@ -1,5 +1,3 @@
-using Core.Entities;
-
 namespace Domain.Entities;
 
 public class Site : EntityBaseWithAudit<int>, IEntity

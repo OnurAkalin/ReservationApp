@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class LoginComponentDto
+public class LoginComponentDto : IDto
 {
     public string Id { get; set; }
     public string Name { get; set; }

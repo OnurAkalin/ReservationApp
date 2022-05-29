@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class CalendarConfigurationDto
+public class CalendarConfigurationDto : IDto
 {
     public string Id { get; set; }
     public int HourDuration { get; set; }
@@ -17,7 +17,7 @@ public class CalendarConfigurationDto
     public string Font { get; set; }
 }
 
-public class CalendarConfigThemeDto
+public class CalendarConfigThemeDto : IDto
 {
     public string Name { get; set; }
     public string Primary { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class SiteRequestDto
+public class SiteRequestDto : IDto
 {
     public int? Id { get; set; }
     public string Code { get; set; }

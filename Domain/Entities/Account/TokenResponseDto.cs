@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class TokenResponseDto
+public class TokenResponseDto : IDto
 {
     public string Token { get; set; }
     public DateTime Expiration { get; set; }

@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class ChangeEmailRequestDto
+public class ChangeEmailRequestDto : IDto
 {
     public int Id { get; set; }
     public string Email { get; set; }

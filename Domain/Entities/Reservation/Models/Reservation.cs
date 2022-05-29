@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Core.Entities;
 
 namespace Domain.Entities;
 
-public class Reservation : EntityBaseSiteWithAudit<int>, IEntity
+public class Reservation : EntityBaseSiteWithAudit<int>
 {
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
