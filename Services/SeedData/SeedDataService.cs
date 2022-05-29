@@ -56,10 +56,10 @@ public class SeedDataService : ISeedDataService
 
     private async Task SeedRoles()
     {
-        await _roleManager.CreateAsync(new Role {Name = UserRole.Admin});
-        await _roleManager.CreateAsync(new Role {Name = UserRole.BusinessOwner});
-        await _roleManager.CreateAsync(new Role {Name = UserRole.Employee});
-        await _roleManager.CreateAsync(new Role {Name = UserRole.Customer});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Admin});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.BusinessOwner});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Employee});
+        await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer});
     }
 
     private async Task SeedAdminUser(Site adminSite)
@@ -77,7 +77,7 @@ public class SeedDataService : ISeedDataService
         };
 
         await _userManager.CreateAsync(user, "qwe123");
-        await _userManager.AddToRoleAsync(user, UserRole.Admin);
+        await _userManager.AddToRoleAsync(user, UserRoles.Admin);
     }
 
     private async Task SeedLoginComponent()

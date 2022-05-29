@@ -22,8 +22,5 @@ public enum ComponentType
     
     // Configuration
     
-    CalendarConfiguration = 11,
-    
-    // Theme
-    CalendarTheme = 12
+    CalendarConfiguration = 11
 }

@@ -1,6 +1,6 @@
 ﻿namespace Domain.Constants;
 
-public static class UserRole
+public static class UserRoles
 {
     public const string Admin = "Admin";
     public const string BusinessOwner = "BusinessOwner";

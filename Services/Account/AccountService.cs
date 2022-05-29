@@ -57,7 +57,7 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
-        await _userManager.AddToRoleAsync(user, UserRole.Customer);
+        await _userManager.AddToRoleAsync(user, UserRoles.Customer);
         
         return new SuccessResult(UiMessages.Success);
     }
