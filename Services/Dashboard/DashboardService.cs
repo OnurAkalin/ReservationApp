@@ -2,7 +2,7 @@
 
 public class DashboardService : BasicService, IDashboardService
 {
-    protected DashboardService
+    public DashboardService
     (
         Logger logger,
         IMapper mapper,
