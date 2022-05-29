@@ -13,7 +13,7 @@ public class ReservationService : BasicService, IReservationService
     {
     }
 
-    public async Task<Result> InsertAsync(ReservationMainDto requestDto)
+    public async Task<Result> InsertAsync(ReservationRequestDto requestDto)
     {
         var reservation = _mapper.Map<Reservation>(requestDto);
         reservation.CreateDate = DateTime.Now;
@@ -22,17 +22,14 @@ public class ReservationService : BasicService, IReservationService
         reservation.UserId = requestDto.Meta.UserId ?? _currentUserId;
 
         await _dbContext.Reservations.AddAsync(reservation);
-        var result = await _dbContext.SaveChangesAsync();
+        var affectedRowCount = await _dbContext.SaveChangesAsync();
 
-        if (result > 0)
-        {
-            return new SuccessResult(UiMessages.Success);
-        }
-
-        return new ErrorResult(UiMessages.Error);
+        return affectedRowCount > 0 
+            ?  new SuccessResult(UiMessages.Success) 
+            :  new ErrorResult(UiMessages.Error);
     }
 
-    public async Task<Result> UpdateAsync(ReservationMainDto requestDto)
+    public async Task<Result> UpdateAsync(ReservationRequestDto requestDto)
     {
         var reservation = await _dbContext.Reservations
             .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
@@ -43,43 +40,43 @@ public class ReservationService : BasicService, IReservationService
         }
 
         _mapper.Map(requestDto, reservation);
+        var affectedRowCount = await _dbContext.SaveChangesAsync();
 
-        var result = await _dbContext.SaveChangesAsync();
-
-        if (result > 0)
-        {
-            return new SuccessResult(UiMessages.Success);
-        }
-
-        return new ErrorResult(UiMessages.Error);
+        return affectedRowCount > 0 
+            ?  new SuccessResult(UiMessages.Success) 
+            :  new ErrorResult(UiMessages.Error);
     }
 
-    public async Task<DataResult<List<ReservationMainDto>>> ListAsync()
+    public async Task<DataResult<List<ReservationResponseDto>>> ListAsync()
     {
         var reservations = await _dbContext.Reservations
             .AsNoTracking()
+            .Include(x => x.User)
+            .Include(x => x.SiteService)
             .Where(x => x.SiteId.Equals(_currentSiteId))
             .ToListAsync();
 
-        var mappedData = _mapper.Map<List<ReservationMainDto>>(reservations);
+        var mappedData = _mapper.Map<List<ReservationResponseDto>>(reservations);
 
-        return new SuccessDataResult<List<ReservationMainDto>>(mappedData, UiMessages.Success);
+        return new SuccessDataResult<List<ReservationResponseDto>>(mappedData, UiMessages.Success);
     }
 
-    public async Task<DataResult<ReservationMainDto>> GetAsync(int id)
+    public async Task<DataResult<ReservationResponseDto>> GetAsync(int id)
     {
         var reservation = await _dbContext.Reservations
             .AsNoTracking()
+            .Include(x => x.User)
+            .Include(x => x.SiteService)
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (reservation is null)
         {
-            return new ErrorDataResult<ReservationMainDto>(UiMessages.NotFoundData);
+            return new ErrorDataResult<ReservationResponseDto>(UiMessages.NotFoundData);
         }
 
-        var mappedData = _mapper.Map<ReservationMainDto>(reservation);
+        var mappedData = _mapper.Map<ReservationResponseDto>(reservation);
 
-        return new SuccessDataResult<ReservationMainDto>(mappedData, UiMessages.Success);
+        return new SuccessDataResult<ReservationResponseDto>(mappedData, UiMessages.Success);
     }
 
     public async Task<Result> DeleteAsync(int id)

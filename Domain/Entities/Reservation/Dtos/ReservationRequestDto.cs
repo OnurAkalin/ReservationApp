@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class ReservationMainDto : IDto
+public class ReservationRequestDto : IDto
 {
     public int? Id { get; set; }
     public DateTime Start { get; set; }
@@ -11,5 +11,12 @@ public class ReservationMainDto : IDto
     public ReservationResizableDto Resizable { get; set; }
     public ReservationActionDto Actions { get; set; }
     public bool Draggable { get; set; }
-    public ReservationMetaDto Meta { get; set; }
+    public ReservationMetaRequestDto Meta { get; set; }
+}
+
+public class ReservationMetaRequestDto : IDto
+{
+    public int SiteServiceId { get; set; }
+    public int? UserId { get; set; }
+    public string UserMessage { get; set; }
 }

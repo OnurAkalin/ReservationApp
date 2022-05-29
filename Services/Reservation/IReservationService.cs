@@ -2,9 +2,9 @@
 
 public interface IReservationService
 {
-    Task<Result> InsertAsync(ReservationMainDto requestDto);
-    Task<Result> UpdateAsync(ReservationMainDto requestDto);
-    Task<DataResult<List<ReservationMainDto>>> ListAsync();
-    Task<DataResult<ReservationMainDto>> GetAsync(int id);
+    Task<Result> InsertAsync(ReservationRequestDto requestDto);
+    Task<Result> UpdateAsync(ReservationRequestDto requestDto);
+    Task<DataResult<List<ReservationResponseDto>>> ListAsync();
+    Task<DataResult<ReservationResponseDto>> GetAsync(int id);
     Task<Result> DeleteAsync(int id);
 }
