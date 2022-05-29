@@ -22,7 +22,7 @@ public class EmployeeService : BasicService, IEmployeeService
         var employees = await (from user in _dbContext.Users
             join userRole in _dbContext.UserRoles on user.Id equals userRole.UserId
             join role in _dbContext.Roles on userRole.RoleId equals role.Id
-            where role.Name.Equals(UserRole.Employee.ToString())
+            where role.Name.Equals(UserRole.Employee)
             select new EmployeeResponseDto
             {
                 Id = user.Id,
@@ -38,11 +38,11 @@ public class EmployeeService : BasicService, IEmployeeService
     public async Task<Result> InsertAsync(EmployeeRequestDto requestDto)
     {
         var site = await _dbContext.Sites
-            .FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+            .FirstOrDefaultAsync(x => x.Id.Equals(_currentSiteId));
 
         if (site is null)
         {
-            return new ErrorResult(UiMessages.InvalidSiteCode);
+            return new ErrorResult(UiMessages.UnselectedSite);
         }
 
         var userName = site.Id + "_" + requestDto.Email;
@@ -69,7 +69,7 @@ public class EmployeeService : BasicService, IEmployeeService
             return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
-        await _userManager.AddToRoleAsync(user, UserRole.Employee.ToString());
+        await _userManager.AddToRoleAsync(user, UserRole.Employee);
 
         return new SuccessResult(UiMessages.Success);
     }

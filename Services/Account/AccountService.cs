@@ -26,11 +26,11 @@ public class AccountService : BasicService, IAccountService
     public async Task<Result> RegisterAsync(RegisterRequestDto requestDto)
     {
         var site = await _dbContext.Sites
-            .FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+            .FirstOrDefaultAsync(x => x.Id.Equals(_currentSiteId));
 
         if (site is null)
         {
-            return new ErrorResult(UiMessages.InvalidSiteCode);
+            return new ErrorResult(UiMessages.UnselectedSite);
         }
 
         var userName = site.Id + "_" + requestDto.Email;
@@ -57,15 +57,25 @@ public class AccountService : BasicService, IAccountService
             return new ErrorResult(UiMessages.InvalidCredentials);
         }
 
-        await _userManager.AddToRoleAsync(user, UserRole.Customer.ToString());
+        await _userManager.AddToRoleAsync(user, UserRole.Customer);
         
         return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto)
     {
+        var site = await _dbContext.Sites
+            .FirstOrDefaultAsync(x => x.Id.Equals(_currentSiteId));
+
+        if (site is null)
+        {
+            return new ErrorDataResult<TokenResponseDto>(UiMessages.UnselectedSite);
+        }
+        
+        var userName = site.Id + "_" + requestDto.Email;
+        
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Email.Equals(requestDto.Email));
+            .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
         if (user is null)
         {
@@ -127,11 +137,11 @@ public class AccountService : BasicService, IAccountService
         }
 
         var site = await _dbContext.Sites
-            .FirstOrDefaultAsync(x => x.Code.Equals(requestDto.Code));
+            .FirstOrDefaultAsync(x => x.Id.Equals(_currentSiteId));
 
         if (site is null)
         {
-            return new ErrorResult(UiMessages.InvalidSiteCode);
+            return new ErrorResult(UiMessages.UnselectedSite);
         }
 
         var userName = site.Id + "_" + requestDto.Email;

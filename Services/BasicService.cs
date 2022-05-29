@@ -19,18 +19,11 @@ public class BasicService
         _logger = logger;
         _mapper = mapper;
         _dbContext = dbContext;
-
-
+        
         var siteId = httpContextAccessor.HttpContext?.Request.Headers["SiteId"];
-        if (!string.IsNullOrWhiteSpace(siteId))
-        {
-            _currentSiteId = int.Parse(siteId);
-        }
+        _currentSiteId = !string.IsNullOrWhiteSpace(siteId) ? int.Parse(siteId) : default;
 
         var userId = httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (!string.IsNullOrWhiteSpace(userId))
-        {
-            _currentUserId = int.Parse(userId);
-        }
+        _currentUserId = !string.IsNullOrWhiteSpace(userId) ? int.Parse(userId) : default;
     }
 }

@@ -12,4 +12,5 @@ public class SiteServiceRequestDto
     public DateTime? BreakAfterDuration { get; set; }
     public int? Price { get; set; }
     public Currency? Currency { get; set; }
+    public string Color { get; set; }
 }
