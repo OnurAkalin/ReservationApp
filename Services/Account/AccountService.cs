@@ -48,7 +48,6 @@ public class AccountService : BasicService, IAccountService
         var user = _mapper.Map<User>(requestDto);
         user.UserName = userName;
         user.CreateDate = DateTime.Now;
-        user.RegisterDate = DateTime.Now;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
 

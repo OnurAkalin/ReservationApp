@@ -8,8 +8,6 @@ public class User : IdentityUser<int>, IEntity
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public DateTime? LastLoginDate { get; set; }
-    public DateTime RegisterDate { get; set; }
-    
     public Guid? CreateUser { get; set; }
     public DateTime CreateDate { get; set; }
     public Guid? ModifyUser { get; set; }

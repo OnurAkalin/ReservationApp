@@ -64,20 +64,46 @@ public class SeedDataService : ISeedDataService
 
     private async Task SeedAdminUser(Site adminSite)
     {
-        var user = new User
+        var adminUserList = new List<User>
         {
-            UserName = adminSite.Code + "_" + "admin@admin.com",
-            Email = "admin@admin.com",
-            PhoneNumber = "0000000000",
-            FirstName = "Admin",
-            LastName = "Admin",
-            SiteId = adminSite.Id,
-            RegisterDate = DateTime.Now,
-            CreateDate = DateTime.Now
+            new()
+            {
+                UserName = adminSite.Id + "_" + "admin@admin.com",
+                Email = "admin@admin.com",
+                PhoneNumber = "0000000000",
+                FirstName = "Admin",
+                LastName = "Admin",
+                SiteId = adminSite.Id,
+                CreateDate = DateTime.Now
+            },
+            new()
+            {
+                UserName = adminSite.Id + "_" + "onur@admin.com",
+                Email = "onur@admin.com",
+                PhoneNumber = "0000000000",
+                FirstName = "Onur",
+                LastName = "Akalın",
+                SiteId = adminSite.Id,
+                CreateDate = DateTime.Now
+            },
+            new()
+            {
+                UserName = adminSite.Id + "_" + "arif@admin.com",
+                Email = "arif@admin.com",
+                PhoneNumber = "0000000000",
+                FirstName = "Ahmet Arif",
+                LastName = "Özçelik",
+                SiteId = adminSite.Id,
+                CreateDate = DateTime.Now
+            }
         };
 
-        await _userManager.CreateAsync(user, "qwe123");
-        await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+        foreach (var adminUser in adminUserList)
+        {
+            await _userManager.CreateAsync(adminUser, "qwe123");
+            await _userManager.AddToRoleAsync(adminUser, UserRoles.Admin);
+        }
+        
     }
 
     private async Task SeedLoginComponent()

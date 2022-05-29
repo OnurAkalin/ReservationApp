@@ -60,7 +60,7 @@ public class EmployeeService : BasicService, IEmployeeService
         var user = _mapper.Map<User>(requestDto);
         user.UserName = userName;
         user.SiteId = site.Id;
-        user.RegisterDate = DateTime.Now;
+        user.CreateDate = DateTime.Now;
 
         var createUserResult = await _userManager.CreateAsync(user, requestDto.Password);
 
