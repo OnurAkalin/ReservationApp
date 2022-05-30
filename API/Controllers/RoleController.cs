@@ -13,6 +13,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create(string roleName)
         => Ok(await _roleService.CreateAsync(roleName));
 

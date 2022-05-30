@@ -57,7 +57,7 @@ public class AccountService : BasicService, IAccountService
         }
 
         await _userManager.AddToRoleAsync(user, UserRoles.Customer);
-        
+
         return new SuccessResult(UiMessages.Success);
     }
 
@@ -70,9 +70,9 @@ public class AccountService : BasicService, IAccountService
         {
             return new ErrorDataResult<TokenResponseDto>(UiMessages.UnselectedSite);
         }
-        
+
         var userName = site.Id + "_" + requestDto.Email;
-        
+
         var user = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.UserName.Equals(userName));
 
@@ -89,7 +89,7 @@ public class AccountService : BasicService, IAccountService
         }
 
         var token = await _tokenService.GenerateAsync(user);
-        
+
         user.LastLoginDate = DateTime.Now;
         await _dbContext.SaveChangesAsync();
 
@@ -99,7 +99,8 @@ public class AccountService : BasicService, IAccountService
     public async Task<Result> ChangePasswordAsync(ChangePasswordRequestDto requestDto)
     {
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (user is null)
         {
@@ -120,19 +121,12 @@ public class AccountService : BasicService, IAccountService
     {
         var checkEmailExists = await _dbContext.Users
             .AnyAsync(x => x.Email.Equals(requestDto.Email)
-                           && !x.Id.Equals(requestDto.Id));
+                           && !x.Id.Equals(requestDto.Id)
+                           && x.SiteId.Equals(_currentSiteId));
 
         if (checkEmailExists)
         {
             return new ErrorResult(UiMessages.UserWithEmailAlreadyExist);
-        }
-
-        var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
-
-        if (user is null)
-        {
-            return new ErrorResult(UiMessages.UserNotFound);
         }
 
         var site = await _dbContext.Sites
@@ -142,9 +136,18 @@ public class AccountService : BasicService, IAccountService
         {
             return new ErrorResult(UiMessages.UnselectedSite);
         }
-
-        var userName = site.Id + "_" + requestDto.Email;
         
+        var user = await _dbContext.Users
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id) 
+                                      && x.SiteId.Equals(_currentSiteId));
+
+        if (user is null)
+        {
+            return new ErrorResult(UiMessages.UserNotFound);
+        }
+        
+        var userName = site.Id + "_" + requestDto.Email;
+
         await _userManager.SetEmailAsync(user, requestDto.Email);
         await _userManager.SetUserNameAsync(user, userName);
 

@@ -196,5 +196,11 @@ public class SiteService : BasicService, ISiteService
     }
 
     #endregion
+
+    #region Site Service Day
+
+    
+
+    #endregion
     
 }

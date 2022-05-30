@@ -1,7 +1,4 @@
-﻿using Newtonsoft.Json;
-using StackExchange.Redis;
-
-namespace Services;
+﻿namespace Services;
 
 public class ComponentService : BasicService, IComponentService
 {
@@ -24,7 +21,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetLoginAsync(List<LoginComponentDto> requestDto)
     {
         var currentLoginComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Login));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Login)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentLoginComponent is not null)
         {
@@ -34,7 +32,8 @@ public class ComponentService : BasicService, IComponentService
         var loginComponent = new Component
         {
             Type = ComponentType.Login,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(loginComponent);
@@ -47,7 +46,8 @@ public class ComponentService : BasicService, IComponentService
     {
         var loginComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Login));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Login)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (loginComponent is null)
         {
@@ -62,7 +62,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetRegisterAsync(List<RegisterComponentDto> requestDto)
     {
         var currentRegisterComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentRegisterComponent is not null)
         {
@@ -72,7 +73,8 @@ public class ComponentService : BasicService, IComponentService
         var registerComponent = new Component
         {
             Type = ComponentType.Register,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(registerComponent);
@@ -85,7 +87,8 @@ public class ComponentService : BasicService, IComponentService
     {
         var registerComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (registerComponent is null)
         {
@@ -100,7 +103,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetAuthLayoutAsync(List<AuthLayoutDto> requestDto)
     {
         var currentAuthLayoutComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.AuthLayout));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.AuthLayout)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentAuthLayoutComponent is not null)
         {
@@ -110,7 +114,8 @@ public class ComponentService : BasicService, IComponentService
         var authLayoutComponent = new Component
         {
             Type = ComponentType.AuthLayout,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(authLayoutComponent);
@@ -123,7 +128,8 @@ public class ComponentService : BasicService, IComponentService
     {
         var authLayoutComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.AuthLayout));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.AuthLayout)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (authLayoutComponent is null)
         {
@@ -138,7 +144,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetCalendarConfigurationAsync(List<CalendarConfigurationDto> requestDto)
     {
         var currentCalendarConfigurationComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarConfiguration));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarConfiguration)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentCalendarConfigurationComponent is not null)
         {
@@ -148,7 +155,8 @@ public class ComponentService : BasicService, IComponentService
         var calendarConfigurationComponent = new Component
         {
             Type = ComponentType.CalendarConfiguration,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(calendarConfigurationComponent);
@@ -161,14 +169,16 @@ public class ComponentService : BasicService, IComponentService
     {
         var calendarConfigurationComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarConfiguration));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarConfiguration)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (calendarConfigurationComponent is null)
         {
             return new ErrorDataResult<List<CalendarConfigurationDto>>(UiMessages.NotFoundData);
         }
 
-        var jsonData = JsonConvert.DeserializeObject<List<CalendarConfigurationDto>>(calendarConfigurationComponent.Value);
+        var jsonData =
+            JsonConvert.DeserializeObject<List<CalendarConfigurationDto>>(calendarConfigurationComponent.Value);
 
         return new SuccessDataResult<List<CalendarConfigurationDto>>(jsonData!, UiMessages.Success);
     }
@@ -176,7 +186,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetCustomAsync(List<CustomDto> requestDto)
     {
         var currentCustomComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Custom));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Custom)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentCustomComponent is not null)
         {
@@ -186,7 +197,8 @@ public class ComponentService : BasicService, IComponentService
         var customComponent = new Component
         {
             Type = ComponentType.Custom,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(customComponent);
@@ -199,7 +211,8 @@ public class ComponentService : BasicService, IComponentService
     {
         var customComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Custom));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Custom)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (customComponent is null)
         {
@@ -214,7 +227,8 @@ public class ComponentService : BasicService, IComponentService
     public async Task<Result> SetWebPageAsync(List<WebPageDto> requestDto)
     {
         var currentWebPageComponent = await _dbContext.Components
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (currentWebPageComponent is not null)
         {
@@ -224,7 +238,8 @@ public class ComponentService : BasicService, IComponentService
         var webPageComponent = new Component
         {
             Type = ComponentType.WebPage,
-            Value = JsonConvert.SerializeObject(requestDto)
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
         };
 
         await _dbContext.Components.AddAsync(webPageComponent);
@@ -237,7 +252,8 @@ public class ComponentService : BasicService, IComponentService
     {
         var webPageComponent = await _dbContext.Components
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage));
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage)
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (webPageComponent is null)
         {

@@ -14,3 +14,5 @@ global using User = Domain.Entities.User;
 global using Role = Domain.Entities.Role;
 global using Microsoft.AspNetCore.Http;
 global using System.Security.Claims;
+global using Newtonsoft.Json;
+global using StackExchange.Redis;

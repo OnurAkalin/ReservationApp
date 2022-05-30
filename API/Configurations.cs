@@ -77,8 +77,7 @@ public static class Configurations
 
         var serverVersion = new MySqlServerVersion(new Version(8, 0, 29));
 
-        serviceCollection.AddDbContext<ApplicationDbContext>(options =>
-            options.UseMySql(connectionString, serverVersion));
+        serviceCollection.AddDbContext<ApplicationDbContext>(options => options.UseMySql(connectionString, serverVersion));
     }
 
     private static void ConfigureIdentity(this IServiceCollection serviceCollection)
@@ -90,8 +89,7 @@ public static class Configurations
         serviceCollection.Configure<IdentityOptions>(options =>
         {
             options.User.RequireUniqueEmail = true;
-            options.User.AllowedUserNameCharacters =
-                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+            options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
             // Password settings.
             options.Password.RequiredLength = 6;

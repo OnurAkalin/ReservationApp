@@ -1,5 +1,6 @@
 ﻿namespace API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]/[action]")]
 public class ComponentController : ControllerBase
@@ -11,84 +12,72 @@ public class ComponentController : ControllerBase
         _componentService = componentService;
     }
 
-    [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<LoginComponentDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login()
         => Ok(await _componentService.GetLoginAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] List<LoginComponentDto> requestDto)
         => Ok(await _componentService.SetLoginAsync(requestDto));
 
 
-    [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<RegisterComponentDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register()
         => Ok(await _componentService.GetRegisterAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register([FromBody] List<RegisterComponentDto> requestDto)
         => Ok(await _componentService.SetRegisterAsync(requestDto));
-    
-    
-    [AllowAnonymous]
+
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<AuthLayoutDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> AuthLayout()
         => Ok(await _componentService.GetAuthLayoutAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> AuthLayout([FromBody] List<AuthLayoutDto> requestDto)
         => Ok(await _componentService.SetAuthLayoutAsync(requestDto));
-    
-    
-    [AllowAnonymous]
+
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CalendarConfigurationDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CalendarConfiguration()
         => Ok(await _componentService.GetCalendarConfigurationAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> CalendarConfiguration([FromBody] List<CalendarConfigurationDto> requestDto)
         => Ok(await _componentService.SetCalendarConfigurationAsync(requestDto));
-    
-    
-    [AllowAnonymous]
+
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<CustomDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Custom()
         => Ok(await _componentService.GetCustomAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Custom([FromBody] List<CustomDto> requestDto)
         => Ok(await _componentService.SetCustomAsync(requestDto));
-    
-    
-    [AllowAnonymous]
+
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<WebPageDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> WebPage()
         => Ok(await _componentService.GetWebPageAsync());
 
 
-    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> WebPage([FromBody] List<WebPageDto> requestDto)

@@ -11,6 +11,7 @@ public class SeedDataController : ControllerBase
         _seedDataService = seedDataService;
     }
 
+    [AllowAnonymous]
     [HttpPut]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> InitializeDatabase()

@@ -9,15 +9,6 @@
     }
   },
   "profiles": {
-    "API_Development": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "applicationUrl": "http://localhost:5000",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
-    },
     "API_Test": {
       "commandName": "Project",
       "launchBrowser": true,
@@ -27,13 +18,13 @@
         "ASPNETCORE_ENVIRONMENT": "Test"
       }
     },
-    "API_Mac": {
+    "API_Test_Mac": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Test"
       }
     }
   }

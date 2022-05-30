@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Services;
+﻿namespace Services;
 
 public class SeedDataService : ISeedDataService
 {
@@ -22,20 +20,19 @@ public class SeedDataService : ISeedDataService
 
     public async Task<Result> SeedBaseData()
     {
-        var adminSite = (await SeedAdminSite()).Data;
+        var adminSiteId = (await SeedAdminSite()).Data;
         await SeedRoles();
-        await SeedAdminUser(adminSite);
-        await SeedLoginComponent();
-
-
+        await SeedAdminUser(adminSiteId);
+        await SeedLoginComponent(adminSiteId);
+        
         return new SuccessResult(UiMessages.Success);
     }
 
-    private async Task<DataResult<Site>> SeedAdminSite()
+    private async Task<DataResult<int>> SeedAdminSite()
     {
         if (await _dbContext.Sites.AnyAsync())
         {
-            return new ErrorDataResult<Site>(UiMessages.SeedDataError);
+            return new ErrorDataResult<int>(UiMessages.SeedDataError);
         }
 
         var adminSite = new Site
@@ -51,7 +48,7 @@ public class SeedDataService : ISeedDataService
         await _dbContext.Sites.AddAsync(adminSite);
         await _dbContext.SaveChangesAsync();
 
-        return new SuccessDataResult<Site>(adminSite);
+        return new SuccessDataResult<int>(adminSite.Id);
     }
 
     private async Task SeedRoles()
@@ -62,38 +59,38 @@ public class SeedDataService : ISeedDataService
         await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer});
     }
 
-    private async Task SeedAdminUser(Site adminSite)
+    private async Task SeedAdminUser(int siteId)
     {
         var adminUserList = new List<User>
         {
             new()
             {
-                UserName = adminSite.Id + "_" + "admin@admin.com",
+                UserName = siteId + "_" + "admin@admin.com",
                 Email = "admin@admin.com",
                 PhoneNumber = "0000000000",
                 FirstName = "Admin",
                 LastName = "Admin",
-                SiteId = adminSite.Id,
+                SiteId = siteId,
                 CreateDate = DateTime.Now
             },
             new()
             {
-                UserName = adminSite.Id + "_" + "onur@admin.com",
+                UserName = siteId + "_" + "onur@admin.com",
                 Email = "onur@admin.com",
                 PhoneNumber = "0000000000",
                 FirstName = "Onur",
                 LastName = "Akalın",
-                SiteId = adminSite.Id,
+                SiteId = siteId,
                 CreateDate = DateTime.Now
             },
             new()
             {
-                UserName = adminSite.Id + "_" + "arif@admin.com",
+                UserName = siteId + "_" + "arif@admin.com",
                 Email = "arif@admin.com",
                 PhoneNumber = "0000000000",
                 FirstName = "Ahmet Arif",
                 LastName = "Özçelik",
-                SiteId = adminSite.Id,
+                SiteId = siteId,
                 CreateDate = DateTime.Now
             }
         };
@@ -103,10 +100,9 @@ public class SeedDataService : ISeedDataService
             await _userManager.CreateAsync(adminUser, "qwe123");
             await _userManager.AddToRoleAsync(adminUser, UserRoles.Admin);
         }
-        
     }
 
-    private async Task SeedLoginComponent()
+    private async Task SeedLoginComponent(int siteId)
     {
         var componentList = new List<LoginComponentDto>
         {
@@ -157,7 +153,8 @@ public class SeedDataService : ISeedDataService
         var loginComponent = new Component
         {
             Type = ComponentType.Login,
-            Value = JsonConvert.SerializeObject(componentList)
+            Value = JsonConvert.SerializeObject(componentList),
+            SiteId = siteId
         };
 
         await _dbContext.Components.AddAsync(loginComponent);
