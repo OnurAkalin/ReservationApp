@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class Site : EntityBaseWithAudit<int>, IEntity
+public class Site : EntityBaseWithAudit<int>
 {
     public string Code { get; set; }
     public string PhoneNumber { get; set; }

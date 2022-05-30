@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class SiteService : EntityBaseSiteWithAudit<int>, IEntity
+public class SiteService : EntityBaseSiteWithAudit<int>
 {
     public string Name { get; set; }
     public string Description { get; set; }

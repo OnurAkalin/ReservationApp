@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class SiteResponseDto : IDto
+public class SiteResponseDto
 {
     public int Id { get; set; }
     public string Code { get; set; }

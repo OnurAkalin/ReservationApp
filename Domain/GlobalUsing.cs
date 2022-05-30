@@ -1,2 +1,1 @@
-﻿global using Core.Entities;
-global using Domain.Enumerations;
+﻿global using Domain.Enumerations;

@@ -1,6 +1,6 @@
 namespace Domain.Entities;
 
-public class ChangePasswordRequestDto : IDto
+public class ChangePasswordRequestDto
 {
     public int Id { get; set; }
     public string OldPassword { get; set; }

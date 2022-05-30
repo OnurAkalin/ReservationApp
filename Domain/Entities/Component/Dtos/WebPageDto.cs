@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class WebPageDto : IDto
+public class WebPageDto
 {
     public string Id { get; set; }
     public string Name { get; set; }

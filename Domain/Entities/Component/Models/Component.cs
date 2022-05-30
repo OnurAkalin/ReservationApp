@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class Component : EntityBase<int>
+public class Component : EntityBaseSite<int>
 {
     public ComponentType Type { get; set; }
     public string Value { get; set; }

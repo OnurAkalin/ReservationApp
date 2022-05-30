@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class ReservationResizableDto : IDto
+public class ReservationResizableDto
 {
     public bool BeforeStart { get; set; }
     public bool AfterEnd { get; set; }

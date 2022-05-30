@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class LoginRequestDto : IDto
+public class LoginRequestDto
 {
     public string Email { get; set; }
     public string Password { get; set; }

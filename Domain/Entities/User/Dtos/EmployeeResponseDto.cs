@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class EmployeeResponseDto : IDto
+public class EmployeeResponseDto
 {
     public int Id { get; set; }
     public string FirstName { get; set; }

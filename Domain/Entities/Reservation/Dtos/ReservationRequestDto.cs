@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class ReservationRequestDto : IDto
+public class ReservationRequestDto
 {
     public int? Id { get; set; }
     public DateTime Start { get; set; }
@@ -14,7 +14,7 @@ public class ReservationRequestDto : IDto
     public ReservationMetaRequestDto Meta { get; set; }
 }
 
-public class ReservationMetaRequestDto : IDto
+public class ReservationMetaRequestDto
 {
     public int SiteServiceId { get; set; }
     public int? UserId { get; set; }

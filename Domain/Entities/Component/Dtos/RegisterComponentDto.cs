@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class RegisterComponentDto : IDto
+public class RegisterComponentDto
 {
     public string Id { get; set; }
     public string Name { get; set; }
