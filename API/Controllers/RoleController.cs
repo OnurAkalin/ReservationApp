@@ -14,8 +14,8 @@ public class RoleController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create(string roleName)
-        => Ok(await _roleService.CreateAsync(roleName));
+    public async Task<IActionResult> Insert(string roleName)
+        => Ok(await _roleService.InsertAsync(roleName));
 
 
     [HttpPost]
@@ -23,7 +23,13 @@ public class RoleController : ControllerBase
     public async Task<IActionResult> Update(int id, string roleName)
         => Ok(await _roleService.UpdateAsync(id, roleName));
 
-
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Get(int id)
+        => Ok(await _roleService.GetAsync(id));
+    
+    
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<RoleResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> List()

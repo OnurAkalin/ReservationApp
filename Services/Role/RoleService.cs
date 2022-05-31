@@ -17,7 +17,7 @@ public class RoleService : BasicService, IRoleService
         _roleManager = roleManager;
     }
 
-    public async Task<Result> CreateAsync(string roleName)
+    public async Task<Result> InsertAsync(string roleName)
     {
         var result = await _roleManager.CreateAsync(new Role {Name = roleName});
 
@@ -50,12 +50,22 @@ public class RoleService : BasicService, IRoleService
         return new ErrorResult(UiMessages.UnknownError);
     }
 
+    public async Task<DataResult<RoleResponseDto>> GetAsync(int id)
+    {
+        var role = await _roleManager.FindByIdAsync(id.ToString());
+
+        if (role is null)
+        {
+            return new ErrorDataResult<RoleResponseDto>(UiMessages.NotFoundData);
+        }
+
+        var mappedData = _mapper.Map<RoleResponseDto>(role);
+
+        return new SuccessDataResult<RoleResponseDto>(mappedData, UiMessages.Success);
+    }
+
     public async Task<DataResult<List<RoleResponseDto>>> ListAsync()
     {
-        // var roles = await _dbContext.Roles
-        //     .AsNoTracking()
-        //     .ToListAsync();
-
         var roles = await _roleManager.Roles.AsNoTracking().ToListAsync();
 
         if (!roles.Any())
@@ -70,9 +80,8 @@ public class RoleService : BasicService, IRoleService
 
     public async Task<Result> DeleteAsync(int id)
     {
-        var role = await _dbContext.Roles
-            .FirstOrDefaultAsync(x => x.Id.Equals(id));
-
+        var role = await _roleManager.FindByIdAsync(id.ToString());
+        
         if (role is null)
         {
             return new ErrorResult(UiMessages.Error);
