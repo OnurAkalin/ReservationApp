@@ -52,9 +52,11 @@ public class RoleService : BasicService, IRoleService
 
     public async Task<DataResult<List<RoleResponseDto>>> ListAsync()
     {
-        var roles = await _dbContext.Roles
-            .AsNoTracking()
-            .ToListAsync();
+        // var roles = await _dbContext.Roles
+        //     .AsNoTracking()
+        //     .ToListAsync();
+
+        var roles = await _roleManager.Roles.AsNoTracking().ToListAsync();
 
         if (!roles.Any())
         {

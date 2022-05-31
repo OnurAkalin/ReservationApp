@@ -22,11 +22,9 @@ public class ReservationService : BasicService, IReservationService
         reservation.UserId = requestDto.Meta.UserId ?? _currentUserId;
 
         await _dbContext.Reservations.AddAsync(reservation);
-        var affectedRowCount = await _dbContext.SaveChangesAsync();
-
-        return affectedRowCount > 0 
-            ?  new SuccessResult(UiMessages.Success) 
-            :  new ErrorResult(UiMessages.Error);
+        await _dbContext.SaveChangesAsync();
+        
+        return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<Result> UpdateAsync(ReservationRequestDto requestDto)
@@ -40,11 +38,9 @@ public class ReservationService : BasicService, IReservationService
         }
 
         _mapper.Map(requestDto, reservation);
-        var affectedRowCount = await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
-        return affectedRowCount > 0 
-            ?  new SuccessResult(UiMessages.Success) 
-            :  new ErrorResult(UiMessages.Error);
+        return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<DataResult<List<ReservationResponseDto>>> ListAsync()
