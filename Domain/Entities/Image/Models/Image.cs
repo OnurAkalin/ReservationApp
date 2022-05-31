@@ -2,5 +2,6 @@
 
 public class Image : EntityBase<int>
 {
-    public byte[] ImageContent { get; set; }
+    public string ImageTitle { get; set; }
+    public byte[] ImageData { get; set; }
 }

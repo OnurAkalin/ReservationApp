@@ -17,5 +17,6 @@ public static class ServiceRegistration
         serviceCollection.AddScoped<IComponentService, ComponentService>();
         serviceCollection.AddScoped<IReservationService, ReservationService>();
         serviceCollection.AddScoped<IDashboardService, DashboardService>();
+        serviceCollection.AddScoped<IImageService, ImageService>();
     }
 }
