@@ -8,4 +8,6 @@ public enum RedisDatabases
 
 public class CacheKeys
 {
+    public const string Component = "{0}:Component:{1}";
+    public const string Image = "{0}:Image:{1}";
 }
