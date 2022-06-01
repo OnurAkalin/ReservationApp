@@ -5,6 +5,7 @@ services:
   mysql:
     container_name: mysql
     image: mysql:8.0.29-oracle
+    restart: always
     ports:
       - "3306:3306"
     environment:
@@ -13,8 +14,9 @@ services:
       - sql-data:/var/lib/mysql
       
   redis:
-    image: redis:7.0.0
     container_name: redis
+    image: redis:7.0.0
+    restart: always
     command: redis-server --requirepass redis-password
     ports:
       - "6379:6379"
