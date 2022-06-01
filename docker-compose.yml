@@ -24,9 +24,9 @@ services:
       - redis-data:/data
       
   portainer:
+    container_name: portainer
     image: portainer/portainer-ce
     restart: always
-    container_name: portainer
     ports:
       - "9000:9000"
     volumes:
