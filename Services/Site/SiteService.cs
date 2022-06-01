@@ -2,15 +2,18 @@
 
 public class SiteService : BasicService, ISiteService
 {
+    private readonly IImageService _imageService;
     public SiteService
     (
         Logger logger,
         IMapper mapper,
         ApplicationDbContext dbContext,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor,
+        IImageService imageService
     )
         : base(logger, mapper, dbContext, httpContextAccessor)
     {
+        _imageService = imageService;
     }
 
     #region Site
@@ -105,6 +108,27 @@ public class SiteService : BasicService, ISiteService
         return new SuccessResult(UiMessages.Success);
     }
 
+    public async Task<Result> UploadSiteImageAsync(ImageRequestDto requestDto)
+    {
+        var result = await _imageService.UploadToFileAsync(requestDto.Image);
+        
+        if (!result.Success)
+        {
+            return new ErrorResult(result.Message);
+        }
+
+        var siteImage = new SiteImage
+        {
+            SiteId = requestDto.EntityId,
+            ImageId = result.Data
+        };
+
+        await _dbContext.SiteImages.AddAsync(siteImage);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
     #endregion
 
     #region Site Service
@@ -190,6 +214,27 @@ public class SiteService : BasicService, ISiteService
         }
 
         _dbContext.SiteServices.Remove(siteService);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<Result> UploadSiteServiceImageAsync(ImageRequestDto requestDto)
+    {
+        var result = await _imageService.UploadToFileAsync(requestDto.Image);
+        
+        if (!result.Success)
+        {
+            return new ErrorResult(result.Message);
+        }
+
+        var siteImage = new SiteServiceImage
+        {
+            ServiceId = requestDto.EntityId,
+            ImageId = result.Data
+        };
+
+        await _dbContext.SiteServiceImages.AddAsync(siteImage);
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);
