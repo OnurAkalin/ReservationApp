@@ -13,6 +13,7 @@ public class ComponentController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<LoginComponentDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Login()
         => Ok(await _componentService.GetLoginAsync());
@@ -25,6 +26,7 @@ public class ComponentController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<RegisterComponentDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Register()
         => Ok(await _componentService.GetRegisterAsync());
@@ -37,6 +39,7 @@ public class ComponentController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<AuthLayoutDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> AuthLayout()
         => Ok(await _componentService.GetAuthLayoutAsync());
