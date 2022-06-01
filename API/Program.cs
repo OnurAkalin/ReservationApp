@@ -16,7 +16,6 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         }));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,6 +25,12 @@ app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseHttpsRedirection();
+app.UseStaticFiles(new StaticFileOptions()
+{
+    RequestPath = "/images",
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Images"))
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseCors("CorsPolicy");

@@ -19,3 +19,4 @@ global using Services;
 global using Domain.Entities;
 global using StackExchange.Redis;
 global using Serilog;
+global using Microsoft.Extensions.FileProviders;
