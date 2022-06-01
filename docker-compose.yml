@@ -22,7 +22,18 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
+      
+  portainer:
+    image: portainer/portainer-ce
+    restart: always
+    container_name: portainer
+    ports:
+      - "9000:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
         
 volumes:
   redis-data:
   sql-data:
+  portainer-data:
