@@ -2,6 +2,8 @@
 
 public interface IImageService
 {
-    Task<DataResult<int>> UploadImage(IFormFile image);
-    Task<DataResult<string>> GetImage(int id);
+    Task<DataResult<int>> UploadToFileAsync(IFormFile image);
+    Task<DataResult<string>> GetImagePathAsync(int id);
+    Task<DataResult<int>> UploadToDatabaseAsync(IFormFile image);
+    Task<DataResult<string>> GetBase64ImageAsync(int id);
 }

@@ -27,7 +27,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseStaticFiles(new StaticFileOptions()
 {
-    RequestPath = "/images",
+    RequestPath = "/Images",
     FileProvider = new PhysicalFileProvider(
         Path.Combine(builder.Environment.ContentRootPath, "Images"))
 });
