@@ -2,5 +2,5 @@
 
 public interface ISeedDataService
 {
-    Task<Result> SeedBaseData();
+    Task SeedBaseData();
 }

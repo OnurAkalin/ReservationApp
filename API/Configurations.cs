@@ -13,6 +13,12 @@ public static class Configurations
         serviceCollection.ConfigureSwagger();
     }
 
+    public static void SeedData(this WebApplication application)
+    {
+        var seedDataService = application.Services.GetRequiredService<ISeedDataService>();
+        seedDataService?.SeedBaseData();
+    }
+    
     #region Extensions
 
     private static void ConfigureSwagger(this IServiceCollection serviceCollection)

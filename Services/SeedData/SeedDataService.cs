@@ -18,14 +18,13 @@ public class SeedDataService : ISeedDataService
         _roleManager = roleManager;
     }
 
-    public async Task<Result> SeedBaseData()
+    public async Task SeedBaseData()
     {
-        var adminSiteId = (await SeedAdminSite()).Data;
+        var result = await SeedAdminSite();
+        if (!result.Success) return;
         await SeedRoles();
-        await SeedAdminUser(adminSiteId);
-        await SeedLoginComponent(adminSiteId);
-        
-        return new SuccessResult(UiMessages.Success);
+        await SeedAdminUser(result.Data);
+        await SeedLoginComponent(result.Data);
     }
 
     private async Task<DataResult<int>> SeedAdminSite()
