@@ -22,10 +22,22 @@ public class AutoMapper : Profile
         #region Site
 
         CreateMap<SiteRequestDto, Site>();
-        CreateMap<Site, SiteResponseDto>();
+        CreateMap<Site, SiteResponseDto>()
+            .ForPath(x => x.Images, y => y.MapFrom(z => z.SiteImages.Select(t => new ImageResponseDto
+            {
+                Id = t.ImageId,
+                Title = t.Image.Title,
+                Path = t.Image.Path
+            }).ToList()));
         
         CreateMap<SiteServiceRequestDto, Domain.Entities.SiteService>();
-        CreateMap<Domain.Entities.SiteService, SiteServiceResponseDto>();
+        CreateMap<Domain.Entities.SiteService, SiteServiceResponseDto>()
+            .ForPath(x => x.Images, y => y.MapFrom(z => z.SiteServiceImages.Select(t => new ImageResponseDto
+            {
+                Id = t.ImageId,
+                Title = t.Image.Title,
+                Path = t.Image.Path
+            }).ToList()));
 
         #endregion
 
