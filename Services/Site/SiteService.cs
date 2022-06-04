@@ -141,14 +141,9 @@ public class SiteService : BasicService, ISiteService
         siteService.CreateUser = _currentUserId;
 
         await _dbContext.SiteServices.AddAsync(siteService);
-        var result = await _dbContext.SaveChangesAsync();
-
-        if (result > 0)
-        {
-            return new SuccessResult(UiMessages.Success);
-        }
-
-        return new ErrorResult(UiMessages.Error);
+        await _dbContext.SaveChangesAsync();
+        
+        return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<Result> UpdateSiteServiceAsync(SiteServiceRequestDto requestDto)
@@ -165,14 +160,9 @@ public class SiteService : BasicService, ISiteService
         siteService.ModifyDate = DateTime.Now;
         siteService.ModifyUser = _currentUserId;
 
-        var result = await _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
-        if (result > 0)
-        {
-            return new SuccessResult(UiMessages.Success);
-        }
-
-        return new ErrorResult(UiMessages.Error);
+        return new SuccessResult(UiMessages.Success);
     }
 
     public async Task<DataResult<List<SiteServiceResponseDto>>> ListSiteServiceAsync()
@@ -239,12 +229,82 @@ public class SiteService : BasicService, ISiteService
 
         return new SuccessResult(UiMessages.Success);
     }
-
-    #endregion
-
-    #region Site Service Day
-
     
+    #endregion
+    
+    #region Site Service Day
+    
+    public async Task<Result> InsertSiteServiceDayAsync(SiteServiceDayRequestDto requestDto)
+    {
+        var siteServiceDays = _mapper.Map<SiteServiceDay>(requestDto);
+
+        await _dbContext.SiteServiceDays.AddAsync(siteServiceDays);
+        await _dbContext.SaveChangesAsync();
+        
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<Result> UpdateSiteServiceDayAsync(SiteServiceDayRequestDto requestDto)
+    {
+        var siteServiceDay = await _dbContext.SiteServiceDays
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
+
+        if (siteServiceDay is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _mapper.Map(requestDto, siteServiceDay);
+
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<SiteServiceDayResponseDto>>> ListSiteServiceDayAsync()
+    {
+        var siteServiceDays = await _dbContext.SiteServiceDays
+            .AsNoTracking()
+            .Include(x => x.SiteService)
+            .Where(x => x.SiteService.SiteId.Equals(_currentSiteId))
+            .ToListAsync();
+
+        var mappedData = _mapper.Map<List<SiteServiceDayResponseDto>>(siteServiceDays);
+
+        return new SuccessDataResult<List<SiteServiceDayResponseDto>>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<DataResult<SiteServiceDayResponseDto>> GetSiteServiceDayAsync(int id)
+    {
+        var siteServiceDay = await _dbContext.SiteServiceDays
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteServiceDay is null)
+        {
+            return new ErrorDataResult<SiteServiceDayResponseDto>(UiMessages.NotFoundData);
+        }
+
+        var mappedData = _mapper.Map<SiteServiceDayResponseDto>(siteServiceDay);
+
+        return new SuccessDataResult<SiteServiceDayResponseDto>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<Result> DeleteSiteServiceDayAsync(int id)
+    {
+        var siteServiceDay = await _dbContext.SiteServiceDays
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteServiceDay is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _dbContext.SiteServiceDays.Remove(siteServiceDay);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
 
     #endregion
     
