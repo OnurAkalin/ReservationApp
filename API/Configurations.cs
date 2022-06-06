@@ -18,7 +18,7 @@ public static class Configurations
         var seedDataService = application.Services.GetRequiredService<ISeedDataService>();
         seedDataService?.SeedBaseData();
     }
-    
+
     #region Extensions
 
     private static void ConfigureSwagger(this IServiceCollection serviceCollection)

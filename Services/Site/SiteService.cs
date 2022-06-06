@@ -3,6 +3,7 @@
 public class SiteService : BasicService, ISiteService
 {
     private readonly IImageService _imageService;
+
     public SiteService
     (
         Logger logger,
@@ -113,7 +114,7 @@ public class SiteService : BasicService, ISiteService
     public async Task<Result> UploadSiteImageAsync(ImageRequestDto requestDto)
     {
         var result = await _imageService.UploadToFileAsync(requestDto.Image);
-        
+
         if (!result.Success)
         {
             return new ErrorResult(result.Message);
@@ -144,7 +145,7 @@ public class SiteService : BasicService, ISiteService
 
         await _dbContext.SiteServices.AddAsync(siteService);
         await _dbContext.SaveChangesAsync();
-        
+
         return new SuccessResult(UiMessages.Success);
     }
 
@@ -216,7 +217,7 @@ public class SiteService : BasicService, ISiteService
     public async Task<Result> UploadSiteServiceImageAsync(ImageRequestDto requestDto)
     {
         var result = await _imageService.UploadToFileAsync(requestDto.Image);
-        
+
         if (!result.Success)
         {
             return new ErrorResult(result.Message);
@@ -233,18 +234,18 @@ public class SiteService : BasicService, ISiteService
 
         return new SuccessResult(UiMessages.Success);
     }
-    
+
     #endregion
-    
+
     #region Site Service Day
-    
+
     public async Task<Result> InsertSiteServiceDayAsync(SiteServiceDayRequestDto requestDto)
     {
         var siteServiceDays = _mapper.Map<SiteServiceDay>(requestDto);
 
         await _dbContext.SiteServiceDays.AddAsync(siteServiceDays);
         await _dbContext.SaveChangesAsync();
-        
+
         return new SuccessResult(UiMessages.Success);
     }
 
@@ -311,5 +312,4 @@ public class SiteService : BasicService, ISiteService
     }
 
     #endregion
-    
 }

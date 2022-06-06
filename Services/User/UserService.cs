@@ -48,7 +48,7 @@ public class UserService : BasicService, IUserService
 
         _mapper.Map(requestDto, user);
         user.ModifyDate = DateTime.Now;
-        
+
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);
@@ -108,7 +108,7 @@ public class UserService : BasicService, IUserService
         {
             return new ErrorResult(UiMessages.RoleNotFound);
         }
-        
+
         await _userManager.RemoveFromRoleAsync(user, role.Name);
 
         return new SuccessResult(UiMessages.Success);

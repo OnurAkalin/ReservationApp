@@ -136,16 +136,16 @@ public class AccountService : BasicService, IAccountService
         {
             return new ErrorResult(UiMessages.UnselectedSite);
         }
-        
+
         var user = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id) 
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id)
                                       && x.SiteId.Equals(_currentSiteId));
 
         if (user is null)
         {
             return new ErrorResult(UiMessages.UserNotFound);
         }
-        
+
         var userName = site.Id + "_" + requestDto.Email;
 
         await _userManager.SetEmailAsync(user, requestDto.Email);

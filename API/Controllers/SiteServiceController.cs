@@ -11,7 +11,7 @@ public class SiteServiceController : ControllerBase
     {
         _siteService = siteService;
     }
-    
+
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Insert(SiteServiceRequestDto requestDto)
@@ -40,8 +40,8 @@ public class SiteServiceController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete([FromQuery] int id)
         => Ok(await _siteService.DeleteSiteServiceAsync(id));
-    
-    
+
+
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> UploadImage([FromForm] ImageRequestDto requestDto)

@@ -5,6 +5,7 @@ namespace Services;
 public class ImageService : BasicService, IImageService
 {
     private readonly IWebHostEnvironment _environment;
+
     public ImageService
     (
         Logger logger,
@@ -29,18 +30,19 @@ public class ImageService : BasicService, IImageService
 
         await using var fileStream = new FileStream(imagePath, FileMode.Create);
         await image.CopyToAsync(fileStream);
-        
+
         var imageEntity = new Image
         {
             Title = image.FileName,
             Path = "/Images/" + $"{formattedImageName}"
         };
-        
+
         await _dbContext.Images.AddAsync(imageEntity);
         await _dbContext.SaveChangesAsync();
 
-        return new SuccessDataResult<int>(imageEntity.Id,UiMessages.Success);
+        return new SuccessDataResult<int>(imageEntity.Id, UiMessages.Success);
     }
+
     public async Task<DataResult<string>> GetImagePathAsync(int id)
     {
         var imagePath = await _dbContext.Images
@@ -48,13 +50,13 @@ public class ImageService : BasicService, IImageService
             .Where(x => x.Id.Equals(id))
             .Select(x => x.Path)
             .FirstOrDefaultAsync();
-        
+
         if (imagePath is null)
         {
             return new ErrorDataResult<string>(UiMessages.NotFoundData);
         }
 
-        return new SuccessDataResult<string>(imagePath,UiMessages.Success);
+        return new SuccessDataResult<string>(imagePath, UiMessages.Success);
     }
 
     public async Task<DataResult<int>> UploadToDatabaseAsync(IFormFile image)
@@ -75,11 +77,11 @@ public class ImageService : BasicService, IImageService
             Path = "/Images/" + $"{formattedImageName}",
             Data = memoryStream.ToArray()
         };
-        
+
         await _dbContext.Images.AddAsync(imageEntity);
         await _dbContext.SaveChangesAsync();
 
-        return new SuccessDataResult<int>(imageEntity.Id,UiMessages.Success);
+        return new SuccessDataResult<int>(imageEntity.Id, UiMessages.Success);
     }
 
     public async Task<DataResult<string>> GetBase64ImageAsync(int id)
@@ -92,9 +94,9 @@ public class ImageService : BasicService, IImageService
         {
             return new ErrorDataResult<string>(UiMessages.NotFoundData);
         }
-        
+
         var imageData = $"data:image/jpg;base64,{Convert.ToBase64String(image.Data)}";
 
-        return new SuccessDataResult<string>(imageData,UiMessages.Success);
+        return new SuccessDataResult<string>(imageData, UiMessages.Success);
     }
 }

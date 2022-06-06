@@ -11,7 +11,7 @@ public class SiteServiceDayController : ControllerBase
     {
         _siteService = siteService;
     }
-    
+
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Insert(SiteServiceDayRequestDto requestDto)
@@ -40,5 +40,4 @@ public class SiteServiceDayController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete([FromQuery] int id)
         => Ok(await _siteService.DeleteSiteServiceDayAsync(id));
-
 }

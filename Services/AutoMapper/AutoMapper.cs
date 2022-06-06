@@ -29,7 +29,7 @@ public class AutoMapper : Profile
                 Title = t.Image.Title,
                 Path = t.Image.Path
             }).ToList()));
-        
+
         CreateMap<SiteServiceRequestDto, Domain.Entities.SiteService>();
         CreateMap<Domain.Entities.SiteService, SiteServiceResponseDto>()
             .ForPath(x => x.Images, y => y.MapFrom(z => z.SiteServiceImages.Select(t => new ImageResponseDto
