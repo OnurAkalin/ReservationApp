@@ -159,4 +159,24 @@ public class SeedDataService : ISeedDataService
         await _dbContext.Components.AddAsync(loginComponent);
         await _dbContext.SaveChangesAsync();
     }
+    
+    private async Task SeedTestCompany1()
+    {
+        var site = new Site
+            {
+                CreateDate = DateTime.Now,
+                Code = "XBERBER",
+                PhoneNumber = "5301111111",
+                Email = "berberx@gmail.com",
+                Description = "X Berber Açıklama",
+                Address = "İstanbul/Maltepe"
+            };
+
+        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+
+        await SeedAdminUser(site.Id);
+        await SeedLoginComponent(site.Id);
+
+    }
 }
