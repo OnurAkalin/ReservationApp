@@ -23,16 +23,21 @@ public class SeedDataService : ISeedDataService
         var result = await SeedAdminSite();
         if (!result.Success) return;
         await SeedRoles();
-        await SeedAdminUser(result.Data);
+        await SeedAdminUsers(result.Data);
         await SeedLoginComponent(result.Data);
+        await SeedTestCompany1();
+        
+        Console.WriteLine("Seed ended...");
     }
 
     private async Task<DataResult<int>> SeedAdminSite()
     {
         if (await _dbContext.Sites.AnyAsync())
         {
-            return new ErrorDataResult<int>(UiMessages.SeedDataError);
+            return new ErrorDataResult<int>();
         }
+        
+        Console.WriteLine("Seed started...");
 
         var adminSite = new Site
         {
@@ -58,7 +63,7 @@ public class SeedDataService : ISeedDataService
         await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer});
     }
 
-    private async Task SeedAdminUser(int siteId)
+    private async Task SeedAdminUsers(int siteId)
     {
         var adminUserList = new List<User>
         {
@@ -175,7 +180,6 @@ public class SeedDataService : ISeedDataService
         await _dbContext.Sites.AddAsync(site);
         await _dbContext.SaveChangesAsync();
         
-        await SeedAdminUser(site.Id);
         await SeedLoginComponent(site.Id);
 
         var businessOwner = new User
@@ -206,7 +210,7 @@ public class SeedDataService : ISeedDataService
                 BreakAfterDuration = 10,
                 Price = 25,
                 Currency = Currency.Tl,
-                Color = null
+                Color = ""
             },
             new()
             {
@@ -216,10 +220,9 @@ public class SeedDataService : ISeedDataService
                 Description = "Her türlü sakal kesim işlemi.",
                 Duration = 15,
                 BreakAfter = false,
-                BreakAfterDuration = null,
                 Price = 20,
                 Currency = Currency.Tl,
-                Color = null
+                Color = ""
             },
             new()
             {
@@ -232,13 +235,66 @@ public class SeedDataService : ISeedDataService
                 BreakAfterDuration = 30,
                 Price = 50,
                 Currency = Currency.Tl,
-                Color = null
+                Color = ""
             }
         };
 
         await _dbContext.SiteServices.AddRangeAsync(siteServices);
         await _dbContext.SaveChangesAsync();
-        
-        
+
+        foreach (var siteService in siteServices)
+        {
+            var siteServiceDays = new List<SiteServiceDay>
+            {
+                new()
+                {
+                    Day = Day.Monday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Tuesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Wednesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Thursday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Friday,
+                    SiteServiceId = siteService.Id,
+                }
+            };
+
+            await _dbContext.SiteServiceDays.AddRangeAsync(siteServiceDays);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        var siteOffTimes = new List<SiteOffTime>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Saturday,
+                IsFullDay = true,
+            },
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Sunday,
+                IsFullDay = true,
+            }
+        };
+
+        await _dbContext.SiteOfTimes.AddRangeAsync(siteOffTimes);
+        await _dbContext.SaveChangesAsync();
     }
 }
