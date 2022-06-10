@@ -21,6 +21,9 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
             .Ignore(x => x.TwoFactorEnabled)
             .Ignore(x => x.PhoneNumberConfirmed)
             .Ignore(x => x.EmailConfirmed);
+
+        builder.Entity<Role>()
+            .Ignore(x => x.ConcurrencyStamp);
     }
 
     #region DbSets
@@ -28,9 +31,10 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
     public DbSet<Site> Sites { get; set; }
     public DbSet<SiteService> SiteServices { get; set; }
     public DbSet<SiteServiceDay> SiteServiceDays { get; set; }
-
+    public DbSet<SiteOffTime> SiteOfTimes { get; set; }
+    
     public DbSet<Component> Components { get; set; }
-
+    
     public DbSet<Reservation> Reservations { get; set; }
 
     public DbSet<Image> Images { get; set; }

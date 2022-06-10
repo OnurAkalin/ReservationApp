@@ -30,6 +30,9 @@ public class AutoMapper : Profile
                 Path = t.Image.Path
             }).ToList()));
 
+        CreateMap<SiteOffTimeRequestDto, SiteOffTime>();
+        CreateMap<SiteOffTime, SiteOffTimeResponseDto>();
+
         CreateMap<SiteServiceRequestDto, Domain.Entities.SiteService>();
         CreateMap<Domain.Entities.SiteService, SiteServiceResponseDto>()
             .ForPath(x => x.Images, y => y.MapFrom(z => z.SiteServiceImages.Select(t => new ImageResponseDto
@@ -38,6 +41,9 @@ public class AutoMapper : Profile
                 Title = t.Image.Title,
                 Path = t.Image.Path
             }).ToList()));
+
+        CreateMap<SiteServiceDayRequestDto, SiteServiceDay>();
+        CreateMap<SiteServiceDay, SiteServiceDayResponseDto>();
 
         #endregion
 

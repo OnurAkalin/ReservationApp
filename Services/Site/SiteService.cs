@@ -134,6 +134,81 @@ public class SiteService : BasicService, ISiteService
 
     #endregion
 
+    #region Site Off-Time
+
+    public async Task<Result> InsertSiteOffTimeAsync(SiteOffTimeRequestDto requestDto)
+    {
+        var siteOffTime = _mapper.Map<SiteOffTime>(requestDto);
+        siteOffTime.SiteId = _currentSiteId;
+
+        await _dbContext.SiteOfTimes.AddAsync(siteOffTime);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<Result> UpdateSiteOffTimeAsync(SiteOffTimeRequestDto requestDto)
+    {
+        var siteOffTime = await _dbContext.SiteOfTimes
+            .FirstOrDefaultAsync(x => x.Id.Equals(requestDto.Id));
+
+        if (siteOffTime is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _mapper.Map(requestDto, siteOffTime);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<SiteOffTimeResponseDto>>> ListSiteOffTimeAsync()
+    {
+        var siteOffTimes = await _dbContext.SiteOfTimes
+            .AsNoTracking()
+            .Where(x => x.SiteId.Equals(_currentSiteId))
+            .ToListAsync();
+
+        var mappedData = _mapper.Map<List<SiteOffTimeResponseDto>>(siteOffTimes);
+
+        return new SuccessDataResult<List<SiteOffTimeResponseDto>>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<DataResult<SiteOffTimeResponseDto>> GetSiteOffTimeAsync(int id)
+    {
+        var siteOffTime = await _dbContext.SiteOfTimes
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteOffTime is null)
+        {
+            return new ErrorDataResult<SiteOffTimeResponseDto>(UiMessages.NotFoundData);
+        }
+
+        var mappedData = _mapper.Map<SiteOffTimeResponseDto>(siteOffTime);
+
+        return new SuccessDataResult<SiteOffTimeResponseDto>(mappedData, UiMessages.Success);
+    }
+
+    public async Task<Result> DeleteSiteOffTimeAsync(int id)
+    {
+        var siteOffTime = await _dbContext.SiteOfTimes
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+
+        if (siteOffTime is null)
+        {
+            return new ErrorResult(UiMessages.NotFoundData);
+        }
+
+        _dbContext.Remove(siteOffTime);
+        await _dbContext.SaveChangesAsync();
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    #endregion
+
     #region Site Service
 
     public async Task<Result> InsertSiteServiceAsync(SiteServiceRequestDto requestDto)

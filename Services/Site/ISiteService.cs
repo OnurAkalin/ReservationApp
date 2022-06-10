@@ -13,6 +13,16 @@ public interface ISiteService
 
     #endregion
 
+    #region Site Off-Time
+
+    Task<Result> InsertSiteOffTimeAsync(SiteOffTimeRequestDto requestDto);
+    Task<Result> UpdateSiteOffTimeAsync(SiteOffTimeRequestDto requestDto);
+    Task<DataResult<List<SiteOffTimeResponseDto>>> ListSiteOffTimeAsync();
+    Task<DataResult<SiteOffTimeResponseDto>> GetSiteOffTimeAsync(int id);
+    Task<Result> DeleteSiteOffTimeAsync(int id);
+
+    #endregion
+
     #region Site Service
 
     Task<Result> InsertSiteServiceAsync(SiteServiceRequestDto requestDto);

@@ -9,5 +9,7 @@ public class Site : EntityBaseWithAudit<int>
     public string Address { get; set; }
 
     // RELATIONS //
+    public List<SiteService> SiteServices { get; set; }
+    public List<SiteOffTime> SiteOffTimes { get; set; }
     public List<SiteImage> SiteImages { get; set; }
 }
