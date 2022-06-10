@@ -6,5 +6,4 @@ public interface IAccountService
     Task<DataResult<TokenResponseDto>> LoginAsync(LoginRequestDto requestDto);
     Task<Result> ChangePasswordAsync(ChangePasswordRequestDto requestDto);
     Task<Result> ChangeEmailAsync(ChangeEmailRequestDto requestDto);
-
 }

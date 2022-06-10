@@ -19,7 +19,7 @@ public class BasicService
         _logger = logger;
         _mapper = mapper;
         _dbContext = dbContext;
-        
+
         var siteId = httpContextAccessor.HttpContext?.Request.Headers["SiteId"];
         _currentSiteId = !string.IsNullOrWhiteSpace(siteId) ? int.Parse(siteId) : default;
 

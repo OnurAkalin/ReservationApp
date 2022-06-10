@@ -159,4 +159,85 @@ public class SeedDataService : ISeedDataService
         await _dbContext.Components.AddAsync(loginComponent);
         await _dbContext.SaveChangesAsync();
     }
+    
+    private async Task SeedTestCompany1()
+    {
+        var site = new Site
+            {
+                CreateDate = DateTime.Now,
+                Code = "XBERBER",
+                PhoneNumber = "5301111111",
+                Email = "berberx@gmail.com",
+                Description = "X Berber Açıklama",
+                Address = "İstanbul/Maltepe"
+            };
+
+        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+        
+        await SeedAdminUser(site.Id);
+        await SeedLoginComponent(site.Id);
+
+        var businessOwner = new User
+        {
+            UserName = site.Id + "_" + "berberx@gmail.com",
+            Email = "berberx@gmail.com",
+            PhoneNumber = "5301111111",
+            FirstName = "Berber X",
+            LastName = "Business Owner",
+            CreateDate = DateTime.Now,
+            SiteId = site.Id,
+        };
+
+        await _userManager.CreateAsync(businessOwner, "123456");
+        await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
+
+
+        var siteServices = new List<Domain.Entities.SiteService>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Saç Kesimi",
+                Description = "Her türlü saç kesim işlemi.",
+                Duration = 30,
+                BreakAfter = true,
+                BreakAfterDuration = 10,
+                Price = 25,
+                Currency = Currency.Tl,
+                Color = null
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Sakalı Kesimi",
+                Description = "Her türlü sakal kesim işlemi.",
+                Duration = 15,
+                BreakAfter = false,
+                BreakAfterDuration = null,
+                Price = 20,
+                Currency = Currency.Tl,
+                Color = null
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Yüz Bakımı",
+                Description = "Tüm yüz bakımı içerir",
+                Duration = 45,
+                BreakAfter = true,
+                BreakAfterDuration = 30,
+                Price = 50,
+                Currency = Currency.Tl,
+                Color = null
+            }
+        };
+
+        await _dbContext.SiteServices.AddRangeAsync(siteServices);
+        await _dbContext.SaveChangesAsync();
+
+    }
 }

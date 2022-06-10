@@ -15,7 +15,7 @@ public class TestController : ControllerBase
     [ProducesResponseType(typeof(DataResult<int>), StatusCodes.Status200OK)]
     public async Task<IActionResult> UploadImage([FromForm] FileDto request)
         => Ok(await _imageService.UploadToFileAsync(request.File));
-    
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<string>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetImage(int id)

@@ -13,7 +13,7 @@ public class DashboardController : ControllerBase
     {
         _dashboardService = dashboardService;
     }
-    
+
     [HttpGet]
     [ProducesResponseType(typeof(DataResult<List<UserResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetLastActiveUsers()

@@ -23,7 +23,7 @@ public class ReservationService : BasicService, IReservationService
 
         await _dbContext.Reservations.AddAsync(reservation);
         await _dbContext.SaveChangesAsync();
-        
+
         return new SuccessResult(UiMessages.Success);
     }
 
@@ -38,6 +38,7 @@ public class ReservationService : BasicService, IReservationService
         }
 
         _mapper.Map(requestDto, reservation);
+
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);
@@ -63,7 +64,8 @@ public class ReservationService : BasicService, IReservationService
             .AsNoTracking()
             .Include(x => x.User)
             .Include(x => x.SiteService)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id)
+                                      || x.SiteId.Equals(_currentSiteId));
 
         if (reservation is null)
         {
@@ -78,7 +80,8 @@ public class ReservationService : BasicService, IReservationService
     public async Task<Result> DeleteAsync(int id)
     {
         var reservation = await _dbContext.Reservations
-            .FirstOrDefaultAsync(x => x.Id.Equals(id));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id)
+                                      || x.SiteId.Equals(_currentSiteId));
 
         if (reservation is null)
         {

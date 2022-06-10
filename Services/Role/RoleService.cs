@@ -81,7 +81,7 @@ public class RoleService : BasicService, IRoleService
     public async Task<Result> DeleteAsync(int id)
     {
         var role = await _roleManager.FindByIdAsync(id.ToString());
-        
+
         if (role is null)
         {
             return new ErrorResult(UiMessages.Error);

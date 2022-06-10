@@ -41,8 +41,8 @@ public class SiteController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete([FromQuery] int id)
         => Ok(await _siteService.DeleteSiteAsync(id));
-    
-    
+
+
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> UploadImage([FromForm] ImageRequestDto requestDto)

@@ -11,7 +11,7 @@ public class ReservationController : ControllerBase
     {
         _reservationService = reservationService;
     }
-    
+
     [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> Insert(ReservationRequestDto requestDto)
