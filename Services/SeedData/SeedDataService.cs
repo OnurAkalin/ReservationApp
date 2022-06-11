@@ -21,14 +21,20 @@ public class SeedDataService : ISeedDataService
     public async Task SeedBaseData()
     {
         var result = await SeedAdminSite();
-        if (!result.Success) return;
+        if (!result.Success)
+        {
+            Console.WriteLine("Seed ended... Date:" + DateTime.Now);
+            return;
+        }
         await SeedRoles();
         await SeedAdminUser(result.Data);
         await SeedLoginComponent(result.Data);
         await SeedTestCompany1();
         await SeedTestCompany2();
+        await SeedTestCompany3();
+        await SeedTestCompany4();
         
-        Console.WriteLine("Seed ended...");
+        Console.WriteLine("Seed ended... Date:" + DateTime.Now);
     }
 
     private async Task<DataResult<int>> SeedAdminSite()
@@ -38,7 +44,7 @@ public class SeedDataService : ISeedDataService
             return new ErrorDataResult<int>();
         }
         
-        Console.WriteLine("Seed started...");
+        Console.WriteLine("Seed started... Date: " + DateTime.Now);
 
         var adminSite = new Site
         {
@@ -154,6 +160,22 @@ public class SeedDataService : ISeedDataService
             };
 
         await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+
+        var image = new Image
+        {
+            Title = "1.jpg",
+            Path = "/Images/1.jpg"
+        };
+
+        await _dbContext.Images.AddAsync(image);
+        await _dbContext.SaveChangesAsync();
+
+        await _dbContext.SiteImages.AddAsync(new SiteImage
+        {
+            SiteId = site.Id,
+            ImageId = image.Id
+        });
         await _dbContext.SaveChangesAsync();
 
         await SeedAdminUser(site.Id);
@@ -289,6 +311,22 @@ public class SeedDataService : ISeedDataService
 
         await _dbContext.Sites.AddAsync(site);
         await _dbContext.SaveChangesAsync();
+        
+        var image = new Image
+        {
+            Title = "2.jpg",
+            Path = "/Images/2.jpg"
+        };
+
+        await _dbContext.Images.AddAsync(image);
+        await _dbContext.SaveChangesAsync();
+
+        await _dbContext.SiteImages.AddAsync(new SiteImage
+        {
+            SiteId = site.Id,
+            ImageId = image.Id
+        });
+        await _dbContext.SaveChangesAsync();
 
         await SeedAdminUser(site.Id);
         await SeedLoginComponent(site.Id);
@@ -392,6 +430,307 @@ public class SeedDataService : ISeedDataService
                 Day = Day.Friday,
                 IsFullDay = true,
             },
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Saturday,
+                IsFullDay = true,
+            },
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Sunday,
+                IsFullDay = true,
+            }
+        };
+
+        await _dbContext.SiteOfTimes.AddRangeAsync(siteOffTimes);
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    private async Task SeedTestCompany3()
+    {
+        var site = new Site
+            {
+                CreateDate = DateTime.Now,
+                Code = "XDISCI",
+                PhoneNumber = "5303333333",
+                Email = "discix@gmail.com",
+                Description = "X Dişçi Açıklama",
+                Address = "İstanbul/Maltepe"
+            };
+
+        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+        
+        var image = new Image
+        {
+            Title = "3.jpg",
+            Path = "/Images/3.jpg"
+        };
+
+        await _dbContext.Images.AddAsync(image);
+        await _dbContext.SaveChangesAsync();
+
+        await _dbContext.SiteImages.AddAsync(new SiteImage
+        {
+            SiteId = site.Id,
+            ImageId = image.Id
+        });
+        await _dbContext.SaveChangesAsync();
+
+        await SeedAdminUser(site.Id);
+        await SeedLoginComponent(site.Id);
+
+        var businessOwner = new User
+        {
+            UserName = site.Id + "_" + "discix@gmail.com",
+            Email = "discix@gmail.com",
+            PhoneNumber = "5303333333",
+            FirstName = "Dişçi X",
+            LastName = "Business Owner",
+            CreateDate = DateTime.Now,
+            SiteId = site.Id,
+        };
+
+        await _userManager.CreateAsync(businessOwner, "123456");
+        await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
+
+
+        var siteServices = new List<Domain.Entities.SiteService>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Diş Çekimi",
+                Description = "",
+                Duration = 120,
+                BreakAfter = true,
+                BreakAfterDuration = 15,
+                Price = 500,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Kanal Tedavisi",
+                Description = "",
+                Duration = 150,
+                BreakAfter = true,
+                BreakAfterDuration = 30,
+                Price = 750,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "İmplant",
+                Description = "",
+                Duration = 180,
+                BreakAfter = true,
+                BreakAfterDuration = 45,
+                Price = 1000,
+                Currency = Currency.Tl,
+                Color = ""
+            }
+        };
+
+        await _dbContext.SiteServices.AddRangeAsync(siteServices);
+        await _dbContext.SaveChangesAsync();
+
+        foreach (var siteService in siteServices)
+        {
+            var siteServiceDays = new List<SiteServiceDay>
+            {
+                new()
+                {
+                    Day = Day.Monday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Tuesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Wednesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Thursday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Friday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Saturday,
+                    SiteServiceId = siteService.Id,
+                }
+            };
+
+            await _dbContext.SiteServiceDays.AddRangeAsync(siteServiceDays);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        var siteOffTimes = new List<SiteOffTime>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Sunday,
+                IsFullDay = true,
+            }
+        };
+
+        await _dbContext.SiteOfTimes.AddRangeAsync(siteOffTimes);
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    private async Task SeedTestCompany4()
+    {
+        var site = new Site
+            {
+                CreateDate = DateTime.Now,
+                Code = "YDISCI",
+                PhoneNumber = "5304444444",
+                Email = "disciy@gmail.com",
+                Description = "Y Dişçi Açıklama",
+                Address = "İstanbul/Kadıköy"
+            };
+
+        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+        
+        var image = new Image
+        {
+            Title = "4.jpg",
+            Path = "/Images/4.jpg"
+        };
+
+        await _dbContext.Images.AddAsync(image);
+        await _dbContext.SaveChangesAsync();
+
+        await _dbContext.SiteImages.AddAsync(new SiteImage
+        {
+            SiteId = site.Id,
+            ImageId = image.Id
+        });
+        await _dbContext.SaveChangesAsync();
+
+        await SeedAdminUser(site.Id);
+        await SeedLoginComponent(site.Id);
+
+        var businessOwner = new User
+        {
+            UserName = site.Id + "_" + "disciy@gmail.com",
+            Email = "disciy@gmail.com",
+            PhoneNumber = "5304444444",
+            FirstName = "Dişçi Y",
+            LastName = "Business Owner",
+            CreateDate = DateTime.Now,
+            SiteId = site.Id,
+        };
+
+        await _userManager.CreateAsync(businessOwner, "123456");
+        await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
+
+
+        var siteServices = new List<Domain.Entities.SiteService>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Diş Çekimi",
+                Description = "",
+                Duration = 150,
+                BreakAfter = true,
+                BreakAfterDuration = 20,
+                Price = 750,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Kanal Tedavisi",
+                Description = "",
+                Duration = 180,
+                BreakAfter = true,
+                BreakAfterDuration = 45,
+                Price = 1200,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "İmplant",
+                Description = "",
+                Duration = 200,
+                BreakAfter = true,
+                BreakAfterDuration = 30,
+                Price = 1500,
+                Currency = Currency.Tl,
+                Color = ""
+            }
+        };
+
+        await _dbContext.SiteServices.AddRangeAsync(siteServices);
+        await _dbContext.SaveChangesAsync();
+
+        foreach (var siteService in siteServices)
+        {
+            var siteServiceDays = new List<SiteServiceDay>
+            {
+                new()
+                {
+                    Day = Day.Monday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Tuesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Wednesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Thursday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Friday,
+                    SiteServiceId = siteService.Id,
+                }
+            };
+
+            await _dbContext.SiteServiceDays.AddRangeAsync(siteServiceDays);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        var siteOffTimes = new List<SiteOffTime>
+        {
             new()
             {
                 SiteId = site.Id,
