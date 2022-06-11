@@ -7,6 +7,7 @@ public class User : IdentityUser<int>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
+    public Gender Gender { get; set; }
     public DateTime? LastLoginDate { get; set; }
     public Guid? CreateUser { get; set; }
     public DateTime CreateDate { get; set; }

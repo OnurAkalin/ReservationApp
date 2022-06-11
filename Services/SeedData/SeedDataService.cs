@@ -53,7 +53,7 @@ public class SeedDataService : ISeedDataService
             PhoneNumber = "Admin",
             Email = "Admin",
             Description = "Admin",
-            Address = "Admin",
+            Address = "Admin"
         };
 
         await _dbContext.Sites.AddAsync(adminSite);
@@ -81,6 +81,7 @@ public class SeedDataService : ISeedDataService
             FirstName = "Admin",
             LastName = "Admin",
             SiteId = siteId,
+            Gender = Gender.Male,
             CreateDate = DateTime.Now
         };
         
@@ -189,7 +190,8 @@ public class SeedDataService : ISeedDataService
             FirstName = "Berber X",
             LastName = "Business Owner",
             CreateDate = DateTime.Now,
-            SiteId = site.Id,
+            Gender = Gender.Male,
+            SiteId = site.Id
         };
 
         await _userManager.CreateAsync(businessOwner, "123456");
@@ -339,7 +341,8 @@ public class SeedDataService : ISeedDataService
             FirstName = "Berber Y",
             LastName = "Business Owner",
             CreateDate = DateTime.Now,
-            SiteId = site.Id,
+            Gender = Gender.Male,
+            SiteId = site.Id
         };
 
         await _userManager.CreateAsync(businessOwner, "123456");
@@ -490,7 +493,8 @@ public class SeedDataService : ISeedDataService
             FirstName = "Dişçi X",
             LastName = "Business Owner",
             CreateDate = DateTime.Now,
-            SiteId = site.Id,
+            Gender = Gender.Male,
+            SiteId = site.Id
         };
 
         await _userManager.CreateAsync(businessOwner, "123456");
@@ -640,7 +644,8 @@ public class SeedDataService : ISeedDataService
             FirstName = "Dişçi Y",
             LastName = "Business Owner",
             CreateDate = DateTime.Now,
-            SiteId = site.Id,
+            Gender = Gender.Male,
+            SiteId = site.Id
         };
 
         await _userManager.CreateAsync(businessOwner, "123456");
