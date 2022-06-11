@@ -11,5 +11,4 @@ public class SiteServiceResponseDto
     public int? Price { get; set; }
     public Currency? Currency { get; set; }
     public string Color { get; set; }
-    public List<ImageResponseDto> Images { get; set; }
 }

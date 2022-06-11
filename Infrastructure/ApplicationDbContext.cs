@@ -39,7 +39,6 @@ public class ApplicationDbContext : IdentityDbContext<User, Role, int>
 
     public DbSet<Image> Images { get; set; }
     public DbSet<SiteImage> SiteImages { get; set; }
-    public DbSet<SiteServiceImage> SiteServiceImages { get; set; }
 
     #endregion
 }

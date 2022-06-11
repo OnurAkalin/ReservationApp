@@ -30,7 +30,6 @@ public interface ISiteService
     Task<DataResult<List<SiteServiceResponseDto>>> ListSiteServiceAsync();
     Task<DataResult<SiteServiceResponseDto>> GetSiteServiceAsync(int id);
     Task<Result> DeleteSiteServiceAsync(int id);
-    Task<Result> UploadSiteServiceImageAsync(ImageRequestDto requestDto);
 
     #endregion
 

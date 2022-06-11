@@ -247,7 +247,6 @@ public class SiteService : BasicService, ISiteService
     {
         var siteServices = await _dbContext.SiteServices
             .AsNoTracking()
-            .Include(x => x.SiteServiceImages).ThenInclude(x => x.Image)
             .Where(x => x.SiteId.Equals(_currentSiteId))
             .ToListAsync();
 
@@ -259,7 +258,6 @@ public class SiteService : BasicService, ISiteService
     public async Task<DataResult<SiteServiceResponseDto>> GetSiteServiceAsync(int id)
     {
         var siteService = await _dbContext.SiteServices
-            .Include(x => x.SiteServiceImages).ThenInclude(x => x.Image)
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
@@ -284,27 +282,6 @@ public class SiteService : BasicService, ISiteService
         }
 
         _dbContext.SiteServices.Remove(siteService);
-        await _dbContext.SaveChangesAsync();
-
-        return new SuccessResult(UiMessages.Success);
-    }
-
-    public async Task<Result> UploadSiteServiceImageAsync(ImageRequestDto requestDto)
-    {
-        var result = await _imageService.UploadToFileAsync(requestDto.Image);
-
-        if (!result.Success)
-        {
-            return new ErrorResult(result.Message);
-        }
-
-        var siteImage = new SiteServiceImage
-        {
-            ServiceId = requestDto.EntityId,
-            ImageId = result.Data
-        };
-
-        await _dbContext.SiteServiceImages.AddAsync(siteImage);
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);
