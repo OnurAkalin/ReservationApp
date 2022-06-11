@@ -21,6 +21,7 @@ public class Reservation : EntityBaseSiteWithAudit<int>
     public bool Draggable { get; set; }
     
     // Meta //
+    public bool IsCancelled { get; set; }
     public string UserMessage { get; set; } // User message or note for reservation.
 
     // FOREIGN KEYS //

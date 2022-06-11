@@ -16,6 +16,7 @@ public class ReservationRequestDto
 
 public class ReservationMetaRequestDto
 {
+    public bool IsCancelled { get; set; }
     public int SiteServiceId { get; set; }
     public int? UserId { get; set; }
     public string UserMessage { get; set; }

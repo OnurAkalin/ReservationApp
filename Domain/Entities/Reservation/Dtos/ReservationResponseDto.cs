@@ -19,4 +19,5 @@ public class ReservationMetaResponseDto
     public SiteServiceResponseDto SiteService { get; set; }
     public UserResponseDto User { get; set; }
     public string UserMessage { get; set; }
+    public bool IsCancelled { get; set; }
 }

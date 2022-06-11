@@ -50,7 +50,8 @@ public class AutoMapper : Profile
             .ForPath(x => x.Deletable, y => y.MapFrom(z => z.Actions.Deletable))
             .ForPath(x => x.UserMessage, y => y.MapFrom(z => z.Meta.UserMessage))
             .ForPath(x => x.UserId, y => y.MapFrom(z => z.Meta.UserId))
-            .ForPath(x => x.SiteServiceId, y => y.MapFrom(z => z.Meta.SiteServiceId));
+            .ForPath(x => x.SiteServiceId, y => y.MapFrom(z => z.Meta.SiteServiceId))
+            .ForPath(x => x.IsCancelled, y => y.MapFrom(z => z.Meta.IsCancelled));
 
         CreateMap<Reservation, ReservationResponseDto>()
             .ForPath(x => x.Resizable.BeforeStart, y => y.MapFrom(z => z.BeforeStart))
@@ -60,6 +61,7 @@ public class AutoMapper : Profile
             .ForPath(x => x.Meta.UserMessage, y => y.MapFrom(z => z.UserMessage))
             .ForPath(x => x.Meta.User, y => y.MapFrom(z => z.User))
             .ForPath(x => x.Meta.SiteService, y => y.MapFrom(z => z.SiteService))
+            .ForPath(x => x.Meta.IsCancelled, y => y.MapFrom(z => z.IsCancelled))
             .ForPath(x => x.Color, y => y.MapFrom(z => z.SiteService.Color));
 
         #endregion
