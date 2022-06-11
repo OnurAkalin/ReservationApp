@@ -94,7 +94,7 @@ public static class Configurations
 
         serviceCollection.Configure<IdentityOptions>(options =>
         {
-            options.User.RequireUniqueEmail = true;
+            options.User.RequireUniqueEmail = false;
             options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
 
             // Password settings.

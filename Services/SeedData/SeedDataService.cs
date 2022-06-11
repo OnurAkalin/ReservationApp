@@ -23,9 +23,10 @@ public class SeedDataService : ISeedDataService
         var result = await SeedAdminSite();
         if (!result.Success) return;
         await SeedRoles();
-        await SeedAdminUsers(result.Data);
+        await SeedAdminUser(result.Data);
         await SeedLoginComponent(result.Data);
         await SeedTestCompany1();
+        await SeedTestCompany2();
         
         Console.WriteLine("Seed ended...");
     }
@@ -63,47 +64,22 @@ public class SeedDataService : ISeedDataService
         await _roleManager.CreateAsync(new Role {Name = UserRoles.Customer});
     }
 
-    private async Task SeedAdminUsers(int siteId)
+    private async Task SeedAdminUser(int siteId)
     {
-        var adminUserList = new List<User>
-        {
-            new()
-            {
-                UserName = siteId + "_" + "admin@admin.com",
-                Email = "admin@admin.com",
-                PhoneNumber = "0000000000",
-                FirstName = "Admin",
-                LastName = "Admin",
-                SiteId = siteId,
-                CreateDate = DateTime.Now
-            },
-            new()
-            {
-                UserName = siteId + "_" + "onur@admin.com",
-                Email = "onur@admin.com",
-                PhoneNumber = "0000000000",
-                FirstName = "Onur",
-                LastName = "Akalın",
-                SiteId = siteId,
-                CreateDate = DateTime.Now
-            },
-            new()
-            {
-                UserName = siteId + "_" + "arif@admin.com",
-                Email = "arif@admin.com",
-                PhoneNumber = "0000000000",
-                FirstName = "Ahmet Arif",
-                LastName = "Özçelik",
-                SiteId = siteId,
-                CreateDate = DateTime.Now
-            }
-        };
 
-        foreach (var adminUser in adminUserList)
+        var adminUser = new User
         {
-            await _userManager.CreateAsync(adminUser, "qwe123");
-            await _userManager.AddToRoleAsync(adminUser, UserRoles.Admin);
-        }
+            UserName = siteId + "_" + "admin@admin.com",
+            Email = "admin@admin.com",
+            PhoneNumber = "0000000000",
+            FirstName = "Admin",
+            LastName = "Admin",
+            SiteId = siteId,
+            CreateDate = DateTime.Now
+        };
+        
+        await _userManager.CreateAsync(adminUser, "qwe123");
+        await _userManager.AddToRoleAsync(adminUser, UserRoles.Admin);
     }
 
     private async Task SeedLoginComponent(int siteId)
@@ -179,7 +155,8 @@ public class SeedDataService : ISeedDataService
 
         await _dbContext.Sites.AddAsync(site);
         await _dbContext.SaveChangesAsync();
-        
+
+        await SeedAdminUser(site.Id);
         await SeedLoginComponent(site.Id);
 
         var businessOwner = new User
@@ -280,6 +257,141 @@ public class SeedDataService : ISeedDataService
 
         var siteOffTimes = new List<SiteOffTime>
         {
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Saturday,
+                IsFullDay = true,
+            },
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Sunday,
+                IsFullDay = true,
+            }
+        };
+
+        await _dbContext.SiteOfTimes.AddRangeAsync(siteOffTimes);
+        await _dbContext.SaveChangesAsync();
+    }
+    
+    private async Task SeedTestCompany2()
+    {
+        var site = new Site
+            {
+                CreateDate = DateTime.Now,
+                Code = "YBERBER",
+                PhoneNumber = "5302222222",
+                Email = "berbery@gmail.com",
+                Description = "Y Berber Açıklama",
+                Address = "İstanbul/Kadıköy"
+            };
+
+        await _dbContext.Sites.AddAsync(site);
+        await _dbContext.SaveChangesAsync();
+
+        await SeedAdminUser(site.Id);
+        await SeedLoginComponent(site.Id);
+
+        var businessOwner = new User
+        {
+            UserName = site.Id + "_" + "berbery@gmail.com",
+            Email = "berbery@gmail.com",
+            PhoneNumber = "5302222222",
+            FirstName = "Berber Y",
+            LastName = "Business Owner",
+            CreateDate = DateTime.Now,
+            SiteId = site.Id,
+        };
+
+        await _userManager.CreateAsync(businessOwner, "123456");
+        await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
+
+
+        var siteServices = new List<Domain.Entities.SiteService>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Saç Kesimi",
+                Description = "",
+                Duration = 40,
+                BreakAfter = true,
+                BreakAfterDuration = 15,
+                Price = 30,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Sakalı Kesimi",
+                Description = "",
+                Duration = 20,
+                BreakAfter = false,
+                Price = 30,
+                Currency = Currency.Tl,
+                Color = ""
+            },
+            new()
+            {
+                SiteId = site.Id,
+                CreateDate = DateTime.Now,
+                Name = "Yüz Bakımı",
+                Description = "",
+                Duration = 50,
+                BreakAfter = true,
+                BreakAfterDuration = 35,
+                Price = 70,
+                Currency = Currency.Tl,
+                Color = ""
+            }
+        };
+
+        await _dbContext.SiteServices.AddRangeAsync(siteServices);
+        await _dbContext.SaveChangesAsync();
+
+        foreach (var siteService in siteServices)
+        {
+            var siteServiceDays = new List<SiteServiceDay>
+            {
+                new()
+                {
+                    Day = Day.Monday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Tuesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Wednesday,
+                    SiteServiceId = siteService.Id,
+                },
+                new()
+                {
+                    Day = Day.Thursday,
+                    SiteServiceId = siteService.Id,
+                }
+            };
+
+            await _dbContext.SiteServiceDays.AddRangeAsync(siteServiceDays);
+        }
+
+        await _dbContext.SaveChangesAsync();
+
+        var siteOffTimes = new List<SiteOffTime>
+        {
+            new()
+            {
+                SiteId = site.Id,
+                Day = Day.Friday,
+                IsFullDay = true,
+            },
             new()
             {
                 SiteId = site.Id,
