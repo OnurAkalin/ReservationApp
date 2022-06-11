@@ -23,7 +23,7 @@ public class SeedDataService : ISeedDataService
         var result = await SeedAdminSite();
         if (!result.Success)
         {
-            Console.WriteLine("Seed ended... Date:" + DateTime.Now);
+            Console.WriteLine("Seed data exists...");
             return;
         }
         await SeedRoles();

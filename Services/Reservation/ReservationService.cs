@@ -2,15 +2,18 @@
 
 public class ReservationService : BasicService, IReservationService
 {
+    private readonly UserManager<User> _userManager;
     public ReservationService
     (
         Logger logger,
         IMapper mapper,
         ApplicationDbContext dbContext,
-        IHttpContextAccessor httpContextAccessor
+        IHttpContextAccessor httpContextAccessor,
+        UserManager<User> userManager
     )
         : base(logger, mapper, dbContext, httpContextAccessor)
     {
+        _userManager = userManager;
     }
 
     public async Task<Result> InsertAsync(ReservationRequestDto requestDto)
@@ -55,6 +58,21 @@ public class ReservationService : BasicService, IReservationService
 
         var mappedData = _mapper.Map<List<ReservationResponseDto>>(reservations);
 
+        var user = await _userManager.FindByIdAsync(_currentUserId.ToString());
+        var isCustomer = await _userManager.IsInRoleAsync(user, UserRoles.Customer);
+        
+        if (isCustomer)
+        {
+            foreach (var reservationResponseDto in mappedData)
+            {
+                reservationResponseDto.Draggable = false;
+                reservationResponseDto.Actions.Deletable = false;
+                reservationResponseDto.Actions.Editable = false;
+                reservationResponseDto.Resizable.AfterEnd = false;
+                reservationResponseDto.Resizable.BeforeStart = false;
+            }
+        }
+        
         return new SuccessDataResult<List<ReservationResponseDto>>(mappedData, UiMessages.Success);
     }
 
@@ -73,6 +91,18 @@ public class ReservationService : BasicService, IReservationService
         }
 
         var mappedData = _mapper.Map<ReservationResponseDto>(reservation);
+        
+        var user = await _userManager.FindByIdAsync(_currentUserId.ToString());
+        var isCustomer = await _userManager.IsInRoleAsync(user, UserRoles.Customer);
+
+        if (isCustomer)
+        {
+            mappedData.Draggable = false;
+            mappedData.Actions.Deletable = false;
+            mappedData.Actions.Editable = false;
+            mappedData.Resizable.AfterEnd = false;
+            mappedData.Resizable.BeforeStart = false;
+        }
 
         return new SuccessDataResult<ReservationResponseDto>(mappedData, UiMessages.Success);
     }

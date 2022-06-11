@@ -25,7 +25,6 @@ app.UseDeveloperExceptionPage();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.SeedData();
-app.UseHttpsRedirection();
 app.UseStaticFiles(new StaticFileOptions()
 {
     RequestPath = "/Images",

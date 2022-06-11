@@ -46,6 +46,7 @@ public class AccountService : BasicService, IAccountService
         }
 
         var user = _mapper.Map<User>(requestDto);
+        user.SiteId = _currentSiteId;
         user.UserName = userName;
         user.CreateDate = DateTime.Now;
 
