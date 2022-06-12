@@ -31,7 +31,19 @@ public class DashboardController : ControllerBase
     
     
     [HttpGet]
-    [ProducesResponseType(typeof(DataResult<List<MonthlyUserSummaryResponseDto>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(DataResult<List<MonthlySummaryResponseDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMonthlyUserSummary()
         => Ok(await _dashboardService.GetMonthlyUserSummaryAsync());
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<MonthlySummaryResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMonthlyIncomeSummary()
+        => Ok(await _dashboardService.GetMonthlyIncomeSummaryAsync());
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<MonthlySummaryResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMonthlyReservationSummary()
+        => Ok(await _dashboardService.GetMonthlyReservationSummaryAsync());
 }

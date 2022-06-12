@@ -117,7 +117,7 @@ public class DashboardService : BasicService, IDashboardService
         return new SuccessDataResult<WeeklySummaryResponseDto>(responseDto, UiMessages.Success);
     }
 
-    public async Task<DataResult<List<MonthlyUserSummaryResponseDto>>> GetMonthlyUserSummaryAsync()
+    public async Task<DataResult<List<MonthlySummaryResponseDto>>> GetMonthlyUserSummaryAsync()
     {
         var customers = await (from user in _dbContext.Users
                 join userRole in _dbContext.UserRoles on user.Id equals userRole.UserId
@@ -129,12 +129,52 @@ public class DashboardService : BasicService, IDashboardService
         var groupedByMonth = customers.GroupBy(x => x.CreateDate.Month);
 
         var monthlyUserSummary = groupedByMonth
-            .Select(x => new MonthlyUserSummaryResponseDto
+            .Select(x => new MonthlySummaryResponseDto
             {
                 Month = x.Key,
                 Total = x.Count()
             }).ToList();
 
-        return new SuccessDataResult<List<MonthlyUserSummaryResponseDto>>(monthlyUserSummary, UiMessages.Success);
+        return new SuccessDataResult<List<MonthlySummaryResponseDto>>(monthlyUserSummary, UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<MonthlySummaryResponseDto>>> GetMonthlyIncomeSummaryAsync()
+    {
+        var reservations = await _dbContext.Reservations
+            .AsNoTracking()
+            .Include(x => x.SiteService)
+            .Where(x => x.SiteId.Equals(_currentSiteId))
+            .ToListAsync();
+
+        var groupedByMonth = reservations.GroupBy(x => x.Start.Month);
+        
+        var monthlyIncomeSummary = groupedByMonth
+            .Select(x => new MonthlySummaryResponseDto
+            {
+                Month = x.Key,
+                Total = x.Sum(y => y.SiteService.Price) ?? default
+            }).ToList();
+
+        return new SuccessDataResult<List<MonthlySummaryResponseDto>>(monthlyIncomeSummary, UiMessages.Success);
+        
+    }
+
+    public async Task<DataResult<List<MonthlySummaryResponseDto>>> GetMonthlyReservationSummaryAsync()
+    {
+        var reservations = await _dbContext.Reservations
+            .AsNoTracking()
+            .Where(x => x.SiteId.Equals(_currentSiteId))
+            .ToListAsync();
+
+        var groupedByMonth = reservations.GroupBy(x => x.Start.Month);
+        
+        var monthlyReservationSummary = groupedByMonth
+            .Select(x => new MonthlySummaryResponseDto
+            {
+                Month = x.Key,
+                Total = x.Count()
+            }).ToList();
+
+        return new SuccessDataResult<List<MonthlySummaryResponseDto>>(monthlyReservationSummary, UiMessages.Success);
     }
 }
