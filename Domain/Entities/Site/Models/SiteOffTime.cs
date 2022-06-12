@@ -2,7 +2,7 @@
 
 public class SiteOffTime : EntityBaseSite<int>
 {
-    public Day Day { get; set; }
+    public DayOfWeek Day { get; set; }
     public bool IsFullDay { get; set; }
 
     public DateTime? Date { get; set; }

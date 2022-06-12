@@ -309,7 +309,7 @@ public class SeedDataService : ISeedDataService
             {
                 SiteId = site.Id,
                 CreateDate = DateTime.Now,
-                Name = "Sakalı Kesimi",
+                Name = "Sakal Kesimi",
                 Description = "Her türlü sakal kesim işlemi.",
                 Duration = 15,
                 BreakAfter = false,
@@ -341,27 +341,27 @@ public class SeedDataService : ISeedDataService
             {
                 new()
                 {
-                    Day = Day.Monday,
+                    Day = DayOfWeek.Monday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Tuesday,
+                    Day = DayOfWeek.Tuesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Wednesday,
+                    Day = DayOfWeek.Wednesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Thursday,
+                    Day = DayOfWeek.Thursday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Friday,
+                    Day = DayOfWeek.Friday,
                     SiteServiceId = siteService.Id,
                 }
             };
@@ -376,13 +376,13 @@ public class SeedDataService : ISeedDataService
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Saturday,
+                Day = DayOfWeek.Saturday,
                 IsFullDay = true,
             },
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Sunday,
+                Day = DayOfWeek.Sunday,
                 IsFullDay = true,
             }
         };
@@ -461,7 +461,7 @@ public class SeedDataService : ISeedDataService
             {
                 SiteId = site.Id,
                 CreateDate = DateTime.Now,
-                Name = "Sakalı Kesimi",
+                Name = "Sakal Kesimi",
                 Description = "",
                 Duration = 20,
                 BreakAfter = false,
@@ -493,22 +493,22 @@ public class SeedDataService : ISeedDataService
             {
                 new()
                 {
-                    Day = Day.Monday,
+                    Day = DayOfWeek.Monday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Tuesday,
+                    Day = DayOfWeek.Tuesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Wednesday,
+                    Day = DayOfWeek.Wednesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Thursday,
+                    Day = DayOfWeek.Thursday,
                     SiteServiceId = siteService.Id,
                 }
             };
@@ -523,19 +523,19 @@ public class SeedDataService : ISeedDataService
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Friday,
+                Day = DayOfWeek.Friday,
                 IsFullDay = true,
             },
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Saturday,
+                Day = DayOfWeek.Saturday,
                 IsFullDay = true,
             },
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Sunday,
+                Day = DayOfWeek.Sunday,
                 IsFullDay = true,
             }
         };
@@ -647,32 +647,32 @@ public class SeedDataService : ISeedDataService
             {
                 new()
                 {
-                    Day = Day.Monday,
+                    Day = DayOfWeek.Monday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Tuesday,
+                    Day = DayOfWeek.Tuesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Wednesday,
+                    Day = DayOfWeek.Wednesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Thursday,
+                    Day = DayOfWeek.Thursday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Friday,
+                    Day = DayOfWeek.Friday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Saturday,
+                    Day = DayOfWeek.Saturday,
                     SiteServiceId = siteService.Id,
                 }
             };
@@ -687,7 +687,7 @@ public class SeedDataService : ISeedDataService
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Sunday,
+                Day = DayOfWeek.Sunday,
                 IsFullDay = true,
             }
         };
@@ -799,27 +799,27 @@ public class SeedDataService : ISeedDataService
             {
                 new()
                 {
-                    Day = Day.Monday,
+                    Day = DayOfWeek.Monday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Tuesday,
+                    Day = DayOfWeek.Tuesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Wednesday,
+                    Day = DayOfWeek.Wednesday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Thursday,
+                    Day = DayOfWeek.Thursday,
                     SiteServiceId = siteService.Id,
                 },
                 new()
                 {
-                    Day = Day.Friday,
+                    Day = DayOfWeek.Friday,
                     SiteServiceId = siteService.Id,
                 }
             };
@@ -834,13 +834,13 @@ public class SeedDataService : ISeedDataService
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Saturday,
+                Day = DayOfWeek.Saturday,
                 IsFullDay = true,
             },
             new()
             {
                 SiteId = site.Id,
-                Day = Day.Sunday,
+                Day = DayOfWeek.Sunday,
                 IsFullDay = true,
             }
         };

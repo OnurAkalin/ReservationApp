@@ -67,31 +67,41 @@ public class DashboardService : BasicService, IDashboardService
             .Where(x => x.SiteId.Equals(_currentSiteId))
             .ToListAsync();
 
-        var users = await _dbContext.Users
-            .AsNoTracking()
-            .Where(x => x.SiteId.Equals(_currentSiteId)
-                        && x.CreateDate >= startDate
-                        && x.CreateDate <= endDate)
+        var customers = await (from user in _dbContext.Users
+                join userRole in _dbContext.UserRoles on user.Id equals userRole.UserId
+                join role in _dbContext.Roles on userRole.RoleId equals role.Id
+                where role.Name.Equals(UserRoles.Customer) && user.SiteId.Equals(_currentSiteId)
+                select user)
             .ToListAsync();
 
         var completedReservationTotal = reservations.Count(x => !x.IsCancelled);
         var cancelledReservationTotal = reservations.Count(x => x.IsCancelled);
         var siteServiceTotal = siteServices.Count;
-        var userTotal = users.Count;
-        var maleTotal = users.Count(x => x.Gender == Gender.Male);
-        var femaleTotal = users.Count(x => x.Gender == Gender.Female);
+        var userTotal = customers.Count;
+        var maleTotal = customers.Count(x => x.Gender == Gender.Male);
+        var femaleTotal = customers.Count(x => x.Gender == Gender.Female);
 
-        var groupedReservations = reservations.GroupBy(x => x.SiteService.Name);
+        var groupedBySiteService = reservations.GroupBy(x => x.SiteService.Name);
 
-        foreach (var key in groupedReservations)
-        {
-            foreach (var reservation in key)
+        var siteServiceSummary = groupedBySiteService
+            .Select(x =>
+                new WeeklySummarySiteServiceResponseDto
+                {
+                    SiteServiceName = x.Key,
+                    Total = x.Count()
+                }
+            ).ToList();
+
+        var groupedByDay = reservations.GroupBy(x => x.Start.DayOfWeek);
+
+        var daySummary = groupedByDay
+            .Select(x => new WeeklySummaryDayResponseDto
             {
-                Console.WriteLine(reservation.SiteService.Name);
-            }
-        }
-
-
+                Day = x.Key,
+                CompletedTotal = x.Count(y => !y.IsCancelled),
+                CancelledTotal = x.Count(y => y.IsCancelled)
+            }).ToList();
+        
         var responseDto = new WeeklySummaryResponseDto
         {
             CompletedReservationTotal = completedReservationTotal,
@@ -99,7 +109,9 @@ public class DashboardService : BasicService, IDashboardService
             SiteServiceTotal = siteServiceTotal,
             UserTotal = userTotal,
             MaleTotal = maleTotal,
-            FemaleTotal = femaleTotal
+            FemaleTotal = femaleTotal,
+            DaySummary = daySummary,
+            SiteServiceSummary = siteServiceSummary
         };
 
         return new SuccessDataResult<WeeklySummaryResponseDto>(responseDto, UiMessages.Success);
