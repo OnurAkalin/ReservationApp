@@ -49,8 +49,7 @@ public class EmployeeService : BasicService, IEmployeeService
 
         var checkUserExist = await _dbContext.Users
             .AsNoTracking()
-            .AnyAsync(x => x.Email.Equals(requestDto.Email)
-                           || x.UserName.Equals(userName));
+            .AnyAsync(x => x.UserName.Equals(userName));
 
         if (checkUserExist)
         {
@@ -78,7 +77,7 @@ public class EmployeeService : BasicService, IEmployeeService
     {
         var employee = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      || x.SiteId.Equals(_currentSiteId));
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (employee is null)
         {
@@ -94,7 +93,7 @@ public class EmployeeService : BasicService, IEmployeeService
     {
         var employee = await _dbContext.Users
             .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      || x.SiteId.Equals(_currentSiteId));
+                                      && x.SiteId.Equals(_currentSiteId));
 
         if (employee is null)
         {

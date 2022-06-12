@@ -37,8 +37,7 @@ public class AccountService : BasicService, IAccountService
 
         var checkUserExist = await _dbContext.Users
             .AsNoTracking()
-            .AnyAsync(x => x.Email.Equals(requestDto.Email)
-                           || x.UserName.Equals(userName));
+            .AnyAsync(x => x.UserName.Equals(userName));
 
         if (checkUserExist)
         {

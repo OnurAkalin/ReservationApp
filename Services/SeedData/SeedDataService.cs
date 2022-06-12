@@ -21,11 +21,7 @@ public class SeedDataService : ISeedDataService
     public async Task SeedBaseData()
     {
         var result = await SeedAdminSite();
-        if (!result.Success)
-        {
-            Console.WriteLine("Seed data exists...");
-            return;
-        }
+        if (!result.Success) return;
         await SeedRoles();
         await SeedAdminUser(result.Data);
         await SeedLoginComponent(result.Data);
