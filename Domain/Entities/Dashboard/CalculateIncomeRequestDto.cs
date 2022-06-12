@@ -1,4 +1,4 @@
-namespace Domain.Entities.Dashboard;
+namespace Domain.Entities;
 
 public class CalculateIncomeRequestDto
 {

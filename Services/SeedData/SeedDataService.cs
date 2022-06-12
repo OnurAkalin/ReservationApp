@@ -159,6 +159,85 @@ public class SeedDataService : ISeedDataService
         await _dbContext.Components.AddAsync(loginComponent);
         await _dbContext.SaveChangesAsync();
     }
+
+    private async Task SeedTestCustomers(int siteId)
+    {
+        var customers = new List<User>
+        {
+            new()
+            {
+                UserName = siteId + "_" + "customer1@gmail.com",
+                Email = "customer1@gmail.com",
+                PhoneNumber = "0000000001",
+                FirstName = "Customer 1",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Male,
+                SiteId = siteId
+            },
+            new()
+            {
+                UserName = siteId + "_" + "customer2@gmail.com",
+                Email = "customer2@gmail.com",
+                PhoneNumber = "0000000002",
+                FirstName = "Customer 2",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Female,
+                SiteId = siteId
+            },
+            new()
+            {
+                UserName = siteId + "_" + "customer3@gmail.com",
+                Email = "customer3@gmail.com",
+                PhoneNumber = "0000000003",
+                FirstName = "Customer 3",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Male,
+                SiteId = siteId
+            },
+            new()
+            {
+                UserName = siteId + "_" + "customer4@gmail.com",
+                Email = "customer4@gmail.com",
+                PhoneNumber = "0000000004",
+                FirstName = "Customer 4",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Female,
+                SiteId = siteId
+            },
+            new()
+            {
+                UserName = siteId + "_" + "customer5@gmail.com",
+                Email = "customer5@gmail.com",
+                PhoneNumber = "0000000005",
+                FirstName = "Customer 5",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Male,
+                SiteId = siteId
+            },
+            new()
+            {
+                UserName = siteId + "_" + "customer6@gmail.com",
+                Email = "customer6@gmail.com",
+                PhoneNumber = "0000000006",
+                FirstName = "Customer 6",
+                LastName = "Test",
+                CreateDate = DateTime.Now,
+                Gender = Gender.Female,
+                SiteId = siteId
+            }
+        };
+
+        foreach (var customer in customers)
+        {
+            await _userManager.CreateAsync(customer, "123456");
+            await _userManager.AddToRoleAsync(customer, UserRoles.Customer);
+        }
+    }
     
     private async Task SeedTestCompany1()
     {
@@ -209,7 +288,8 @@ public class SeedDataService : ISeedDataService
         await _userManager.CreateAsync(businessOwner, "123456");
         await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
 
-
+        await SeedTestCustomers(site.Id);
+        
         var siteServices = new List<Domain.Entities.SiteService>
         {
             new()
@@ -360,6 +440,7 @@ public class SeedDataService : ISeedDataService
         await _userManager.CreateAsync(businessOwner, "123456");
         await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
 
+        await SeedTestCustomers(site.Id);
 
         var siteServices = new List<Domain.Entities.SiteService>
         {
@@ -512,6 +593,7 @@ public class SeedDataService : ISeedDataService
         await _userManager.CreateAsync(businessOwner, "123456");
         await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
 
+        await SeedTestCustomers(site.Id);
 
         var siteServices = new List<Domain.Entities.SiteService>
         {
@@ -663,6 +745,7 @@ public class SeedDataService : ISeedDataService
         await _userManager.CreateAsync(businessOwner, "123456");
         await _userManager.AddToRoleAsync(businessOwner, UserRoles.BusinessOwner);
 
+        await SeedTestCustomers(site.Id);
 
         var siteServices = new List<Domain.Entities.SiteService>
         {

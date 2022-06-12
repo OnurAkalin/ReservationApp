@@ -1,6 +1,4 @@
-﻿using Domain.Entities.Dashboard;
-
-namespace API.Controllers;
+﻿namespace API.Controllers;
 
 [Authorize]
 [ApiController]
@@ -23,5 +21,11 @@ public class DashboardController : ControllerBase
     [HttpPost]
     [ProducesResponseType(typeof(DataResult<int>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CalculateIncome([FromBody] CalculateIncomeRequestDto requestDto)
-        => Ok(await _dashboardService.CalculateIncome(requestDto));
+        => Ok(await _dashboardService.CalculateIncomeAsync(requestDto));
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<WeeklySummaryResponseDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetWeeklySummary()
+        => Ok(await _dashboardService.GetWeeklySummaryAsync());
 }
