@@ -54,6 +54,22 @@ public class SeedDataService : ISeedDataService
 
         await _dbContext.Sites.AddAsync(adminSite);
         await _dbContext.SaveChangesAsync();
+        
+        var image = new Image
+        {
+            Title = "admin.jpg",
+            Path = "/Images/admin.jpg"
+        };
+
+        await _dbContext.Images.AddAsync(image);
+        await _dbContext.SaveChangesAsync();
+
+        await _dbContext.SiteImages.AddAsync(new SiteImage
+        {
+            SiteId = adminSite.Id,
+            ImageId = image.Id
+        });
+        await _dbContext.SaveChangesAsync();
 
         return new SuccessDataResult<int>(adminSite.Id);
     }

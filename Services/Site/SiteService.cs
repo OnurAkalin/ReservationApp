@@ -122,7 +122,7 @@ public class SiteService : BasicService, ISiteService
 
         var siteImage = new SiteImage
         {
-            SiteId = requestDto.EntityId,
+            SiteId = _currentSiteId,
             ImageId = result.Data
         };
 
