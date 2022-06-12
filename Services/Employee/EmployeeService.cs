@@ -76,8 +76,7 @@ public class EmployeeService : BasicService, IEmployeeService
     public async Task<DataResult<EmployeeResponseDto>> GetAsync(int id)
     {
         var employee = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      && x.SiteId.Equals(_currentSiteId));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (employee is null)
         {
@@ -92,8 +91,7 @@ public class EmployeeService : BasicService, IEmployeeService
     public async Task<Result> DeleteAsync(int id)
     {
         var employee = await _dbContext.Users
-            .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      && x.SiteId.Equals(_currentSiteId));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (employee is null)
         {

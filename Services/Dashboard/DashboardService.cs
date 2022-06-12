@@ -55,7 +55,6 @@ public class DashboardService : BasicService, IDashboardService
 
         var reservations = await _dbContext.Reservations
             .AsNoTracking()
-            .Include(x => x.User)
             .Include(x => x.SiteService)
             .Where(x => x.SiteId.Equals(_currentSiteId)
                         && x.Start >= startDate

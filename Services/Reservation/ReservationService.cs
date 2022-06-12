@@ -82,8 +82,7 @@ public class ReservationService : BasicService, IReservationService
             .AsNoTracking()
             .Include(x => x.User)
             .Include(x => x.SiteService)
-            .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      || x.SiteId.Equals(_currentSiteId));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (reservation is null)
         {
@@ -110,8 +109,7 @@ public class ReservationService : BasicService, IReservationService
     public async Task<Result> DeleteAsync(int id)
     {
         var reservation = await _dbContext.Reservations
-            .FirstOrDefaultAsync(x => x.Id.Equals(id)
-                                      || x.SiteId.Equals(_currentSiteId));
+            .FirstOrDefaultAsync(x => x.Id.Equals(id));
 
         if (reservation is null)
         {
