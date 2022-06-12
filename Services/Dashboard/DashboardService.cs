@@ -116,4 +116,25 @@ public class DashboardService : BasicService, IDashboardService
 
         return new SuccessDataResult<WeeklySummaryResponseDto>(responseDto, UiMessages.Success);
     }
+
+    public async Task<DataResult<List<MonthlyUserSummaryResponseDto>>> GetMonthlyUserSummaryAsync()
+    {
+        var customers = await (from user in _dbContext.Users
+                join userRole in _dbContext.UserRoles on user.Id equals userRole.UserId
+                join role in _dbContext.Roles on userRole.RoleId equals role.Id
+                where role.Name.Equals(UserRoles.Customer) && user.SiteId.Equals(_currentSiteId)
+                select user)
+            .ToListAsync();
+
+        var groupedByMonth = customers.GroupBy(x => x.CreateDate.Month);
+
+        var monthlyUserSummary = groupedByMonth
+            .Select(x => new MonthlyUserSummaryResponseDto
+            {
+                Month = x.Key,
+                Total = x.Count()
+            }).ToList();
+
+        return new SuccessDataResult<List<MonthlyUserSummaryResponseDto>>(monthlyUserSummary, UiMessages.Success);
+    }
 }

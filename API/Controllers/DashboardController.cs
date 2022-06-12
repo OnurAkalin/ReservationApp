@@ -28,4 +28,10 @@ public class DashboardController : ControllerBase
     [ProducesResponseType(typeof(DataResult<WeeklySummaryResponseDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetWeeklySummary()
         => Ok(await _dashboardService.GetWeeklySummaryAsync());
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<MonthlyUserSummaryResponseDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMonthlyUserSummary()
+        => Ok(await _dashboardService.GetMonthlyUserSummaryAsync());
 }
