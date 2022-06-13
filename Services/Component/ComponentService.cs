@@ -57,6 +57,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Login)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (loginComponent is null)
             {
                 return new ErrorDataResult<List<LoginComponentDto>>(UiMessages.NotFoundData);
@@ -113,6 +114,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Register)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (registerComponent is null)
             {
                 return new ErrorDataResult<List<RegisterComponentDto>>(UiMessages.NotFoundData);
@@ -169,6 +171,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.AuthLayout)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (authLayoutComponent is null)
             {
                 return new ErrorDataResult<List<AuthLayoutDto>>(UiMessages.NotFoundData);
@@ -184,6 +187,63 @@ public class ComponentService : BasicService, IComponentService
         }
         
         return new SuccessDataResult<List<AuthLayoutDto>>(responseData, UiMessages.Success);
+    }
+    
+    public async Task<Result> SetCalendarLayoutAsync(List<CalendarLayoutDto> requestDto)
+    {
+        var currentCalendarLayoutComponent = await _dbContext.Components
+            .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarLayout)
+                                      && x.SiteId.Equals(_currentSiteId));
+
+        if (currentCalendarLayoutComponent is not null)
+        {
+            _dbContext.Components.Remove(currentCalendarLayoutComponent);
+        }
+
+        var calendarLayoutComponent = new Component
+        {
+            Type = ComponentType.CalendarLayout,
+            Value = JsonConvert.SerializeObject(requestDto),
+            SiteId = _currentSiteId
+        };
+
+        await _dbContext.Components.AddAsync(calendarLayoutComponent);
+        await _dbContext.SaveChangesAsync();
+        
+        var redisKey = string.Format(CacheKeys.Component, _currentSiteId, ComponentType.CalendarLayout.ToString());
+        await _redis.KeyDeleteAsync(redisKey);
+
+        return new SuccessResult(UiMessages.Success);
+    }
+
+    public async Task<DataResult<List<CalendarLayoutDto>>> GetCalendarLayoutAsync()
+    {
+        List<CalendarLayoutDto> responseData;
+        var redisKey = string.Format(CacheKeys.Component, _currentSiteId, ComponentType.CalendarLayout.ToString());
+        var redisValue = await _redis.StringGetAsync(redisKey);
+        
+        if (redisValue.IsNull)
+        {
+            var calendarLayoutComponent = await _dbContext.Components
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarLayout)
+                                          && x.SiteId.Equals(_currentSiteId));
+            
+            if (calendarLayoutComponent is null)
+            {
+                return new ErrorDataResult<List<CalendarLayoutDto>>(UiMessages.NotFoundData);
+            }
+            
+            responseData = JsonConvert.DeserializeObject<List<CalendarLayoutDto>>(calendarLayoutComponent.Value);
+
+            await _redis.StringSetAsync(redisKey, calendarLayoutComponent.Value);
+        }
+        else
+        {
+            responseData = JsonConvert.DeserializeObject<List<CalendarLayoutDto>>(redisValue);
+        }
+        
+        return new SuccessDataResult<List<CalendarLayoutDto>>(responseData, UiMessages.Success);
     }
 
     public async Task<Result> SetCalendarConfigurationAsync(List<CalendarConfigurationDto> requestDto)
@@ -225,6 +285,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.CalendarConfiguration)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (calendarConfigurationComponent is null)
             {
                 return new ErrorDataResult<List<CalendarConfigurationDto>>(UiMessages.NotFoundData);
@@ -281,6 +342,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.Custom)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (customComponent is null)
             {
                 return new ErrorDataResult<List<CustomDto>>(UiMessages.NotFoundData);
@@ -337,6 +399,7 @@ public class ComponentService : BasicService, IComponentService
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Type.Equals(ComponentType.WebPage)
                                           && x.SiteId.Equals(_currentSiteId));
+            
             if (webPageComponent is null)
             {
                 return new ErrorDataResult<List<WebPageDto>>(UiMessages.NotFoundData);

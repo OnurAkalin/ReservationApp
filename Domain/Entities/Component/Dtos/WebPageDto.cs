@@ -9,4 +9,5 @@ public class WebPageDto
     public string Content { get; set; }
     public string Script { get; set; }
     public string DependentComponents { get; set; }
+    public string Style { get; set; }
 }
