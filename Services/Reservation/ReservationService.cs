@@ -106,7 +106,7 @@ public class ReservationService : BasicService, IReservationService
         return new SuccessDataResult<ReservationResponseDto>(mappedData, UiMessages.Success);
     }
 
-    public async Task<Result> DeleteAsync(int id)
+    public async Task<Result> CancelAsync(int id)
     {
         var reservation = await _dbContext.Reservations
             .FirstOrDefaultAsync(x => x.Id.Equals(id));
@@ -116,7 +116,7 @@ public class ReservationService : BasicService, IReservationService
             return new ErrorResult(UiMessages.NotFoundData);
         }
 
-        _dbContext.Reservations.Remove(reservation);
+        reservation.IsCancelled = true;
         await _dbContext.SaveChangesAsync();
 
         return new SuccessResult(UiMessages.Success);

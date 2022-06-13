@@ -49,6 +49,18 @@ public class ComponentController : ControllerBase
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
     public async Task<IActionResult> AuthLayout([FromBody] List<AuthLayoutDto> requestDto)
         => Ok(await _componentService.SetAuthLayoutAsync(requestDto));
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<CalendarLayoutDto>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CalendarLayout()
+        => Ok(await _componentService.GetCalendarLayoutAsync());
+
+
+    [HttpPut]
+    [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
+    public async Task<IActionResult> CalendarLayout([FromBody] List<CalendarLayoutDto> requestDto)
+        => Ok(await _componentService.SetCalendarLayoutAsync(requestDto));
 
 
     [HttpGet]

@@ -6,5 +6,5 @@ public interface IReservationService
     Task<Result> UpdateAsync(ReservationRequestDto requestDto);
     Task<DataResult<List<ReservationResponseDto>>> ListAsync();
     Task<DataResult<ReservationResponseDto>> GetAsync(int id);
-    Task<Result> DeleteAsync(int id);
+    Task<Result> CancelAsync(int id);
 }

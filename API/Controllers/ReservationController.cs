@@ -36,8 +36,8 @@ public class ReservationController : ControllerBase
         => Ok(await _reservationService.ListAsync());
 
 
-    [HttpDelete]
+    [HttpPost]
     [ProducesResponseType(typeof(Result), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Delete([FromQuery] int id)
-        => Ok(await _reservationService.DeleteAsync(id));
+    public async Task<IActionResult> Cancel([FromQuery] int id)
+        => Ok(await _reservationService.CancelAsync(id));
 }
