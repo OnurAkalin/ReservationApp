@@ -52,6 +52,7 @@ public class ComponentController : ControllerBase
     
     
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<CalendarLayoutDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CalendarLayout()
         => Ok(await _componentService.GetCalendarLayoutAsync());
@@ -64,6 +65,7 @@ public class ComponentController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<CalendarConfigurationDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CalendarConfiguration()
         => Ok(await _componentService.GetCalendarConfigurationAsync());
@@ -76,6 +78,7 @@ public class ComponentController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<CustomDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> Custom()
         => Ok(await _componentService.GetCustomAsync());
@@ -88,6 +91,7 @@ public class ComponentController : ControllerBase
 
 
     [HttpGet]
+    [AllowAnonymous]
     [ProducesResponseType(typeof(DataResult<List<WebPageDto>>), StatusCodes.Status200OK)]
     public async Task<IActionResult> WebPage()
         => Ok(await _componentService.GetWebPageAsync());
