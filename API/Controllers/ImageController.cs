@@ -20,4 +20,10 @@ public class ImageController : ControllerBase
     [ProducesResponseType(typeof(DataResult<string>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetImage(int id)
         => Ok(await _imageService.GetImagePathAsync(id));
+    
+    
+    [HttpGet]
+    [ProducesResponseType(typeof(DataResult<List<string>>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> ListImages()
+        => Ok(await _imageService.ListImagePathsAsync());
 }

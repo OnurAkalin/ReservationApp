@@ -58,6 +58,16 @@ public class ImageService : BasicService, IImageService
 
         return new SuccessDataResult<string>(imagePath, UiMessages.Success);
     }
+    
+    public async Task<DataResult<List<string>>> ListImagePathsAsync()
+    {
+        var images = await _dbContext.Images
+            .AsNoTracking()
+            .Select(x => x.Path)
+            .ToListAsync();
+
+        return new SuccessDataResult<List<string>>(images, UiMessages.Success);
+    }
 
     public async Task<DataResult<int>> UploadToDatabaseAsync(IFormFile image)
     {
